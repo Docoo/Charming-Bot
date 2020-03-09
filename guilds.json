@@ -1,0 +1,531 @@
+[
+    {
+        "guildID": "579619180966445077",
+
+        "prefix": "P!",
+
+        "roles": [
+            "579627080421998594",
+
+            "600404673429635072",
+
+            "600404910445690890",
+
+            "600404967815381013"
+        ],
+
+        "name": "Super Panda!",
+
+        "roleWatches": [
+            {
+                "msgID": "600001927006257203",
+
+                "role": "579627080421998594",
+
+                "emoji": "531959539960905748"
+            },
+
+            {
+                "msgID": "600404621164544010",
+
+                "role": "600404673429635072",
+
+                "emoji": "600405210040500224"
+            },
+
+            {
+                "msgID": "600404621164544010",
+
+                "role": "600404910445690890",
+
+                "emoji": "600405210065666048"
+            },
+
+            {
+                "msgID": "600404621164544010",
+
+                "role": "600404967815381013",
+
+                "emoji": "600405209893699624"
+            }
+        ],
+
+        "roleToggles": [
+            "600404621164544010"
+        ],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "296289202998476800",
+
+        "prefix": "C!",
+
+        "name": "Ṫh̍e̘̒ ̡̍D̎ar̾k͕̋ian͈̍s",
+
+        "roles": [
+            "494268498990858241"
+        ],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "346619706595082253",
+
+        "prefix": "C!",
+
+        "name": "united cactus🎄",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "247831161013796865",
+
+        "prefix": "C!",
+
+        "roles": [
+            "598003444695040010",
+
+            "600390066249924646"
+        ],
+
+        "name": "CharmieMusic",
+
+        "roleWatches": [
+            {
+                "msgID": "598129225756704770",
+
+                "role": "598003444695040010",
+
+                "emoji": "525456714498179072"
+            },
+
+            {
+                "msgID": "598129225756704770",
+
+                "role": "600390066249924646",
+
+                "emoji": "531244520889647105"
+            }
+        ],
+
+        "roleToggles": [
+            "598129225756704770",
+
+            "598129225756704770"
+        ],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": "169525036305219585",
+
+        "dailyQuizChannel": "580612655107145728",
+
+        "defaultChannel": "580612655107145728",
+
+        "bnsRecNick": true
+    },
+
+    {
+        "guildID": "593930977823162419",
+
+        "prefix": "cactus ",
+
+        "bdochannelid": "597745474233171968",
+
+        "bdomentionrole": "",
+
+        "name": "Carbohydrates",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "defaultChannel": "594102585083035648",
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "574686245322620952",
+
+        "prefix": "P!",
+
+        "name": "Whales Sanctuary (EU)",
+
+        "roles": [
+            "574686420644397104",
+
+            "574690061652590592",
+
+            "574686495554666533",
+
+            "574686453062434856",
+
+            "574689123630186505",
+
+            "574686662655868938",
+
+            "574686478332985354",
+
+            "574686560843202561",
+
+            "574686594272067586",
+
+            "574686398263853106",
+
+            "574686528689930270",
+
+            "600755216878665729",
+
+            "600755251263569921",
+
+            "600755279268806656",
+
+            "600755308264030208",
+
+            "624291353110642700",
+
+            "662310998312747018"
+        ],
+
+        "roleWatches": [
+            {
+                "msgID": "574707113671131146",
+
+                "role": "624291353110642700",
+
+                "emoji": "624282245024186388"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574690061652590592",
+
+                "emoji": "574698540320686082"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686420644397104",
+
+                "emoji": "574698541591560224"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574689123630186505",
+
+                "emoji": "574698539871895571"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686662655868938",
+
+                "emoji": "574698540387794960"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686478332985354",
+
+                "emoji": "574698540522012692"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686560843202561",
+
+                "emoji": "574698540291588155"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686594272067586",
+
+                "emoji": "574698540333268993"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686398263853106",
+
+                "emoji": "574698540375343124"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686528689930270",
+
+                "emoji": "574698540287393842"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686495554666533",
+
+                "emoji": "574698540224479243"
+            },
+
+            {
+                "msgID": "574707113671131146",
+
+                "role": "574686453062434856",
+
+                "emoji": "574698540110970881"
+            }
+        ],
+
+        "roleToggles": [
+            "574707113671131146"
+        ],
+
+        "defaultChannel": "600752007912882352",
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "353980706260779008",
+
+        "prefix": "cactus ",
+
+        "name": "Reapers Nazarick Empire",
+
+        "roles": [
+            "401827545391038466"
+        ],
+
+        "roleWatches": [
+            {
+                "msgID": "628934326230319156",
+
+                "role": "401827545391038466",
+
+                "emoji": "366607980197838858"
+            }
+        ],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": true
+    },
+
+    {
+        "guildID": "638070969965215745",
+
+        "prefix": "cactus ",
+
+        "name": "test",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null
+    },
+
+    {
+        "guildID": "197813306054934528",
+
+        "prefix": "&",
+
+        "name": "Septum",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": true
+    },
+
+    {
+        "guildID": "367471439890219008",
+
+        "prefix": "~",
+
+        "name": "League & Soul",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    },
+
+    {
+        "guildID": "564143269878038540",
+
+        "prefix": "r!",
+
+        "name": "Spicy Pizza",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": true
+    },
+
+    {
+        "guildID": "611826349035749386",
+
+        "prefix": "~",
+
+        "name": "(X)",
+
+        "roles": [],
+
+        "roleWatches": [],
+
+        "roleToggles": [],
+
+        "dailyQuiz": null,
+
+        "autoQuizUpdate": false,
+
+        "dailyQuizAnswers": [],
+
+        "dailyQuizManager": null,
+
+        "dailyQuizChannel": null,
+
+        "bnsRecNick": false
+    }
+]
