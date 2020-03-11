@@ -135,7 +135,7 @@
     },
     {
         "sb_count": 2,
-        "bb_count": 1,
+        "bb_count": 2,
         "ac_count": 1,
         "stealth_count": 2,
         "hmb_count": 2,
@@ -146,8 +146,8 @@
         "message_id": "685922149676220436",
         "title": "et1",
         "nr_max_people": 12,
-        "nr_taken_spots": 9,
-        "nr_free_spots": 3,
+        "nr_taken_spots": 10,
+        "nr_free_spots": 2,
         "author": "201857181518266368",
         "nr_overflow": 0,
         "party_one": [
@@ -191,6 +191,10 @@
             [
                 "384031108326621215",
                 "WL"
+            ],
+            [
+                "201857181518266368",
+                "KFM"
             ]
         ],
         "party_two_sb_id": null,
