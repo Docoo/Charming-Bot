@@ -57,13 +57,13 @@ bot.on('messageReactionAdd', (reaction, user) => {
     
 bot.on('messageReactionRemove', (reaction, user) => {
     if (user.bot) return;
-    bot.onMessageReactionRemoveFunction();
+    bot.onMessageReactionRemoveFunction(reaction, user);
 });
 
 bot.on("guildCreate", guild => {
-    bot.onGuildCreateFunction();
+    bot.onGuildCreateFunction(guild);
 });
     
 bot.on("guildDelete", guild => {
-    bot.onGuildDeleteFunction();
+    bot.onGuildDeleteFunction(guild);
 });
