@@ -1,8 +1,9 @@
 module.exports.initBot = initBot;
+const fs = require('fs');
+const path = require('path');
 
 // Initialize Discord Bot
 async function initBot(bot, message){
-	const fs = require('fs');
 	bot.whitelistmode = false;
 	if (bot.startupTime == undefined){
 		let date = new Date();
@@ -46,10 +47,58 @@ async function initBot(bot, message){
 			fs.writeFileSync('./betaRestart.json', json, 'utf8');
 		}
     }
-    
-    bot.commands = new Map();
 
-    bot.commands.set("restart", require("./betarestart"));
+	bot.recFindByExt = recFindByExt;
+	bot.reloadCommands = reloadCommands;
+
+	try{
+		bot.reloadCommands(bot);
+		bot.oldCommands = undefined;
+		console.log("reloaded without errors")
+	} catch (error){
+		console.log("init error: " + error);
+		bot.commands = bot.oldCommands;
+		bot.oldCommands = undefined;
+		console.log("reloaded with errors")
+	}
 
 	return bot;
+}
+
+function recFindByExt(base,ext,files,result) 
+{
+    files = files || fs.readdirSync(base) 
+    result = result || [] 
+
+    files.forEach( 
+        function (file) {
+            var newbase = path.join(base,file)
+            if ( fs.statSync(newbase).isDirectory() )
+            {
+                result = recFindByExt(newbase,ext,fs.readdirSync(newbase),result)
+            }
+            else
+            {
+                if ( file.substr(-1*(ext.length+1)) == '.' + ext )
+                {
+                    result.push(newbase)
+                } 
+            }
+        }
+    )
+    return result
+}
+
+function reloadCommands(bot){
+	bot.oldCommands = bot.commands;
+	bot.commands = new Map();
+	const commandFiles = recFindByExt('./betacommands','js');
+	for (const file of commandFiles) {
+		file2 = './../' + file.split('\\').join('/');
+		delete require.cache[require.resolve(`${file2}`)];
+		const command = require(`${file2}`);
+		bot.commands.set(command.name, command);
+	}
+	delete require.cache[require.resolve("./betarestart")];
+	bot.commands.set("restart", require("./betarestart"));
 }

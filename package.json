@@ -16,6 +16,7 @@
     "http": "0.0.0",
     "https": "^1.0.0",
     "lodash": "^4.17.15",
+    "mssql": "^6.1.0",
     "nightmare": "^3.0.2",
     "opusscript": "0.0.6",
     "request": "^2.88.0",

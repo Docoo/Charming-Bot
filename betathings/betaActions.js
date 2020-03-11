@@ -18,7 +18,6 @@ async function setStuff(bot){
             rawCommand.shift();
             let command = rawCommand.shift();
             console.log("Processing " + command + " with arguments " + rawCommand);
-            
             if (bot.commands.has(command)){
                 bot.commands.get(command).execute(bot, message, rawCommand);
             } else {
