@@ -6,7 +6,7 @@ async function setStuff(bot){
         console.log('Connected');
         console.log('Logged in as: ');
         console.log(bot.user.username + ' - (' + bot.user.id + ')');
-        //bot.user.setActivity('a New Start', { type: 'PLAYING' });
+        bot.user.setActivity('a New Start', { type: 'PLAYING' });
         //bot.user.setAvatar('./assets/bot_profile_pics/Hoodie-Neko.jpg');
     }
 

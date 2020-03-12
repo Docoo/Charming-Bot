@@ -62,6 +62,11 @@ async function initBot(bot, message){
 		console.log("reloaded with errors")
 	}
 
+	if (bot.sql == undefined){
+		bot.sql = require('mssql');
+		await bot.sql.connect(`mssql://${bot.authToken.mssql.user}:${bot.authToken.mssql.pass}@localhost/CharmingBotBetaDB`);
+	}
+
 	return bot;
 }
 

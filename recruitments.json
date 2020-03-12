@@ -1,76 +1,5 @@
 [
     {
-        "sb_count": 2,
-        "bb_count": 0,
-        "ac_count": 2,
-        "stealth_count": 1,
-        "hmb_count": 3,
-        "ice_count": 0,
-        "server_name": "Septum",
-        "server_id": "197813306054934528",
-        "channel_id": "651443407516073994",
-        "message_id": "684806037995520000",
-        "title": "vt",
-        "nr_max_people": 12,
-        "nr_taken_spots": 9,
-        "nr_free_spots": 3,
-        "author": "384031108326621215",
-        "nr_overflow": 0,
-        "party_one": [
-            [
-                "384031108326621215",
-                "WL"
-            ],
-            [
-                "385113717219655690",
-                "GUN"
-            ],
-            [
-                "225318263465312256",
-                "WRD"
-            ],
-            [
-                "199230236376694784",
-                "SF"
-            ],
-            [
-                "339510131391725570",
-                "ARC"
-            ],
-            [
-                "164145989433688064",
-                "BM"
-            ]
-        ],
-        "party_one_sb_id": null,
-        "party_one_bb_id": null,
-        "party_one_ac_id": null,
-        "party_two": [
-            [
-                "148053003906056192",
-                "SUM"
-            ],
-            [
-                "339839437938884609",
-                "BM"
-            ],
-            [
-                "310075957723791360",
-                "BM"
-            ]
-        ],
-        "party_two_sb_id": null,
-        "party_two_bb_id": null,
-        "party_two_ac_id": null,
-        "overflow": [],
-        "tank_id": null,
-        "type": "A",
-        "nr_of_parties": 2,
-        "use_nick": true,
-        "expire": "2020-03-11T16:54:42.295Z",
-        "enforceRoles": false
-    },
-    {
         "sb_count": 1,
         "bb_count": 1,
         "ac_count": 0,
@@ -139,15 +68,15 @@
         "ac_count": 1,
         "stealth_count": 2,
         "hmb_count": 2,
-        "ice_count": 2,
+        "ice_count": 1,
         "server_name": "Septum",
         "server_id": "197813306054934528",
         "channel_id": "572373702449299466",
         "message_id": "685922149676220436",
         "title": "et1",
         "nr_max_people": 12,
-        "nr_taken_spots": 10,
-        "nr_free_spots": 2,
+        "nr_taken_spots": 9,
+        "nr_free_spots": 3,
         "author": "201857181518266368",
         "nr_overflow": 0,
         "party_one": [
@@ -185,10 +114,6 @@
                 "SUM"
             ],
             [
-                "244905951180750848",
-                "FM"
-            ],
-            [
                 "384031108326621215",
                 "WL"
             ],
@@ -211,7 +136,7 @@
     {
         "sb_count": 1,
         "bb_count": 1,
-        "ac_count": 0,
+        "ac_count": 1,
         "stealth_count": 1,
         "hmb_count": 3,
         "ice_count": 2,
@@ -221,8 +146,8 @@
         "message_id": "685950099729547427",
         "title": "et2",
         "nr_max_people": 12,
-        "nr_taken_spots": 8,
-        "nr_free_spots": 4,
+        "nr_taken_spots": 9,
+        "nr_free_spots": 3,
         "author": "201857181518266368",
         "nr_overflow": 0,
         "party_one": [
@@ -262,6 +187,10 @@
             [
                 "266688347966144515",
                 "BM"
+            ],
+            [
+                "164394044116434945",
+                "GUN"
             ]
         ],
         "party_two_sb_id": null,
@@ -273,6 +202,64 @@
         "nr_of_parties": 2,
         "use_nick": true,
         "expire": "2020-03-14T20:40:51.739Z",
+        "enforceRoles": false
+    },
+    {
+        "sb_count": 2,
+        "bb_count": 0,
+        "ac_count": 1,
+        "stealth_count": 0,
+        "hmb_count": 2,
+        "ice_count": 0,
+        "server_name": "Septum",
+        "server_id": "197813306054934528",
+        "channel_id": "651443407516073994",
+        "message_id": "687376247772282958",
+        "title": "vt",
+        "nr_max_people": 12,
+        "nr_taken_spots": 6,
+        "nr_free_spots": 6,
+        "author": "384031108326621215",
+        "nr_overflow": 0,
+        "party_one": [
+            [
+                "225318263465312256",
+                "WRD"
+            ],
+            [
+                "339839437938884609",
+                "BM"
+            ],
+            [
+                "384031108326621215",
+                "WL"
+            ],
+            [
+                "199230236376694784",
+                "SF"
+            ],
+            [
+                "339510131391725570",
+                "ARC"
+            ],
+            [
+                "310075957723791360",
+                "BM"
+            ]
+        ],
+        "party_one_sb_id": null,
+        "party_one_bb_id": null,
+        "party_one_ac_id": null,
+        "party_two": [],
+        "party_two_sb_id": null,
+        "party_two_bb_id": null,
+        "party_two_ac_id": null,
+        "overflow": [],
+        "tank_id": null,
+        "type": "A",
+        "nr_of_parties": 2,
+        "use_nick": true,
+        "expire": "2020-03-18T19:07:50.654Z",
         "enforceRoles": false
     }
 ]
