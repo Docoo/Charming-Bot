@@ -5,7 +5,9 @@ module.exports = {
     help: `**message** : any text`,
     execute(bot, message, args){
         if (args == undefined || args == null) return 0;
-        message.channel.send(sum(args)).then(sentMessage => {
+        let msgToSend = sum(args);
+        if (message.author.id == "412077741274431498") msgToSend = "Ruki told me to say that " + msgToSend;
+        message.channel.send(msgToSend).then(sentMessage => {
             console.log(`Sent message with id ${sentMessage.id} for ${message.author.username}`);
             message.delete().then(msg => console.log(`Deleted message from ${msg.author.username}`)).catch(console.log);
         });

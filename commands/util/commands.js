@@ -7,12 +7,10 @@ module.exports = {
         var response = "**Command list:**";
         const fs = require('fs');
         const Discord = require('discord.js');
-        let replyEmbed = new Discord.RichEmbed()
+        let replyEmbed = new Discord.MessageEmbed()
             .setTitle(response)
             .setColor('#17b817')
-            .addBlankField(false)
-            .attachFile('./media/img/discordblobs/cuteLove.jpg')
-            .setThumbnail('attachment://cuteLove.jpg');
+            .setThumbnail(`attachment://cuteLove.jpg`);
         let onemodule = false;
         if (args[0] != undefined && args[0] != null){
             onemodule = true;
@@ -41,6 +39,7 @@ module.exports = {
                 replyEmbed.addField(responseVal1, responseVal2, false);
             }
         }
-        message.channel.send(replyEmbed);
+        const messageAttachment = new Discord.MessageAttachment().setFile(`./media/img/discordblobs/cuteLove.jpg`);
+        message.channel.send({embeds: [replyEmbed], files: [messageAttachment]});
     }
 }

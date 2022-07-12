@@ -19,8 +19,9 @@ module.exports = {
 
         // return 0;
 
-        const Nightmare = require('nightmare');
-        const nightmare = new Nightmare();
+        //const Nightmare = require('nightmare');
+        //const nightmare = new Nightmare();
+        const nightmare = undefined; //removing nightmare due to vulnerabilities
         nightmare
             .goto('https://bdobosstimer.com/?&server=eu')
             .evaluate(() => document.querySelector('.head.selected').outerHTML)

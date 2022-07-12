@@ -20,7 +20,7 @@ module.exports = {
             const Discord = require('discord.js');
             //var messageContent = `${amount.toString()} people needed for ${sum(args)}\n\`\`\`\nEmpty list\n\`\`\``;
             //message.channel.send(messageContent);
-            const newEmbed = new Discord.RichEmbed().setTitle(`People needed for ${sum(args)}`);
+            const newEmbed = new Discord.MessageEmbed().setTitle(`People needed for ${sum(args)}`);
             newEmbed.setDescription(`Needed: ${amount}`);
             //newEmbed.addField("Empty list", "Be the first one to apply!");
             if (amount == 6){
@@ -29,23 +29,25 @@ module.exports = {
                 newEmbed.addField('Party1', 'Empty!', true);
                 newEmbed.addField('Party2', 'Empty!', true);
             }
-            message.channel.send(newEmbed).then(() =>
+            message.channelsend({
+            embeds: [newEmbed]
+            }).then(() =>
             {
-                const channel = message.client.channels.get(message.channel.id);
+                const channel = message.client.channels.cache.get(message.channel.id);
                 channel.fetchMessages({ limit: 1 }).then(messages => {
                     let lastMessage = messages.first();
               
-                    const BD = message.client.emojis.find(emoji => emoji.name === "BD");
-                    const BM = message.client.emojis.find(emoji => emoji.name === "BM");
-                    const DES = message.client.emojis.find(emoji => emoji.name === "DES");
-                    const FM = message.client.emojis.find(emoji => emoji.name === "FM");
-                    const GUN = message.client.emojis.find(emoji => emoji.name === "GUN");
-                    const KFM = message.client.emojis.find(emoji => emoji.name === "KFM");
-                    const SF = message.client.emojis.find(emoji => emoji.name === "SF");
-                    const SIN = message.client.emojis.find(emoji => emoji.name === "SIN");
-                    const SUM = message.client.emojis.find(emoji => emoji.name === "SUM");
-                    const WL = message.client.emojis.find(emoji => emoji.name === "WL");
-                    const WRD = message.client.emojis.find(emoji => emoji.name === "WRD");
+                    const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD");
+                    const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM");
+                    const DES = message.client.emojis.cache.find(emoji => emoji.name === "DES");
+                    const FM = message.client.emojis.cache.find(emoji => emoji.name === "FM");
+                    const GUN = message.client.emojis.cache.find(emoji => emoji.name === "GUN");
+                    const KFM = message.client.emojis.cache.find(emoji => emoji.name === "KFM");
+                    const SF = message.client.emojis.cache.find(emoji => emoji.name === "SF");
+                    const SIN = message.client.emojis.cache.find(emoji => emoji.name === "SIN");
+                    const SUM = message.client.emojis.cache.find(emoji => emoji.name === "SUM");
+                    const WL = message.client.emojis.cache.find(emoji => emoji.name === "WL");
+                    const WRD = message.client.emojis.cache.find(emoji => emoji.name === "WRD");
 
                     lastMessage.react(BD).then(() => 
                     lastMessage.react(BM)).then(() =>

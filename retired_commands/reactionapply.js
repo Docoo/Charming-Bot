@@ -14,7 +14,7 @@ module.exports = {
         var list = oldEmbed.description.split(" ");
         let userlist = oldEmbed.fields;
         for (let i=0; i<oldEmbed.fields.length; i++){
-            let newEmbed = new Discord.RichEmbed(oldEmbed);
+            let newEmbed = new Discord.MessageEmbed(oldEmbed);
             let data = oldEmbed.fields[i].value.split('\n');
             data.forEach(element => {
                 if (element.indexOf(`${user.username}`) != -1){
@@ -29,7 +29,7 @@ module.exports = {
                         }
                     });
                     newEmbed.fields[i].value = newValue;
-                    reaction.message.edit(newEmbed);
+                    reaction.message.edit({embeds: [newEmbed]});
                     //console.log("reached new embed");
                     //console.log(newValue);
                     reaction.message.reactions.forEach(react => {
@@ -55,7 +55,7 @@ module.exports = {
 	    if (required == 0) {
             //reaction.remove(user).catch(console.error);
             ok = false;
-            let newEmbed = new Discord.RichEmbed(oldEmbed);
+            let newEmbed = new Discord.MessageEmbed(oldEmbed);
             if (newEmbed.fields.length == 3){
                 // two parties + overflow
                 let data = newEmbed.fields[2].value;
@@ -73,7 +73,7 @@ module.exports = {
             } else if (newEmbed.fields.length == 1){
                 newEmbed.addField('Overflow:', `${reaction.emoji.toString()}${user.username}\n`, false);
             }
-            reaction.message.edit(newEmbed);
+            reaction.message.edit({embeds: [newEmbed]});
             return;
         }
         if (ok) {
@@ -81,7 +81,7 @@ module.exports = {
             console.log(ok);
     	    var newDescription = list[0] + " " + required.toString();
 	        if ((oldEmbed.fields.length == 1) || (oldEmbed.fields.length == 2 && required >= 6) ) {	
-                var newEmbed = new Discord.RichEmbed(oldEmbed);
+                var newEmbed = new Discord.MessageEmbed(oldEmbed);
                 let data = newEmbed.fields[0].value;
                 if (data == 'Empty!') {
                     data = `${reaction.emoji.toString()}${user.username}`;
@@ -90,9 +90,9 @@ module.exports = {
                 }
                 newEmbed.fields[0].value = data;
                 newEmbed.description = newDescription;
-    		    reaction.message.edit(newEmbed);
+    		    reaction.message.edit({embeds: [newEmbed]});
 	        } else {
-                var newEmbed = new Discord.RichEmbed(oldEmbed);
+                var newEmbed = new Discord.MessageEmbed(oldEmbed);
                 let data = newEmbed.fields[1].value;
                 if (data == 'Empty!') {
                     data = `${reaction.emoji.toString()}${user.username}`;
@@ -101,7 +101,7 @@ module.exports = {
                 }
 		        newEmbed.fields[1].value = data;
                 newEmbed.description = newDescription;
-		        reaction.message.edit(newEmbed);
+		        reaction.message.edit({embeds: [newEmbed]});
             }
         }
     }

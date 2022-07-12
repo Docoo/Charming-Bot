@@ -46,9 +46,9 @@ module.exports = {
                 } else {
                     console.log("Ending recruitment with id " + recruitment.message_id + " from server " + recruitment.server_name + "for expiring!");
                 }
-                guild = bot.guilds.get(recruitment.server_id);
-                channel = guild.channels.get(recruitment.channel_id);
-                channel.fetchMessage(recruitment.message_id)
+                guild = bot.guilds.cache.get(recruitment.server_id);
+                channel = guild.channels.cache.get(recruitment.channel_id);
+                channel.messages.fetch(recruitment.message_id)
                     .then(message => bot.queue.push(['bnsend', message, [message.id, "auto"]]))
                     .catch(async error => {
                         if (bot.bnsrecendlock == true){

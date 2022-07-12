@@ -22,7 +22,7 @@ module.exports = {
         bot.guildList.forEach(guild => {
             if (guild.guildID == message.guild.id){
                 if (guild.roles == undefined) return message.channel.send("This server does not allow users to set their roles.");
-                role = message.guild.roles.find(role => role.name == args[0]);
+                role = message.guild.roles.cache.find(role => role.name == args[0]);
                 if (role == null) return message.channel.send("Role not found!");
                 index = guild.roles.indexOf(role.name);
                 if (index == -1) return message.channel.send("Role is not user settable!");

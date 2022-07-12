@@ -1,29 +1,43 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 //const bnssrcTrackIDs = JSON.parse(fs.readFileSync('./bnssrctrack.json', 'utf8'));
-//const whitelistuserIDs = JSON.parse(fs.readFileSync('./user-whitelist.json', 'utf8'));
+//const whitelistuserIDs = JSON.parse(fs.readFileSync('./configs/user-whitelist.json', 'utf8'));
 const songqueue = new Map();
 var path = require('path')
 
 //ext_file_list = recFindByExt('/mypath','ext')
-var bot = new Discord.Client();
+class StaticBot{
+    static bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+    static botInstanceID = Math.floor(Math.random()*100000);
+}
+bot = StaticBot.bot;
 bot.loggedIn = false;
-bot.config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+bot.config = JSON.parse(fs.readFileSync('./configs/config.json', 'utf8'));
 //console.log (bot.config.developer);
-module.exports.bot = bot;
-let restartBot = require('./insiderthings/restartbot.js');
-restartBot.execute(bot, null, null);
+module.exports.bot = StaticBot.bot;
+module.exports.botInstanceID = StaticBot.botInstanceID;
 if (!bot.loggedIn){
 	bot.login(bot.config.token);
+	wait(1000);
 	bot.loggedIn = true;
 }
+
+async function wait(ms){
+	const sleep = (milliseconds) => {
+		return new Promise(resolve => setTimeout(resolve, milliseconds))
+	}
+	await sleep(ms);
+}
+
+let restartBot = require('./insiderthings/restartbot.js');
+restartBot.execute(bot, null, null);
 
 //const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const insiderCommandFiles = fs.readdirSync('./insiderthings').filter(file => file.endsWith('.js'));
 
 //read guild list
 /*
-fs.readFile('./guilds.json', 'utf8', function readFileCallback(err, data){
+fs.readFile('./configs/guilds.json', 'utf8', function readFileCallback(err, data){
 	if (err){
 		console.log(err);
 	} else {
@@ -42,14 +56,14 @@ bot.on('ready', function (evt) {
 	//bot.user.setActivity('Carols', { type: 'PLAYING' });
 	bot.queue.push(['updateguildlist', undefined, undefined]);
 	//bot.user.setAvatar('./assets/bot_profile_pics/christmas.jpg');
-	bot.reloadCommands();
-	bot.loop();
+	//bot.reloadCommands();
+	//bot.loop(bot.loopIdentifier);
 });
 
-bot.on('message', message => {
+bot.on('messageCreate', message => {
     // Our bot needs to know if it will execute a command
 	// It will listen for messages that will start with `!`
-	bot.guildList = JSON.parse(fs.readFileSync('./guilds.json','utf8'));
+	bot.guildList = JSON.parse(fs.readFileSync('./configs/guilds.json','utf8'));
 	let thisGuild = undefined;
 	bot.guildList.forEach(guild => {if (message.guild != null) if (guild.guildID == message.guild.id) thisGuild = guild; });
 	if (thisGuild == undefined){
@@ -57,6 +71,11 @@ bot.on('message', message => {
 	}
 	//console.log(thisGuild);
 	if (message.author.id === bot.user.id) return;
+    if (message.mentions.everyone)
+        if (thisGuild.protectFromEveryoneTag == true) {
+            console.log(`User ${message.author.username} has tagged everyone in server ${message.guild.name}`);
+            bot.addEveryoneTagToWatchlist(message);
+        }
 	if (bot.userBlacklist.indexOf(message.author.id) != -1) return;
 	if (!message.content.startsWith(thisGuild.prefix)) {
 		//console.log(message.content.toLowerCase());
@@ -67,19 +86,21 @@ bot.on('message', message => {
 		if (message.content.toLowerCase().includes("cactus")) {
 			if (message.content.toLowerCase().includes("play despacito")){
 				message.reply("you are omega gay.");
-			} else {
+			} else  {
 				message.channel.send("Did i hear my name? OmO");
 			}
 			return;
-		}
+		} else if (message.content.includes("(╯°□°）╯︵ ┻━┻")) {
+            message.channel.send("┬─┬ ノ( ゜-゜ノ)");
+        }
 		return;
 	}
 	//console.log(`${bot.config.developer}, ${message.author.id}`);
 	if (bot.config.developer && (message.author.id != "169525036305219585" && message.author.id != bot.user.id))
 		return message.reply(" i am currently working on new features so i cannot help you at the moment!");
 	if (bot.whitelistmode == true){
-		//delete require.cache[require.resolve('./user-whitelist.json')];
-		//const whitelistuserIDs = require('./user-whitelist.json');
+		//delete require.cache[require.resolve('./configs/user-whitelist.json')];
+		//const whitelistuserIDs = require('./configs/user-whitelist.json');
 		if (bot.userWhitelist.indexOf(message.author.id) == -1) return message.channel.send('Bot is in whitelist mode!');
 	}
 	let args = undefined;
@@ -89,7 +110,7 @@ bot.on('message', message => {
 	//console.log(command);
 	//console.log(args);
 	if (command === '') {
-		const AkariHug = bot.emojis.find(emoji => emoji.name === 'AkariHug');
+		const AkariHug = bot.emojis.cache.find(emoji => emoji.name === 'AkariHug');
 		message.channel.send('<@' + message.author.id + '>, how may i help? ' + AkariHug.toString());
 		return;
 	}
@@ -117,16 +138,16 @@ bot.on('raw', async event => {
 	if (!events.hasOwnProperty(event.t)) return
 	const { d: data } = event;
 	const user = bot.users.get(data.user_id);
-	const channel = bot.channels.get(data.channel_id) || await user.createDM();
+	const channel = bot.channels.cache.get(data.channel_id) || await user.createDM();
 
-	if (channel.messages.has(data.message_id)) return;
+	if (channel.messages.cache.has(data.message_id)) return;
 
-	const message = await channel.fetchMessage(data.message_id);
+	const message = await channel.messages.fetch(data.message_id);
 	const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
-	let reaction = message.reactions.get(emojiKey);
+	let reaction = message.reactions.cache.get(emojiKey);
 	if (!reaction) {
 		// Create an object that can be passed through the event like normal
-		const emoji = new Discord.Emoji(bot.guilds.get(data.guild_id), data.emoji);
+		const emoji = new Discord.Emoji(bot.guilds.cache.get(data.guild_id), data.emoji);
 		reaction = new Discord.MessageReaction(message, emoji, 1, data.user_id === bot.user.id);
 	}
 	bot.emit(events[event.t], reaction, user);
@@ -137,33 +158,40 @@ bot.on('raw', packet => {
     // We don't want this to run on unrelated packets
     if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
     // Grab the channel to check the message from
-    const channel = bot.channels.get(packet.d.channel_id);
+    const channel = bot.channels.resolve(packet.d.channel_id);
     // There's no need to emit if the message is cached, because the event will fire anyway for that
-    if (channel.messages.has(packet.d.message_id)) return;
+    if (channel.messages.resolve(packet.d.message_id)) return;
     // Since we have confirmed the message is not cached, let's fetch it
-    channel.fetchMessage(packet.d.message_id).then(message => {
+    channel.messages.fetch(packet.d.message_id).then(async message => {
         // Emojis can have identifiers of name:id format, so we have to account for that case as well
-        const emoji = packet.d.emoji.id ? `${packet.d.emoji.name}:${packet.d.emoji.id}` : packet.d.emoji.name;
+        const emoji = packet.d.emoji.id ? `${packet.d.emoji.id}` : packet.d.emoji.name;
+		//console.dir(emoji);
         // This gives us the reaction we need to emit the event properly, in top of the message object
-        const reaction = message.reactions.get(emoji);
+        let reaction = message.reactions.resolve(emoji);
+		if (reaction == null) console.log(`REACTION NOT FOUND YOU F'd UP`)
         // Adds the currently reacting user to the reaction's users collection.
-        if (reaction) reaction.users.set(packet.d.user_id, bot.users.get(packet.d.user_id));
+		if (bot.users.resolve(packet.d.user_id) == null) await bot.users.fetch(packet.d.user_id);
+        if (reaction) reaction.users.cache.set(packet.d.user_id, bot.users.resolve(packet.d.user_id));
         // Check which type of event it is before emitting
         if (packet.t === 'MESSAGE_REACTION_ADD') {
-            bot.emit('messageReactionAdd', reaction, bot.users.get(packet.d.user_id));
+            bot.emit('messageReactionAdd', reaction, bot.users.resolve(packet.d.user_id));
         }
         if (packet.t === 'MESSAGE_REACTION_REMOVE') {
-            bot.emit('messageReactionRemove', reaction, bot.users.get(packet.d.user_id));
+			
+			//console.dir(bot.users.resolve(packet.d.user_id));
+            bot.emit('messageReactionRemove', reaction, bot.users.resolve(packet.d.user_id));
         }
     });
 });
 
 bot.on('messageReactionAdd', (reaction, user) => {
+	//console.dir(reaction);
 	if (bot.userBlacklist.indexOf(user.id) != -1) return;
 	if (bot.whitelistmode == true){
 		if (bot.userWhitelist.indexOf(user.id) == -1) return;
 	}
-	console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+	if (user.bot) return;
+	//console.log(`(${reaction.message.channel.guild.name}) ${user.username} reacted with "${reaction.emoji.name}" on msgID "${reaction.message.id}".`);
 	if (bot.config.developer && (user.id != "169525036305219585" && user.id != bot.user.id)) return console.log("Developer mode, returning.");
 	//var memberList = reaction.message.content.substring(reaction.message.content.indexOf(`\`\`\`\n`)+4,reaction.message.content.lastIndexOf(`\`\`\``));
 	//var trackedIDs = bnssrcTrackIDs.id.toString().split(',');
@@ -178,30 +206,31 @@ bot.on('messageReactionAdd', (reaction, user) => {
 	//}
 	//var messageNewContent = reaction.message.content.substring(0, reaction.message.content.indexOf(`\`\`\`\n`)+3) + memberList + reaction.message.content.substring(reaction.message.content.lastIndexOf(`\`\`\``));
 	//reaction.message.edit(messageNewContent);
-	if (user.bot) return;
 	//if (!(reaction.emoji.name in bot.gameClasses)) {
 		bot.queue.push(['rolereactionapply', reaction, user]);
 		//return;
 	//}
 	//bot.queue.push(['reactionapply', reaction, user]);
 	bot.queue.push(['bnsreactionapplyV2', reaction, user]);
+    if (bot.getWeeklyEmotesIdList().includes(reaction.emoji.id)) bot.queue.push(['weeklyTrackerReactAdd', reaction, user]);
 });
 
 bot.on('messageReactionRemove', (reaction, user) => {
 	if (bot.userBlacklist.indexOf(user.id) != -1) return;
 	if (bot.whitelistmode == true){
 		if (bot.userWhitelist.indexOf(user.id) == -1) return;
-	}
-	console.log(`${user.username} removed their "${reaction.emoji.name}" reaction.`);
+    }
+	if (user.bot) return;
+	//console.log(`(${reaction.message.channel.guild.name}) ${user.username} removed their "${reaction.emoji.name}" reaction on msgID "${reaction.message.id}".`);
 	if (bot.config.developer && (user.id != "169525036305219585" && user.id != bot.user.id)) return console.log("Developer mode, returning.");
 	//var memberList = reaction.message.content.substring(reaction.message.content.indexOf(`\`\`\`\n`)+4,reaction.message.content.lastIndexOf(`\`\`\``));
-	if (user.bot) return;
 	//if (!(reaction.emoji.name in bot.gameClasses)) {
 		bot.queue.push(['rolereactionunapply', reaction, user]);
 		//return;
 	//}
 	//bot.queue.push(['reactionunapply', reaction, user]);
 	bot.queue.push(['bnsreactionunapplyV2', reaction, user]);
+    if (bot.getWeeklyEmotesIdList().includes(reaction.emoji.id)) bot.queue.push(['weeklyTrackerReactRemove', reaction, user]);
 });
 
 async function wait(ms){
@@ -213,7 +242,9 @@ async function wait(ms){
 
 //joined a server
 bot.on("guildCreate", guild => {
-	if (guild.id == '611826349035749386'){
+	// if (guild.id == '611826349035749386'){
+    if (bot.guildBlacklist.indexOf(guild.id) != -1){
+        console.log("Refused to join blacklisted guild: " + guild.name);
 		return guild.leave();
 	}
     console.log("Joined a new guild: " + guild.name);
@@ -224,4 +255,5 @@ bot.on("guildCreate", guild => {
 bot.on("guildDelete", guild => {
     console.log("Left a guild: " + guild.name);
     //remove from guildArray
+	bot.eraseGuild(guild.id);
 })

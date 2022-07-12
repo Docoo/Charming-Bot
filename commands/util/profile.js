@@ -32,10 +32,12 @@ module.exports = {
         }
         if (myUser != null){
             const Discord = require('discord.js');
-            const newEmbed = new Discord.RichEmbed()
+            const newEmbed = new Discord.MessageEmbed()
                 .setTitle(`${name}'s profile picture`)
                 .setImage(myUser.user.avatarURL);
-            message.channel.send(newEmbed);
+            message.channelsend({
+                embeds: [newEmbed]
+            });
             return 0;
         } else {
             message.channel.send('Could not find the said user');

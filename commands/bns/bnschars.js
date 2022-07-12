@@ -23,7 +23,7 @@ module.exports = {
         if (!(data.error == undefined))
             return message.channel.send("Character not found!");
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
             .setTitle(`Characters of account ${datautf8.accountName}`)
             .addField(`${getClassIcon(datautf8.playerClass, message)}${datautf8.characterName}`, 
             `Level ${datautf8.playerLevel} • HM ${datautf8.playerLevelHM}`)
@@ -38,7 +38,7 @@ module.exports = {
             else embed.addField(`${getClassIcon(elemData.playerClass, message)}${elemData.characterName}`, 
                 `Level ${elemData.playerLevel} • HM ${elemData.playerLevelHM}`);
         });
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
         return 0;
     }
 }
@@ -57,15 +57,15 @@ function sum(theArgs, spacer) {
 }
 
 function getClassIcon(name, message){
-    if (name == "Blade Dancer") return message.client.emojis.find(emoji => emoji.name === "BD");
-    if (name == "Blade Master") return message.client.emojis.find(emoji => emoji.name === "BM");
-    if (name == "Destroyer") return message.client.emojis.find(emoji => emoji.name === "DES");
-    if (name == "Force Master") return message.client.emojis.find(emoji => emoji.name === "FM");
-    if (name == "Gunner") return message.client.emojis.find(emoji => emoji.name === "GUN");
-    if (name == "Kung Fu Master") return message.client.emojis.find(emoji => emoji.name === "KFM");
-    if (name == "Soul Fighter") return message.client.emojis.find(emoji => emoji.name === "SF");
-    if (name == "Assassin") return message.client.emojis.find(emoji => emoji.name === "SIN");
-    if (name == "Summoner") return message.client.emojis.find(emoji => emoji.name === "SUM");
-    if (name == "Warlock") return message.client.emojis.find(emoji => emoji.name === "WL");
-    if (name == "Warden") return message.client.emojis.find(emoji => emoji.name === "WRD");
+    if (name == "Blade Dancer") return message.client.emojis.cache.find(emoji => emoji.name === "BD");
+    if (name == "Blade Master") return message.client.emojis.cache.find(emoji => emoji.name === "BM");
+    if (name == "Destroyer") return message.client.emojis.cache.find(emoji => emoji.name === "DES");
+    if (name == "Force Master") return message.client.emojis.cache.find(emoji => emoji.name === "FM");
+    if (name == "Gunner") return message.client.emojis.cache.find(emoji => emoji.name === "GUN");
+    if (name == "Kung Fu Master") return message.client.emojis.cache.find(emoji => emoji.name === "KFM");
+    if (name == "Soul Fighter") return message.client.emojis.cache.find(emoji => emoji.name === "SF");
+    if (name == "Assassin") return message.client.emojis.cache.find(emoji => emoji.name === "SIN");
+    if (name == "Summoner") return message.client.emojis.cache.find(emoji => emoji.name === "SUM");
+    if (name == "Warlock") return message.client.emojis.cache.find(emoji => emoji.name === "WL");
+    if (name == "Warden") return message.client.emojis.cache.find(emoji => emoji.name === "WRD");
 }

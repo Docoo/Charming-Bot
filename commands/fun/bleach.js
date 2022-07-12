@@ -33,11 +33,12 @@ module.exports = {
         if (myUser == null) return message.channel.send("The specified user was not found!");
 		const user = myUser.user;
         const Discord = require('discord.js');
-        const exampleEmbed = new Discord.RichEmbed()
+        const files = []
+        files.push(new Discord.MessageAttachment(`./media/img/bleach.jpg`))
+        const exampleEmbed = new Discord.MessageEmbed()
     	    .setTitle(`${myUser.displayName}, your bleach has been served!`)
-    	    .attachFiles([`./media/img/bleach.jpg`])
             .setImage(`attachment://bleach.jpg`);
-        message.channel.send(exampleEmbed);
+        message.channel.send({embeds: [exampleEmbed], files: files});
         return 0;
     }
 }

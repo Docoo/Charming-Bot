@@ -10,9 +10,9 @@ module.exports = {
 		if (!(thisGuild == undefined)) {
 			for (index in thisGuild.roleWatches){
                 watch = thisGuild.roleWatches[index];
-                if ((watch.emoji == reaction.emoji.id || watch.emoji == reaction.emoji) && (watch.msgID == reaction.message.id)){
-                    role = reaction.message.guild.roles.find(role => role.id == watch.role);
-                    reaction.message.guild.members.get(user.id).removeRole(role, "bot-auto-reaction");
+                if ((watch.emoji == reaction.emoji.id || watch.emoji == reaction.emoji.name) && (watch.msgID == reaction.message.id)){
+                    role = reaction.message.guild.roles.cache.find(role => role.id == watch.role);
+                    reaction.message.guild.members.cache.get(user.id).roles.remove(role, "bot-auto-reaction");
                     console.log(`Role ${role.name} taken from ${user.username} in server ${reaction.message.guild.name}`);
                     return;
                 }

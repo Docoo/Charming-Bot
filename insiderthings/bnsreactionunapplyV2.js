@@ -3,6 +3,9 @@ module.exports={
     description: 'allows a user to unapply from a recruitment post',
     async execute(bot, reaction, user){
 
+        const Discord = require('discord.js');
+        const files = [];
+        files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
         let recruitment = undefined;
         for (index in bot.bnsrecruitments){
             rec = bot.bnsrecruitments[index];
@@ -111,9 +114,7 @@ module.exports={
                 if (recruitment.tank_needed) tankvalue += `Tank needed!`;
             }
             
-            const Discord = require('discord.js');
-            let newEmbed = new Discord.RichEmbed(reaction.message.embeds[0])
-            .attachFile('./assets/bns_logo.png')
+            let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
             .setThumbnail('attachment://bns_logo.png');
             if (sbvalue != ''){
                 newEmbed.fields[0].value = sbvalue;
@@ -129,7 +130,7 @@ module.exports={
             }
             bot.updateBnsRecruitments();
             bot.lockedbnsrecruitments.delete(recruitment.message_id);
-            return reaction.message.edit(newEmbed).then(message => console.log(`Edited type B embed with id ${message.id}`));
+            return reaction.message.edit({embeds: [newEmbed], files: files}).then(message => console.log(`Edited type B embed with id ${message.id}`));
 
         } else {
             //treat type A reaction removal
@@ -139,9 +140,7 @@ module.exports={
                 let party2value = '';
                 let overflowvalue = '';
 
-                const Discord = require('discord.js');
-                let newEmbed = new Discord.RichEmbed(reaction.message.embeds[0])
-                .attachFile('./assets/bns_logo.png')
+                let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
                 .setThumbnail('attachment://bns_logo.png');
                 playerClass = reaction.emoji.name.toUpperCase();
                 if (playerClass == 'WAR') playerClass = 'WRD';
@@ -175,17 +174,17 @@ module.exports={
                     place_in_party_by_role(bot, reaction, user, recruitment, temp_ovf[index][1], temp_ovf[index][0]);
 
                 for (index in recruitment.party_one){
-                    player = reaction.message.guild.members.find(member => member.id == recruitment.party_one[index][0]);
+                    player = reaction.message.guild.members.cache.find(member => member.id == recruitment.party_one[index][0]);
                     playerClassIcon = bot.getClassIcon(recruitment.party_one[index][1]);
                     party1value += `\n${playerClassIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
                 for (index in recruitment.party_two){
-                    player = reaction.message.guild.members.find(member => member.id == recruitment.party_two[index][0]);
+                    player = reaction.message.guild.members.cache.find(member => member.id == recruitment.party_two[index][0]);
                     playerClassIcon = bot.getClassIcon(recruitment.party_two[index][1]);
                     party2value += `\n${playerClassIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
                 for (index in recruitment.overflow){
-                    player = reaction.message.guild.members.find(member => member.id == recruitment.overflow[index][0]);
+                    player = reaction.message.guild.members.cache.find(member => member.id == recruitment.overflow[index][0]);
                     playerClassIcon = bot.getClassIcon(recruitment.overflow[index][1]);
                     overflowvalue += `\n${playerClassIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
@@ -204,13 +203,13 @@ module.exports={
                     tankPlayer.user.username = '-';
                     tankPlayer.displayName = '-';
                 } else
-                    tankPlayer = reaction.message.channel.guild.members.find(member => member.id == recruitment.tank_id);
+                    tankPlayer = reaction.message.channel.guild.members.cache.find(member => member.id == recruitment.tank_id);
     
                 newEmbed.setDescription(`Still needed: ${recruitment.nr_free_spots}`)
-                .setFooter(`SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`);
+                .setFooter({text: `SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`});
                 bot.updateBnsRecruitments();
                 bot.lockedbnsrecruitments.delete(recruitment.message_id);
-                reaction.message.edit(newEmbed).then(message => console.log(`Edited type A embed with enforcement with id ${message.id}`));
+                reaction.message.edit({embeds: [newEmbed], files: files}).then(message => console.log(`Edited type A embed with enforcement with id ${message.id}`));
                 return 0;
 
 
@@ -332,9 +331,7 @@ module.exports={
                 let party2value = '';
                 let overflowvalue = '';
 
-                const Discord = require('discord.js');
-                let newEmbed = new Discord.RichEmbed(reaction.message.embeds[0])
-                .attachFile('./assets/bns_logo.png')
+                let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
                 .setThumbnail('attachment://bns_logo.png');
                 //console.log(recruitment.party_one);
                 for (index in recruitment.party_one){
@@ -344,12 +341,12 @@ module.exports={
                     party1value += `\n${playerClass}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
                 for (index in recruitment.party_two){
-                    player = reaction.message.guild.members.find(member => member.id == recruitment.party_two[index][0]);
+                    player = reaction.message.guild.members.cache.find(member => member.id == recruitment.party_two[index][0]);
                     playerClass = bot.getClassIcon(recruitment.party_two[index][1]);
                     party2value += `\n${playerClass}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
                 for (index in recruitment.overflow){
-                    player = reaction.message.guild.members.find(member => member.id == recruitment.overflow[index][0]);
+                    player = reaction.message.guild.members.cache.find(member => member.id == recruitment.overflow[index][0]);
                     playerClass = bot.getClassIcon(recruitment.overflow[index][1]);
                     overflowvalue += `\n${playerClass}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
                 }
@@ -370,13 +367,13 @@ module.exports={
                     tankPlayer.user.username = '-';
                     tankPlayer.displayName = '-';
                 } else
-                    tankPlayer = reaction.message.channel.guild.members.find(member => member.id == recruitment.tank_id);
+                    tankPlayer = reaction.message.channel.guild.members.cache.find(member => member.id == recruitment.tank_id);
     
                 newEmbed.setDescription(`Still needed: ${recruitment.nr_free_spots}`)
-                .setFooter(`SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`);
+                .setFooter({text: `SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`});
                 bot.updateBnsRecruitments();
                 bot.lockedbnsrecruitments.delete(recruitment.message_id);
-                reaction.message.edit(newEmbed).then(message => console.log(`Edited type A embed, no enforcement with id ${message.id}`));
+                reaction.message.edit({embeds: [newEmbed], files: files}).then(message => console.log(`Edited type A embed, no enforcement with id ${message.id}`));
                 return 0;
             }
         }

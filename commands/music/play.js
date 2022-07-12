@@ -1,6 +1,3 @@
-const ytdl = require('ytdl-core-discord');
-const ytdlGetInfo = require('ytdl-getinfo');
-
 module.exports = {
 	name: 'play',
 	description: 'Play a song in your channel!',
@@ -31,7 +28,7 @@ module.exports = {
 		};
 
 		try{
-			songInfoRaw = await ytdlGetInfo.getInfo(songToPlay);
+			songInfoRaw = undefined; //removed ytdl
 			songInfo = songInfoRaw.items[0];
 			console.log(songInfo.fulltitle);
 			song.title= songInfo.fulltitle;

@@ -2,8 +2,9 @@ module.exports = {
     name: 'updateguildlist',
     description: `Updates the list of guilds in the bot files`,
     async execute(bot, message, args){
-        bot.guilds.forEach(guild => {
+        bot.guilds.cache.forEach(guild => {
             console.log(`ID: ${guild.id}, name: ${guild.name}`);
+            console.log("Admin:" + guild.me.permissions.has("ADMINISTRATOR"));
             let thisGuild = undefined;
             bot.guildList.forEach(botguild => {
                 if (botguild.guildID == guild.id) thisGuild = botguild;
@@ -17,9 +18,9 @@ module.exports = {
             if (thisGuild.roleWatches == undefined) thisGuild.roleWatches = [];
             if (thisGuild.roleToggles == undefined) thisGuild.roleToggles = [];
             if (thisGuild.defaultChannel != undefined){
-                guild = bot.guilds.get(thisGuild.guildID);
-                channel = guild.channels.get(thisGuild.defaultChannel);
-                if (channel.type != 'text'){
+                guild = bot.guilds.cache.get(thisGuild.guildID);
+                channel = guild.channels.cache.get(thisGuild.defaultChannel);
+                if (channel.type != 'GUILD_TEXT'){
                     thisGuild.defaultChannel = undefined;
                 }
             }
@@ -29,6 +30,8 @@ module.exports = {
             if (thisGuild.dailyQuizManager == undefined) thisGuild.dailyQuizManager = null;
             if (thisGuild.dailyQuizChannel == undefined) thisGuild.dailyQuizChannel = null;
             if (thisGuild.bnsRecNick == undefined) thisGuild.bnsRecNick = false;
+            if (thisGuild.protectFromEveryoneTag == undefined) thisGuild.protectFromEveryoneTag = false;
+            if (thisGuild.bnsMaintenanceChannel == undefined) thisGuild.bnsMaintenanceChannel = null;
         });
         bot.guildUpdate();
         console.log("Successfully updated!");

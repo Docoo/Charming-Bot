@@ -32,7 +32,7 @@ module.exports = {
         }
         if (myUser == null) return message.channel.send("The specified user was not found!");
 		const user = myUser.user;
-        const aiswalEmote = message.client.emojis.find(emoji => emoji.name === "AisBlueIRL");
-        message.channel.send(`${message.author.displayName} just kicked ${myUser.displayName}! ${aiswalEmote.toString()}`);
+        const aiswalEmote = message.client.emojis.cache.find(emoji => emoji.name === "AisBlueIRL");
+        message.channel.send(`${message.member.displayName} just kicked ${myUser.displayName}! ${aiswalEmote.toString()}`);
     }
 }

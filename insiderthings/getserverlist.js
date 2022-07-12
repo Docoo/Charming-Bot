@@ -4,7 +4,7 @@ module.exports = {
     async execute(bot, message, args){
         let messageToSend = ``;
         let counter = 0;
-        for (let guildEntry of bot.guilds){
+        for (let guildEntry of bot.guilds.cache){
             //console.log(guild);
             let guild = guildEntry[1];
             //let owner = guild.members.get(guild.ownerID);

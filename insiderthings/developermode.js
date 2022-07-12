@@ -14,6 +14,6 @@ module.exports = {
             console.log("Developer mode enabled!");
         }
         const fs = require('fs');
-        fs.writeFileSync('./config.json', JSON.stringify(bot.config, null, 4), 'utf8');
+        fs.writeFileSync('./configs/config.json', JSON.stringify(bot.config, null, 4), 'utf8');
     }
 }

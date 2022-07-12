@@ -20,8 +20,8 @@ module.exports = {
                 if (thisGuild.defaultChannel == undefined){
                     //skip
                 } else {
-                    guild = bot.guilds.get(thisGuild.guildID);
-                    channel = guild.channels.find(channel => channel.id == thisGuild.defaultChannel);
+                    guild = bot.guilds.cache.get(thisGuild.guildID);
+                    channel = guild.channels.resolve(thisGuild.defaultChannel);
                     //console.log(channel);
                     channel.send(msgToSend + '\n\n_This is a broadcast. You have received this because you have set the current channel as the default channel for alerts. If you no longer wish to receive alerts, use the \"defaultchannel\" command._');
                 }
@@ -30,9 +30,9 @@ module.exports = {
             return 0;
         } else {
             //send to thisGuild
-            //console.log(bot.guilds.get(thisGuild.guildID));
+            //console.log(bot.guilds.cache.get(thisGuild.guildID));
             console.log(msgToSend);
-            let guildToSendTo = bot.guilds.get(thisGuild.guildID);
+            let guildToSendTo = bot.guilds.cache.get(thisGuild.guildID);
             if (thisGuild.defaultChannel == undefined){
                 //send to text channel with position 0
                 var iter = guildToSendTo.channels[Symbol.iterator]();
@@ -46,7 +46,7 @@ module.exports = {
                 }
             } else {
                 //send to set default channel
-                guildToSendTo.channels.get(thisGuild.defaultChannel).send(msgToSend);
+                guildToSendTo.channels.cache.get(thisGuild.defaultChannel).send(msgToSend);
                 message.channel.send('Success!');
             }
         }

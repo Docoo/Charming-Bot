@@ -4,8 +4,9 @@ module.exports = {
     async execute(bot, message, args){
         const Discord = require('discord.js');
 
-        const Nightmare = require('nightmare');
-        const nightmare = new Nightmare();
+        //const Nightmare = require('nightmare');
+        //const nightmare = new Nightmare();
+        const nightmare = undefined; //removing nightmare due to vulnerabilities
         nightmare
             .goto('https://bdobosstimer.com/?&server=eu')
             .evaluate(() => document.querySelector('.head.selected').outerHTML)
@@ -39,7 +40,7 @@ module.exports = {
                     bot.guildList.forEach(guild2 => {
                         if (guild2.bdochannelid == undefined) {}
                         else {
-                            guild = bot.guilds.find(element => element.id == guild2.guildID);
+                            guild = bot.guilds.cache.find(element => element.id == guild2.guildID);
                             channel = guild.channels.find(element => element.id == guild2.bdochannelid);
                             channel.send(guild2.bdomentionrole + text);
                         }
@@ -64,7 +65,7 @@ module.exports = {
                     bot.guildList.forEach(guild2 => {
                         if (guild2.bdochannelid == undefined) {}
                         else {
-                            guild = bot.guilds.find(element => element.id == guild2.guildID);
+                            guild = bot.guilds.cache.find(element => element.id == guild2.guildID);
                             channel = guild.channels.find(element => element.id == guild2.bdochannelid);
                             channel.send(guild2.bdomentionrole + text);
                         }

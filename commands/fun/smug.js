@@ -15,11 +15,12 @@ module.exports = {
         //console.log(`File path: ${namefile}`);
         file = namefile[namefile.length-1];
         //console.log(`File name: ${file}`);
-        const exampleEmbed = new Discord.RichEmbed()
-    	    .setTitle(`${message.author.displayName} smiles proudly!`)
-    	    .attachFiles([`./media/gif/smug/${emoteFiles[number]}`])
+        const files = []
+        files.push(new Discord.MessageAttachment(`./media/gif/smug/${emoteFiles[number]}`))
+        const exampleEmbed = new Discord.MessageEmbed()
+    	    .setTitle(`${message.member.displayName} smiles proudly!`)
             .setImage(`attachment://${file}`);
-        message.channel.send(exampleEmbed);
+        message.channel.send({embeds: [exampleEmbed], files: files});
         return 0;
     }
 }

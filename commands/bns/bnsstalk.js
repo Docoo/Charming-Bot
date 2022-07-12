@@ -23,7 +23,7 @@ module.exports = {
             await bot.wait(2000);
         }
         bot.stalking = "blelele";
-        let stalkJSON = JSON.parse(fs.readFileSync('./stalking.json', 'utf8'));
+        let stalkJSON = JSON.parse(fs.readFileSync('./configs/stalking.json', 'utf8'));
         let found = false;
         for (let character of stalkJSON.userList){
             if (character.characterName == name){
@@ -36,7 +36,7 @@ module.exports = {
             character.date = new Date();
             stalkJSON.userList.push(character);
             //console.log(stalkJSON);
-            fs.writeFileSync('./stalking.json', JSON.stringify(stalkJSON, null, 4), 'utf8');
+            fs.writeFileSync('./configs/stalking.json', JSON.stringify(stalkJSON, null, 4), 'utf8');
             message.channel.send(`Character ${name} added to stalking list!`);
             bot.stalking = undefined;
             return 0;

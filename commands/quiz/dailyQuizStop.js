@@ -4,7 +4,7 @@ module.exports ={
     usage: `dailyquizstop`,
     help: `-`,
     async execute(bot, message, args){
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         let thisGuild = message.channel.guild.id;
@@ -19,7 +19,7 @@ module.exports ={
         if (thisGuild.autoQuizUpdate == false){
             return message.channel.send('Daily quiz is already disabled!');
         }
-        if ((thisGuild.dailyQuizManager != message.author.id) && (!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((thisGuild.dailyQuizManager != message.author.id) && (!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.channel.send('Someone else is managing the daily quiz!');
         }
         thisGuild.autoQuizUpdate = false;

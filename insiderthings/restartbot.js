@@ -8,6 +8,7 @@ module.exports = {
             delete require.cache[require.resolve('./../init.js')];
         } catch (err) {}
         let init = require('./../init.js');
+        bot.loggedIn = false;
         return init.initBot(bot, message);
     }
 }

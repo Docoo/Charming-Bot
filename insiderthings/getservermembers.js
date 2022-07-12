@@ -3,7 +3,7 @@ module.exports = {
     description: 'Get list of members of a server',
     async execute(bot, message, args){
         let guildID = args[0];
-        let guild = bot.guilds.get(guildID);
+        let guild = bot.guilds.cache.get(guildID);
         //console.log(guild);
         const memberIDs = guild.members.keys();
         console.log(memberIDs);

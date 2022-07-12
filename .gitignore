@@ -1,9 +1,12 @@
 node_modules
+**/.vscode/
+configs
 backups
 f2pics
 media
-auth.json
-config.json
 QNZeAAAAAAA=.jpg
 ReNLAAAAAAA=.jpg
 changes.txt.txt
+start.bat
+betacommands
+betathings

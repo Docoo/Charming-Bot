@@ -6,11 +6,11 @@ module.exports = {
     Please make sure there is only one role with that name!`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         if (args[0] == undefined) return message.channel.send("No role specified!");
-        role = message.guild.roles.find(role => role.name == args[0]);
+        role = message.guild.roles.cache.find(role => role.name == args[0]);
         if (role == null) return message.channel.send("Role was not found on this server!");
         bot.guildList.forEach(guild => {
             if (guild.guildID == message.guild.id){

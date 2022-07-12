@@ -8,7 +8,7 @@ module.exports = {
         restarted.channel = message.channel.id;
         const fs = require('fs');
         let json = JSON.stringify(restarted, null, 4);
-        fs.writeFileSync('./restart.json', json, 'utf8');
+        fs.writeFileSync('./configs/restart.json', json, 'utf8');
         await message.channel.send('Good night!');
         process.exit(0);
     }

@@ -5,7 +5,7 @@ module.exports = {
     help: `If this command is used in the default channel, alerts will be disabled.`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         for (let thisGuild of bot.guildList){

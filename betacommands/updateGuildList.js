@@ -19,7 +19,7 @@ module.exports = {
         }
 
         //update entries for all guilds available
-        bot.guilds.forEach(async botGuild => {
+        bot.guilds.cache.forEach(async botGuild => {
             console.log(`ID: ${botGuild.id}, name: ${botGuild.name}`);
             let thisGuild = undefined;
             for (let dbGuild of result.recordset){

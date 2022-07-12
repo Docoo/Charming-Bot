@@ -13,22 +13,22 @@ module.exports = {
     	var list = oldEmbed.description.split(" ");
     	var required = parseInt(list[1]);
 		var newDescription;
-		let newEmbed = new Discord.RichEmbed(oldEmbed);
+		let newEmbed = new Discord.MessageEmbed(oldEmbed);
 		/*
     	if (oldEmbed.fields.length == 1) {
 		    let field = oldEmbed.fields[0];
 		    if (field.name === user.username && field.value === reaction.emoji.toString()){	
     			required++;
 			    newDescription = list[0] + " " + required.toString();
-			    var newEmbed = new Discord.RichEmbed({
+			    var newEmbed = new Discord.MessageEmbed({
     				title: oldEmbed.title,
 				    description: newDescription
 			    });
 			    newEmbed.addField("Empty list", "Be the first one to apply!");
-			    reaction.message.edit(newEmbed);
+			    reaction.message.edit({embeds: [newEmbed]});
 		    }
 	    } else {
-    		var newEmbed = new Discord.RichEmbed({
+    		var newEmbed = new Discord.MessageEmbed({
 			    title: oldEmbed.title
 		    });
 		    oldEmbed.fields.forEach(field => {
@@ -44,7 +44,7 @@ module.exports = {
 		    }
 		    var newDescription = list[0] + " " + required.toString();
 		    newEmbed.setDescription(newDescription);
-		    reaction.message.edit(newEmbed);
+		    reaction.message.edit({embeds: [newEmbed]});
 		}
 		*/
 		if (oldEmbed.fields.length == 1){
@@ -58,7 +58,7 @@ module.exports = {
 				newEmbed.setDescription(newDescription);
 				if (data == '') data = 'Empty!';
 				newEmbed.fields[0].value = data;
-				reaction.message.edit(newEmbed);
+				reaction.message.edit({embeds: [newEmbed]});
 				console.log('returning p1/1');
 			} else {
 				console.log('returning out of 1p');
@@ -75,7 +75,7 @@ module.exports = {
 					newEmbed.setDescription(newDescription);
 					if (data == '') data = 'Empty!';
 					newEmbed.fields[0].value = data;
-					reaction.message.edit(newEmbed);
+					reaction.message.edit({embeds: [newEmbed]});
 					console.log('returning p1 no of');
 				} else {
 					data = newEmbed.fields[1].value;
@@ -87,7 +87,7 @@ module.exports = {
 						newEmbed.setDescription(newDescription);
 						if (data == '') data = 'Empty!';
 						newEmbed.fields[1].value = data;
-						reaction.message.edit(newEmbed);
+						reaction.message.edit({embeds: [newEmbed]});
 						console.log('returning p2 no of');
 					}
 					console.log('returning outside of 2p no of');
@@ -112,7 +112,7 @@ module.exports = {
 						newEmbed.fields = [newEmbed.fields[0]];
 					}
 					newEmbed.fields[0].value = data;
-					reaction.message.edit(newEmbed);
+					reaction.message.edit({embeds: [newEmbed]});
 					console.log('returning inside pt1');
 				} else {
 					data = newEmbed.fields[1].value;
@@ -123,7 +123,7 @@ module.exports = {
 						if (data == '') {
 							newEmbed.fields = [newEmbed.fields[0]];
 						}
-						reaction.message.edit(newEmbed);
+						reaction.message.edit({embeds: [newEmbed]});
 						console.log('returning inside overflow');
 					}
 				}
@@ -150,7 +150,7 @@ module.exports = {
 					newEmbed.fields = [newEmbed.fields[0], newEmbed.fields[1]];
 				}
 				newEmbed.fields[0].value = data;
-				reaction.message.edit(newEmbed);
+				reaction.message.edit({embeds: [newEmbed]});
 				console.log('returning from p1');
 			} else {
 				data = newEmbed.fields[1].value;
@@ -172,7 +172,7 @@ module.exports = {
 						newEmbed.fields = [newEmbed.fields[0], newEmbed.fields[1]];
 					}
 					newEmbed.fields[1].value = data;
-					reaction.message.edit(newEmbed);
+					reaction.message.edit({embeds: [newEmbed]});
 					console.log('returning from p2');
 				} else {
 					data = newEmbed.fields[1].value;
@@ -183,7 +183,7 @@ module.exports = {
 						if (data == '') {
 							newEmbed.fields = [newEmbed.fields[0]];
 						}
-						reaction.message.edit(newEmbed);
+						reaction.message.edit({embeds: [newEmbed]});
 						console.log('returning inside overflow');
 					}
 				}

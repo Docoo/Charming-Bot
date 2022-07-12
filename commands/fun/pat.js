@@ -35,20 +35,26 @@ module.exports = {
         const Discord = require('discord.js');
         const fs = require('fs');
         const emoteFiles = fs.readdirSync('./media/gif/pat');
-        console.log(`Emote files: ${emoteFiles.toString()}`);
         number = Math.floor(Math.random() * emoteFiles.length);
         console.log(`Number: ${number}`);
         namefile = emoteFiles[number].split('/');
         console.log(`File path: ${namefile}`);
         file = namefile[namefile.length-1];
         console.log(`File name: ${file}`);
-        const exampleEmbed = new Discord.RichEmbed()
-    	    .setTitle(`${message.author.displayName} pat ${myUser.displayName}!`)
-    	    .attachFiles([`./media/gif/pat/${emoteFiles[number]}`])
+        const messageAttachment = new Discord.MessageAttachment().setFile(`./media/gif/pat/${emoteFiles[number]}`);
+        const messageEmbed = new Discord.MessageEmbed()
+    	    .setTitle(`${message.member.displayName!=undefined?message.member.displayName:message.author.username} pat ${myUser.displayName!=undefined?myUser.displayName:myUser.username}!`)
             .setImage(`attachment://${file}`);
         if ((message.author.username == message.mentions.users.first().username)) 
-            exampleEmbed.setTitle(`${message.author.displayName}, have a pat!`);
-        message.channel.send(exampleEmbed);
+            messageEmbed.setTitle(`${message.author.displayName}, have a pat!`);
+        message.channel.send({
+            embeds: [
+                messageEmbed
+            ],
+            files: [
+                messageAttachment
+            ]
+        });
         return 0;
     }
 }

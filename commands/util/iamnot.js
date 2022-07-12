@@ -24,7 +24,7 @@ module.exports = {
                 if (guild.roles == undefined) return message.channel.send("This server does not allow users to set their roles.");
                 index = guild.roles.indexOf(args[0]);
                 if (index == -1) return message.channel.send("Role not found!");
-                role = message.guild.roles.find(role => role.name == args[0]);
+                role = message.guild.roles.cache.find(role => role.name == args[0]);
                 message.member.removeRole(role);
                 return message.channel.send("Role removed successfully!");
             }

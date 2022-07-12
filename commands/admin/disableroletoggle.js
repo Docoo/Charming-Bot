@@ -5,7 +5,7 @@ module.exports = {
     help: `**messageid** : the ID of the message you want to remove the toggle from
             \tyou can obtain this by right-clicking on a message and selecting the "Copy ID" option`,
     async execute(bot, message, args){
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         if (args[0] == undefined) return message.channel.send("No message id specified!");
@@ -17,9 +17,9 @@ module.exports = {
         }
         if (thisGuild == undefined) return message.channel.send("This server is not in the database yet!");
         
-        message.guild.channels.forEach(channel => {
-            if (channel.type == "text"){
-                channel.fetchMessage(args[0])
+        message.guild.channels.cache.forEach(channel => {
+            if (channel.type == "GUILD_TEXT"){
+                channel.messages.fetch(args[0])
                     .then(fetchedMessage => {
                         let found = false;
                         for (index in thisGuild.roleWatches) {

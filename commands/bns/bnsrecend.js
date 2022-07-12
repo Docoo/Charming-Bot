@@ -54,23 +54,25 @@ module.exports={
             bot.bnsrecendlock = true;
         }
         //console.log("got here");
+        
+        const Discord = require('discord.js');
+        const files = [];
+        files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
 
         if (recruitment.type == 'B'){
             //end type B recruit
-            message.guild.channels.get(recruitment.channel_id).fetchMessage(recruitment.message_id)
+            message.guild.channels.cache.get(recruitment.channel_id).messages.fetch(recruitment.message_id)
                 .then(fetchedMessage => {
                     //console.log("fetched");
-                    const Discord = require('discord.js');
-                    newEmbed = new Discord.RichEmbed(fetchedMessage.embeds[0]);
+                    newEmbed = new Discord.MessageEmbed(fetchedMessage.embeds[0]);
                     //console.log("stole embed");
                     newEmbed.setTitle(`Recruitment ended!`)
                     .setDescription(`Roles were given to:`)
-                    .attachFile('./assets/bns_logo.png')
                     .setThumbnail('attachment://bns_logo.png');
                     //console.log("edited embed");
-                    fetchedMessage.edit(newEmbed).then(editedMessage => {
+                    fetchedMessage.edit({ embeds: [newEmbed], files: files}).then(editedMessage => {
                         //console.log("sent new embed");
-                        editedMessage.clearReactions().then(() => {
+                        editedMessage.reactions.removeAll().then(() => {
                             console.log(`Ended recruitment with id ${recruitment.message_id}, title ${recruitment.title} from server ${editedMessage.guild.name}`);
                             for (i in bot.bnsrecruitments){
                                 //console.log(i);
@@ -123,16 +125,18 @@ module.exports={
                 }
             }
             console.log("type A before fetching message");
+            if (!message.guild.me.permissions.has('ADMINISTRATOR')) {
+                bot.bnsrecendlock = false;
+                return 3;
+            }
             //console.log(JSON.stringify(recruitment));
-            //message.guild.channels.get(recruitment.channel_id).fetchMessage(recruitment.message_id).then(msg => console.log(msg));
-            message.guild.channels.get(recruitment.channel_id).fetchMessage(recruitment.message_id)
+            //message.guild.channels.cache.get(recruitment.channel_id).messages.fetch(recruitment.message_id).then(msg => console.log(msg));
+            message.guild.channels.cache.get(recruitment.channel_id).messages.fetch(recruitment.message_id)
                 .then(fetchedMessage => {
                     //console.log("fetched");
-                    const Discord = require('discord.js');
-                    newEmbed = new Discord.RichEmbed(fetchedMessage.embeds[0]);
+                    newEmbed = new Discord.MessageEmbed(fetchedMessage.embeds[0]);
                     newEmbed.setTitle(`Recruitment ended!`)
                     .setDescription(`The final team is:`)
-                    .attachFile('./assets/bns_logo.png')
                     .setThumbnail('attachment://bns_logo.png');
                     //edit teams here
 
@@ -153,8 +157,8 @@ module.exports={
                         }
                     }
                     //console.log(newEmbed);
-                    fetchedMessage.edit(`${message.author}, recruitment has been closed!`, newEmbed).then(editedMessage => {
-                        editedMessage.clearReactions().then(() => {
+                    fetchedMessage.edit({ content: `${message.author}, recruitment has been closed!`, embeds: [newEmbed], files: files}).then(editedMessage => {
+                        editedMessage.reactions.removeAll().then(() => {
                             console.log(`Ended recruitment with id ${recruitment.message_id}, title ${recruitment.title} from server ${editedMessage.guild.name}`);
                             for (i in bot.bnsrecruitments){
                                 //console.log(i);

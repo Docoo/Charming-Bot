@@ -20,7 +20,7 @@ module.exports ={
             if (thisGuild.autoQuizUpdate == true){
                 return message.channel.send('Daily Quiz automatic processing is on! (disable using \`dailyQuizStop\` to be able to process manually)');
             }
-            if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585') && (thisGuild.dailyQuizManager != message.author.id)){
+            if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585') && (thisGuild.dailyQuizManager != message.author.id)){
                 return message.reply("you are not allowed to use this command!");
             };
         }

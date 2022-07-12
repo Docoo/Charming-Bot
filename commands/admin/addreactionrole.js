@@ -1,25 +1,27 @@
 module.exports = {
     name: 'addreactionrole',
     description: `Allows set up of reaction role assignment.`,
-    usage: `addreactionrole <messageid> <rolename> <emojiname>`,
+    usage: `addreactionrole <messageid> <rolename> <emojitype> <emojiname>`,
     help: `**messageid** : the ID of the message you want to add the reaction to
             \tyou can obtain this by right-clicking on a message and selecting the "Copy ID" option
             **rolename** : the name of the role people will get when reacting to the message
             \tplease make sure the role is user settable (done with the "addmanualrole" command!)
+            **emojitype : custom (added on server) or standard (from discord, available on all servers)
             **emojiname** : the name of the emoji the reaction will use
             \tyou can obtain this by hovering your mouse pointer over an emoji in a message
             ***WARNING! ONLY CUSTOM EMOJI WILL WORK! UNICODE EMOJI NOT SUPPORTED!***`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         if (args[0] == undefined) return message.channel.send("No message id specified!");
         if (args[1] == undefined) return message.channel.send("No role specified!");
-        if (args[2] == undefined) return message.channel.send("No emote specified!");
+        if (args[2] == undefined || (args[2] != "custom" && args[2] != "standard")) return message.channel.send("Invalid emoji type (must be \"custom\" or \"standard\")!");
+        if (args[3] == undefined) return message.channel.send("No emote specified!");
 
 
-        guildRole = message.guild.roles.find(role => role.name == args[1]);
+        guildRole = message.guild.roles.cache.find(role => role.name == args[1]);
         if (guildRole == null) return message.channel.send("Role was not found on this server!");
 
         let unicode = false;
@@ -29,19 +31,20 @@ module.exports = {
         })
         if (thisGuild == undefined) return message.channel.send("This server is not in the database yet!");
         
-
-        let emotename = args[2].split(":")[1];
-        if (emotename == null || emotename == undefined) emotename = args[2];
-        emote = message.channel.guild.emojis.find(emoji => emoji.name == emotename);
-        if (emote == null) emote = message.client.emojis.find(emoji => emoji.name == emotename);
-        if (emote == null) {
-            for (let unicodeEmoji of bot.unicodeEmoji){
-                console.log(unicodeEmoji);
-                console.log(emotename);
-                console.log(emotename == unicodeEmoji);
-                if (emotename == unicodeEmoji){
-                    emote = emotename;
-                    unicode = true;
+        let emote = null;
+        if (args[2] == "custom"){
+            let emotename = args[3].split(":")[1];
+            if (emotename == null || emotename == undefined) emotename = args[3];
+            emote = message.channel.guild.emojis.cache.find(emoji => emoji.name == emotename);
+            if (emote == null) emote = message.client.emojis.cache.find(emoji => emoji.name == emotename);
+        } else {
+            let emotename = args[3];
+            if (emote == null) {
+                for (let unicodeEmoji of bot.unicodeEmoji){
+                    if (emotename == unicodeEmoji){
+                        emote = emotename;
+                        unicode = true;
+                    }
                 }
             }
         }
@@ -59,9 +62,9 @@ module.exports = {
         }
         if (!settablerole) return message.channel.send("This role is not user settable!");
 
-        message.guild.channels.forEach(channel => {
-            if (channel.type == "text"){
-                channel.fetchMessage(args[0])
+        bot.guilds.resolve(message.guildId).channels.cache.forEach(channel => {
+            if (channel.type == "GUILD_TEXT"){
+                channel.messages.fetch(args[0])
                     .then(fetchedMessage => {
                         // for (watch in thisGuild.roleWatches) {
                         //     if (watch.role == guildRole.id) return;

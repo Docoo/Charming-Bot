@@ -7,9 +7,9 @@ module.exports = {
     execute(bot,message,args){
         const Discord = require('discord.js');
         const fs = require('fs');
-        let bnsGoldCoin = bot.emojis.find(emoji => emoji.name === "bnsGoldCoin");
-        let bnsSilverCoin = bot.emojis.find(emoji => emoji.name === "bnsSilverCoin");
-        let bnsCopperCoin = bot.emojis.find(emoji => emoji.name === "bnsCopperCoin");
+        let bnsGoldCoin = bot.emojis.cache.find(emoji => emoji.name === "bnsGoldCoin");
+        let bnsSilverCoin = bot.emojis.cache.find(emoji => emoji.name === "bnsSilverCoin");
+        let bnsCopperCoin = bot.emojis.cache.find(emoji => emoji.name === "bnsCopperCoin");
         if (args[0] == undefined){
             return message.channel.send("No item name provided!");
         }
@@ -43,7 +43,7 @@ module.exports = {
         //message.channel.send(`Item name: ${item.name}, id: ${item.id}`);
 
         let exists = true;
-        let url = 'https://api.silveress.ie/bns/v3/market/eu/current/' + item.id;
+        let url = 'https://api.silveress.ie/bns/v3/market/eu/current/' + item.id + '?limit=10';
         var marketListRequest = request('GET', encodeURI(url));
         var marketListResponse = marketListRequest.getBody('utf8');
         if (!(marketListResponse.error == undefined))
@@ -53,7 +53,7 @@ module.exports = {
         //console.log(marketList);
         if (marketList.toString() == []){
             exists = false;
-            let url = 'https://api.silveress.ie/bns/v3/market/eu/history/' + item.id;
+            let url = 'https://api.silveress.ie/bns/v3/market/eu/history/' + item.id + '?limit=10';
             var marketHistoryRequest = request('GET', encodeURI(url));
             var marketHistoryResponse = marketHistoryRequest.getBody('utf8');
             if (!(marketHistoryResponse.error == undefined))
@@ -62,7 +62,7 @@ module.exports = {
             //console.log(marketList);
         }
 
-        let embed = new Discord.RichEmbed()
+        let embed = new Discord.MessageEmbed()
         .setTitle(item.name)
         .setThumbnail(item.img)
         .setTimestamp(new Date() + ' | courtesy of silveress.ie');
@@ -75,15 +75,15 @@ module.exports = {
                 count--;
                 let listing = listings.shift();
                 embed.addField(`${listing.count} items registered`,
-                    `${Math.floor(listing.each/10000)>1 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 1 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each, for a total of ${Math.floor(listing.price/10000) > 1 ? Math.floor(listing.price/10000) : 0}${bnsGoldCoin}${Math.floor(listing.price%10000/100) > 1 ? Math.floor(listing.price%10000/100) : 0}${bnsSilverCoin}${listing.price%100}${bnsCopperCoin}`, false);
+                    `${Math.floor(listing.each/10000)>0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each, for a total of ${Math.floor(listing.price/10000) > 0 ? Math.floor(listing.price/10000) : 0}${bnsGoldCoin}${Math.floor(listing.price%10000/100) > 0 ? Math.floor(listing.price%10000/100) : 0}${bnsSilverCoin}${listing.price%100}${bnsCopperCoin}`, false);
             }
         } else {
             let listing = marketHistory[0].listings[0];
             embed.setDescription(`No current listings found!`)
-            .addField(`Historical value:`, `${Math.floor(listing.each/10000) > 1 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 1 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each`);
+            .addField(`Historical value:`, `${Math.floor(listing.each/10000) > 0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each`);
         }
             
-        message.channel.send(embed);
+        message.channel.send({embeds: [embed]});
 
         return 0;
     }

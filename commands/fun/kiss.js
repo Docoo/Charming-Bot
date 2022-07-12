@@ -35,20 +35,17 @@ module.exports = {
         const Discord = require('discord.js');
         const fs = require('fs');
         const emoteFiles = fs.readdirSync('./media/gif/kiss');
-        console.log(`Emote files: ${emoteFiles.toString()}`);
         number = Math.floor(Math.random() * emoteFiles.length);
-        console.log(`Number: ${number}`);
         namefile = emoteFiles[number].split('/');
-        console.log(`File path: ${namefile}`);
         file = namefile[namefile.length-1];
-        console.log(`File name: ${file}`);
-        const exampleEmbed = new Discord.RichEmbed()
-    	    .setTitle(`${message.author.displayName} kissed ${myUser.displayName}!`)
-    	    .attachFiles([`./media/gif/kiss/${emoteFiles[number]}`])
+        const files = []
+        files.push(new Discord.MessageAttachment(`./media/gif/kiss/${emoteFiles[number]}`))
+        const exampleEmbed = new Discord.MessageEmbed()
+    	    .setTitle(`${message.member.displayName} kissed ${myUser.displayName}!`)
             .setImage(`attachment://${file}`);
         if ((message.author.username == message.mentions.users.first().username)) 
             return message.reply(`i'm not kissing you, pervert!`);
-        message.channel.send(exampleEmbed);
+        message.channel.send({embeds: [exampleEmbed], files: files});
         return 0;
     }
 }

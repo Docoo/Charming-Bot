@@ -7,14 +7,14 @@ module.exports = {
             **rolename** : the name of the role people get when reacting to the message`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         if (args[0] == undefined) return message.channel.send("No message id specified!");
         if (args[1] == undefined) return message.channel.send("No role specified!");
 
 
-        guildRole = message.guild.roles.find(role => role.name == args[1]);
+        guildRole = message.guild.roles.cache.find(role => role.name == args[1]);
         if (guildRole == null) return message.channel.send("Role was not found on this server!");
 
         let emote = undefined;
@@ -25,7 +25,7 @@ module.exports = {
                 thisGuild = botguild;
                 thisGuild.roleWatches.forEach(watch => {
                     if (watch.role == guildRole.id) {
-                        emote = message.client.emojis.find(emoji => emoji.id == watch.emoji);
+                        emote = message.client.emojis.cache.find(emoji => emoji.id == watch.emoji);
                         watchemote = watch.emoji;
                     }
                 })
@@ -45,9 +45,9 @@ module.exports = {
         console.log(`Guild: ${thisGuild.name}, role: ${guildRole}, emote: ${emote}`);
 
 
-        message.guild.channels.forEach(channel => {
-            if (channel.type == "text"){
-                channel.fetchMessage(args[0])
+        message.guild.channels.cache.forEach(channel => {
+            if (channel.type == "GUILD_TEXT"){
+                channel.messages.fetch(args[0])
                     .then(fetchedMessage => {
                         fetchedMessage.reactions.forEach(msgReaction => {
                             if (unicode){

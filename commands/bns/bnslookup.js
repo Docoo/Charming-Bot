@@ -9,9 +9,9 @@ module.exports = {
         const Discord = require('discord.js');
         const fs = require('fs');
         name1 = sum(args);
-        name = name1.slice(0, -1);
+        characterName = name1.slice(0, -1);
         var request = require('sync-request');
-        let url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/equipments?c=' + name;
+        let url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/equipments?c=' + characterName;
         var bnsEquipReq = request('GET', encodeURI(url));
         bnsEquipResponse = bnsEquipReq.getBody('binary');
         bnsEquipResponseUTF8 = bnsEquipReq.getBody('utf8');
@@ -23,7 +23,7 @@ module.exports = {
         let weapSrc = $('.wrapWeapon .icon .thumb img');
         let weapUrl = weapSrc.attr("src");
 
-        url ='https://api.silveress.ie/bns/v3/character/full/eu/' + name;
+        url ='https://api.silveress.ie/bns/v4/character/eu/' + characterName;
         var silveressCharacterReq;
         var silveressCharacterResponse;
         try {
@@ -32,7 +32,7 @@ module.exports = {
             });
             silveressCharacterResponse = silveressCharacterReq.getBody('binary');
         } catch (err) {
-            console.log("Timeout error");
+            console.log("Silveress error");
             return message.channel.send("Character found, but failed to load data!");
         }
         if (silveressCharacterResponse.includes("Error: Request timed out after") || 
@@ -92,18 +92,18 @@ module.exports = {
             accTxt += characterData.mysticBadgeName + '\n';
         }
 
-        const BD = message.client.emojis.find(emoji => emoji.name === "BD");
-        const BM = message.client.emojis.find(emoji => emoji.name === "BM");
-        const DES = message.client.emojis.find(emoji => emoji.name === "DES");
-        const FM = message.client.emojis.find(emoji => emoji.name === "FM");
-        const GUN = message.client.emojis.find(emoji => emoji.name === "GUN");
-        const KFM = message.client.emojis.find(emoji => emoji.name === "KFM");
-        const SF = message.client.emojis.find(emoji => emoji.name === "SF");
-        const SIN = message.client.emojis.find(emoji => emoji.name === "SIN");
-        const SUM = message.client.emojis.find(emoji => emoji.name === "SUM");
-        const WL = message.client.emojis.find(emoji => emoji.name === "WL");
-        const WRD = message.client.emojis.find(emoji => emoji.name === "WRD");
-        const ARC = message.client.emojis.find(emoji => emoji.name === "ARC");
+        const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD").toString();
+        const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM").toString();
+        const DES = message.client.emojis.cache.find(emoji => emoji.name === "DES").toString();
+        const FM = message.client.emojis.cache.find(emoji => emoji.name === "FM").toString();
+        const GUN = message.client.emojis.cache.find(emoji => emoji.name === "GUN").toString();
+        const KFM = message.client.emojis.cache.find(emoji => emoji.name === "KFM").toString();
+        const SF = message.client.emojis.cache.find(emoji => emoji.name === "SF").toString();
+        const SIN = message.client.emojis.cache.find(emoji => emoji.name === "SIN").toString();
+        const SUM = message.client.emojis.cache.find(emoji => emoji.name === "SUM").toString();
+        const WL = message.client.emojis.cache.find(emoji => emoji.name === "WL").toString();
+        const WRD = message.client.emojis.cache.find(emoji => emoji.name === "WRD").toString();
+        const ARC = message.client.emojis.cache.find(emoji => emoji.name === "ARC").toString();
         var charClass = '';
         switch (characterData.playerClass) {
             case 'Blade Dancer':
@@ -157,7 +157,7 @@ module.exports = {
             let extension = f2picname[f2picname.length-1].split('.');
             extension = extension[extension.length-1];
             //console.log('Extension: '+extension);
-            filenamee = escape(name).replace('%','')+'.'+extension;
+            filenamee = escape(characterName).replace('%','')+'.'+extension;
             filenamee = filenamee.replace(' ', '_');
             try{
                 var imgRequest = request('GET', f2picurl);
@@ -169,7 +169,7 @@ module.exports = {
                 f2picurl = undefined;
             }
         }
-        url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/abilities.json?c=' + name;
+        url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/abilities.json?c=' + characterName;
         var attributeRequest = request('GET', encodeURI(url));
         var attributeBody = attributeRequest.getBody('utf8');
         var attributes = JSON.parse(attributeBody);
@@ -181,13 +181,13 @@ module.exports = {
             '**HM Level:** ' + characterData.playerLevelHM;
         var mysticStats = '**Mystic:** ' + attributes.records.total_ability.attack_attribute_value + 
             '\n**Mystic damage:** ' + attributes.records.total_ability.attack_attribute_rate + '%\n' + 
-            message.client.emojis.find(emoji => emoji.name == "Magic1");
+            message.client.emojis.cache.find(emoji => emoji.name == "Magic1").toString();
         var offensive = '**Attack:** ' + attributes.records.total_ability.attack_power_value +
-            ' ' + message.client.emojis.find(emoji => emoji.name == "ap_icon") + ' ' +
+            ' ' + message.client.emojis.cache.find(emoji => emoji.name == "ap_icon").toString() + ' ' +
             attributes.records.point_ability.offense_point+'P\n'+
-            message.client.emojis.find(emoji => emoji.name == "threat_icon") + ' ' +
+            message.client.emojis.cache.find(emoji => emoji.name == "threat_icon").toString() + ' ' +
             attributes.records.point_ability.picks[0].point+'P '+
-            message.client.emojis.find(emoji => emoji.name == "focus_icon") + ' '+ 
+            message.client.emojis.cache.find(emoji => emoji.name == "focus_icon").toString() + ' '+ 
             attributes.records.point_ability.picks[3].point+'P\n'+
             '**Pierce:** ' + attributes.records.total_ability.attack_pierce_value+
             ' ('+attributes.records.total_ability.attack_defend_pierce_rate+'%)\n'+
@@ -198,13 +198,13 @@ module.exports = {
             '**Critical damage:** ' + attributes.records.total_ability.attack_critical_damage_value+
             ' ('+attributes.records.total_ability.attack_critical_damage_rate+'%)\n';
         var defence = '**HP:** ' + attributes.records.total_ability.max_hp + ' ' + 
-            message.client.emojis.find(emoji => emoji.name == "defense_icon") + ' ' +
+            message.client.emojis.cache.find(emoji => emoji.name == "defense_icon").toString() + ' ' +
             attributes.records.point_ability.defense_point+'P\n'+
-            message.client.emojis.find(emoji => emoji.name == "regen_icon") + ' ' +
+            message.client.emojis.cache.find(emoji => emoji.name == "regen_icon").toString() + ' ' +
             attributes.records.point_ability.picks[1].point+'P ' +
-            message.client.emojis.find(emoji => emoji.name == "evade_icon") + ' ' +
+            message.client.emojis.cache.find(emoji => emoji.name == "evade_icon").toString() + ' ' +
             attributes.records.point_ability.picks[2].point+'P ' +
-            message.client.emojis.find(emoji => emoji.name == "stun_icon") + ' ' +
+            message.client.emojis.cache.find(emoji => emoji.name == "stun_icon").toString() + ' ' +
             attributes.records.point_ability.picks[4].point+'P\n'+
             '**Defense:** ' + attributes.records.total_ability.defend_power_value+
             ' ('+attributes.records.total_ability.defend_physical_damage_reduce_rate+'%)\n'+
@@ -217,50 +217,53 @@ module.exports = {
         //console.log(attributes.records.point_ability.picks);
         var randomColor = "000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
         var attpwr = attributes.records.total_ability.attack_power_value;
-        var exampleEmbed = new Discord.RichEmbed()
-            .setTitle(`${charClass}${characterData.accountName}[${name}]`)
-            .setURL('http://eu-bns.ncsoft.com/ingame/bs/character/profile?c='+ name.replace(' ', '%20'))
+        var exampleEmbed = new Discord.MessageEmbed()
+            .setTitle(`${charClass}${characterData.accountName}[${characterName}]`)
+            .setURL('http://eu-bns.ncsoft.com/ingame/bs/character/profile?c='+ characterName.replace(' ', '%20'))
             .setDescription('AP: ' + attpwr)
             .addField('__General Info:__', generalInfo, true)
             .addField('__Mystic damage:__', mysticStats, true)
-			.addBlankField(false)
+			.addField('\u200B','\u200B', false)
             .addField('__Offensive:__', offensive, true)
             .addField('__Defense:__', defence, true)
             .addField('__Equipment:__', accTxt, false)
             .setColor(randomColor)
             .setTimestamp(new Date() + ' | courtesy of silveress.ie');
-
+        const files = [];
         if (f2picurl != undefined){
-            exampleEmbed.attachFiles([weapUrl, './f2pics/'+filenamee])
-            .setImage('attachment://'+filenamee)
-            .setThumbnail('attachment://'+weapName);
+            files.push(new Discord.MessageAttachment(`${weapUrl}`))
+            files.push(new Discord.MessageAttachment('./f2pics/'+filenamee))
+            exampleEmbed.setImage('attachment://'+filenamee)
+                .setThumbnail('attachment://'+weapName);
         } else {
-            exampleEmbed
-            .attachFile(weapUrl)
-            .setThumbnail('attachment://'+weapName);
+            files.push(new Discord.MessageAttachment(`${weapUrl}`))
+            exampleEmbed.setThumbnail('attachment://'+weapName);
         }
 
         if (attpwr<1800){
-            lollipop = message.client.emojis.find(emoji => emoji.name == "AkariHug");
+            lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
             exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
         } else if (attpwr<1900){
-            gasmlove = message.client.emojis.find(emoji => emoji.name == "GasmLove");
+            gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
             exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
         } else if (attpwr<2000){
-            dolphin = message.client.emojis.find(emoji => emoji.name == "NanachiSmug");
+            dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
             exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
         } else if (attpwr<2200){
-            whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+            whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'whale'+whale);
         } else if (attpwr<2400){
-            whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+            whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
         } else if (attpwr>2400){
-            whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+            whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
         }
         //console.log(exampleEmbed);
-        message.channel.send(exampleEmbed);
+        message.channel.send({
+            embeds: [exampleEmbed],
+            files: files
+        });
         //console.log(weapName);
         console.log('Success!');
         return 0;
@@ -280,22 +283,22 @@ function sum(theArgs) {
 
 function whale(bot, message, args, exampleEmbed, attpwr){
     if (attpwr<1800){
-        lollipop = message.client.emojis.find(emoji => emoji.name == "AkariHug");
+        lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
         exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
     } else if (attpwr<1900){
-        gasmlove = message.client.emojis.find(emoji => emoji.name == "GasmLove");
+        gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
         exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
     } else if (attpwr<2000){
-        dolphin = message.client.emojis.find(emoji => emoji.name == "NanachiSmug");
+        dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
         exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
     } else if (attpwr<2200){
-        whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
         exampleEmbed.addField('Whale meter: ', 'whale'+whale);
     } else if (attpwr<2400){
-        whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
         exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
     } else if (attpwr>2400){
-        whale = message.client.emojis.find(emoji => emoji.name == "HyperYay");
+        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
         exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
     }
 }

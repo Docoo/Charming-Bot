@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     name: "bnsrec",
     description: "Recruit a party for BnS",
@@ -25,7 +27,7 @@ module.exports = {
         //console.log("Number of people: " + nrOfPeople);
         if (args.length == 0) return bot.queue.push(['help', message, ['bnsrecruit']]);
         let title = args.shift();
-        let titleTest = message.channel.guild.members.find(member => 
+        let titleTest = message.channel.guild.members.cache.find(member => 
             member.id == title || member.displayName == title || member.user.username == title || title.includes(member.id)
         );
         if (titleTest != null) return message.channel.send("It would seem you forgot to input a title!");
@@ -110,7 +112,7 @@ module.exports = {
 						}
 					}
 				}
-                //let player = message.channel.guild.members.find(member => 
+                //let player = message.channel.guild.members.cache.find(member => 
                     //member.id == tempPlayer || member.displayName == tempPlayer || member.user.username == tempPlayer || tempPlayer.includes(member.id)
                 //);
                 if (myUser == null) {
@@ -175,10 +177,9 @@ module.exports = {
         
         
 
-        Discord = require('discord.js');
-        let newEmbed = new Discord.RichEmbed();
-        newEmbed.attachFile('./assets/bns_logo.png')
-        .setThumbnail('attachment://bns_logo.png');
+        const Discord = require('discord.js');
+        const messageAttachment = new Discord.MessageAttachment().setFile(`./assets/bns_logo.png`);
+        newEmbed.setThumbnail('attachment://bns_logo.png');
 
         if(recruitment.type == 'A'){
             if (recruitment.enforceRoles) {
@@ -452,9 +453,10 @@ module.exports = {
             tankPlayer = {};
             if (recruitment.tank_id == null){
                 tankPlayer.user = {};
-                tankPlayer.user.username = '-'
+                tankPlayer.user.username = '-';
+                tankPlayer.displayName = '-';
             } else
-                tankPlayer = message.channel.guild.members.find(member => member.id == recruitment.tank_id);
+                tankPlayer = message.channel.guild.members.cache.find(member => member.id == recruitment.tank_id);
 
 
             let party1value = 'Be the first one to apply!';
@@ -467,7 +469,7 @@ module.exports = {
                 if (recruitment.nr_taken_spots < count) count = recruitment.nr_taken_spots;
                 for (let i=0; i<count; i++){
                     //console.log(recruitment.party_one[i]);
-                    player = message.channel.guild.members.find(member => member.id == recruitment.party_one[i][0]);
+                    player = message.channel.guild.members.cache.find(member => member.id == recruitment.party_one[i][0]);
                     let playerClass = recruitment.party_one[i][1];
                     classIcon = bot.getClassIcon(playerClass);
                     party1value = party1value + `\n${classIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
@@ -478,7 +480,7 @@ module.exports = {
                 count = 6;
                 if (recruitment.nr_taken_spots - 6 < count) count = recruitment.nr_taken_spots - 6;
                 for (let i=0; i<count; i++){
-                    player = message.channel.guild.members.find(member => member.id == recruitment.party_two[i][0]);
+                    player = message.channel.guild.members.cache.find(member => member.id == recruitment.party_two[i][0]);
                     let playerClass = recruitment.party_two[i][1];
                     classIcon = bot.getClassIcon(playerClass);
                     party2value = party2value + `\n${classIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
@@ -487,7 +489,7 @@ module.exports = {
             if (recruitment.nr_overflow > 0){
                 count = recruitment.nr_overflow;
                 for (let i=0; i<count; i++){
-                    player = message.channel.guild.members.find(member => member.id == recruitment.overflow[i][0]);
+                    player = message.channel.guild.members.cache.find(member => member.id == recruitment.overflow[i][0]);
                     let playerClass = recruitment.overflow[i][1];
                     classIcon = bot.getClassIcon(playerClass);
                     overflowvalue = overflowvalue + `\n${classIcon}${recruitment.use_nick == false ? player.user.username : player.displayName}`;
@@ -497,12 +499,19 @@ module.exports = {
             newEmbed.setTitle(`People needed for ${title}`)
                 .setDescription(`Still needed: ${recruitment.nr_free_spots}`)
                 .addField('**Party 1:**', party1value, true)
-                .setFooter(`SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`);
+                .setFooter({text: `SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`});
 
             if (party2value != 'Be the first one to apply!') newEmbed.addField('**Party 2:**', party2value, true);
             if (overflowvalue != '') newEmbed.addField('**Overflow:**', overflowvalue, false);
 
-            message.channel.send(newEmbed).then(async sentMessage => {
+            message.channel.send({
+                embeds: [
+                    newEmbed
+                ],
+                files: [
+                    messageAttachment
+                ]
+            }).then(async sentMessage => {
                 recruitment.message_id = sentMessage.id;
                 if (bot.bnsrecendlock == true){
                     while (bot.bnsrecendlock == true){
@@ -514,22 +523,24 @@ module.exports = {
                 }
                 bot.bnsrecruitments.push(recruitment);
                 bot.updateBnsRecruitments();
+                await bot.wait(1000);
                 bot.bnsrecendlock = false;
 
 
-                const BD = message.client.emojis.find(emoji => emoji.name === "BD");
-                const BM = message.client.emojis.find(emoji => emoji.name === "BM");
-                const DES = message.client.emojis.find(emoji => emoji.name === "DES");
-                const FM = message.client.emojis.find(emoji => emoji.name === "FM");
-                const GUN = message.client.emojis.find(emoji => emoji.name === "GUN");
-                const KFM = message.client.emojis.find(emoji => emoji.name === "KFM");
-                const SF = message.client.emojis.find(emoji => emoji.name === "SF");
-                const SIN = message.client.emojis.find(emoji => emoji.name === "SIN");
-                const SUM = message.client.emojis.find(emoji => emoji.name === "SUM");
-                const WL = message.client.emojis.find(emoji => emoji.name === "WL");
-                const WRD = message.client.emojis.find(emoji => emoji.name === "WRD");
-                const ARC = message.client.emojis.find(emoji => emoji.name === "ARC");
-
+                const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD");
+                const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM");
+                const DES = message.client.emojis.cache.find(emoji => emoji.name === "DES");
+                const FM = message.client.emojis.cache.find(emoji => emoji.name === "FM");
+                const GUN = message.client.emojis.cache.find(emoji => emoji.name === "GUN");
+                const KFM = message.client.emojis.cache.find(emoji => emoji.name === "KFM");
+                const SF = message.client.emojis.cache.find(emoji => emoji.name === "SF");
+                const SIN = message.client.emojis.cache.find(emoji => emoji.name === "SIN");
+                const SUM = message.client.emojis.cache.find(emoji => emoji.name === "SUM");
+                const WL = message.client.emojis.cache.find(emoji => emoji.name === "WL");
+                const WRD = message.client.emojis.cache.find(emoji => emoji.name === "WRD");
+                const ARC = message.client.emojis.cache.find(emoji => emoji.name === "ARC");
+                const AST = message.client.emojis.cache.find(emoji => emoji.name === "AST");
+                
                 sentMessage.react(BD).then(() => 
                 sentMessage.react(BM)).then(() =>
                 sentMessage.react(DES)).then(() =>
@@ -541,7 +552,8 @@ module.exports = {
                 sentMessage.react(SUM)).then(() =>
                 sentMessage.react(WL)).then(() =>
                 sentMessage.react(WRD)).then(() => 
-                sentMessage.react(ARC)).then(() => console.log('Type A recruitment created successfully!'));
+                sentMessage.react(ARC)).then(() => 
+                sentMessage.react(AST)).then(() => console.log('Type A recruitment created successfully!'));
             });
         } else {
             let sbmessage;
@@ -563,7 +575,14 @@ module.exports = {
             else tankmessage = 'Can be any class';
             if (recruitment.tank_needed && recruitment.tank_id==null)
                 newEmbed.addField(`**Tank needed!**`, tankmessage, false);
-            message.channel.send(newEmbed).then(async sentMessage => {
+            message.channel.send({
+                embeds: [
+                    newEmbed
+                ],
+                files: [
+                    messageAttachment
+                ]
+            }).then(async sentMessage => {
                 recruitment.message_id = sentMessage.id;
                 if (bot.bnsrecendlock == true){
                     while (bot.bnsrecendlock == true){
@@ -575,6 +594,7 @@ module.exports = {
                 }
                 bot.bnsrecruitments.push(recruitment);
                 bot.updateBnsRecruitments();
+                await bot.wait(1000);
                 bot.bnsrecendlock = false;
 
                 if (recruitment.sb_needed > 0){ 
@@ -595,18 +615,19 @@ module.exports = {
                     acneeded = false;
                 }
 
-                const BD = message.client.emojis.find(emoji => emoji.name === "BD");
-                const BM = message.client.emojis.find(emoji => emoji.name === "BM");
-                const DES = message.client.emojis.find(emoji => emoji.name === "DES");
-                const FM = message.client.emojis.find(emoji => emoji.name === "FM");
-                const GUN = message.client.emojis.find(emoji => emoji.name === "GUN");
-                const KFM = message.client.emojis.find(emoji => emoji.name === "KFM");
-                const SF = message.client.emojis.find(emoji => emoji.name === "SF");
-                const SIN = message.client.emojis.find(emoji => emoji.name === "SIN");
-                const SUM = message.client.emojis.find(emoji => emoji.name === "SUM");
-                const WL = message.client.emojis.find(emoji => emoji.name === "WL");
-                const WRD = message.client.emojis.find(emoji => emoji.name === "WRD");
-                const ARC = message.client.emojis.find(emoji => emoji.name === "ARC");
+                const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD");
+                const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM");
+                const DES = message.client.emojis.cache.find(emoji => emoji.name === "DES");
+                const FM = message.client.emojis.cache.find(emoji => emoji.name === "FM");
+                const GUN = message.client.emojis.cache.find(emoji => emoji.name === "GUN");
+                const KFM = message.client.emojis.cache.find(emoji => emoji.name === "KFM");
+                const SF = message.client.emojis.cache.find(emoji => emoji.name === "SF");
+                const SIN = message.client.emojis.cache.find(emoji => emoji.name === "SIN");
+                const SUM = message.client.emojis.cache.find(emoji => emoji.name === "SUM");
+                const WL = message.client.emojis.cache.find(emoji => emoji.name === "WL");
+                const WRD = message.client.emojis.cache.find(emoji => emoji.name === "WRD");
+                const ARC = message.client.emojis.cache.find(emoji => emoji.name === "ARC");
+                const AST = message.client.emojis.cache.find(emoji => emoji.name === "AST");
 
                 if (sbneeded){
                     sentMessage.react(WL); 

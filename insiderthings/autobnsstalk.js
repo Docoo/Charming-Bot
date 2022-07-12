@@ -12,7 +12,7 @@ module.exports = {
             await bot.wait(2000);
         }
         bot.stalking = "blelele";
-        let stalkJSON = JSON.parse(fs.readFileSync('./stalking.json', 'utf8'));
+        let stalkJSON = JSON.parse(fs.readFileSync('./configs/stalking.json', 'utf8'));
         for (let character of stalkJSON.userList){
             let name = character.characterName;
             url = 'https://api.silveress.ie/bns/v3/character/full/eu/' + name;
@@ -28,7 +28,7 @@ module.exports = {
             stalkJSON.history.push(json);
             count++;
         }
-        fs.writeFileSync('./stalking.json', JSON.stringify(stalkJSON, null, 4), 'utf8');
+        fs.writeFileSync('./configs/stalking.json', JSON.stringify(stalkJSON, null, 4), 'utf8');
         console.log(`Stalking complete! Successfully stalked ${count} characters!`);
         bot.stalking = undefined;
         return 0;

@@ -4,7 +4,7 @@ module.exports ={
     usage: `dailyquizstart`,
     help: `-`,
     async execute(bot, message, args){
-        if ((!message.member.hasPermission('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
+        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
             return message.reply("you are not allowed to use this command!");
         };
         let thisGuild = message.channel.guild.id;
