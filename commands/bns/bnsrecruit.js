@@ -179,7 +179,7 @@ module.exports = {
 
         const Discord = require('discord.js');
         const messageAttachment = new Discord.MessageAttachment().setFile(`./assets/bns_logo.png`);
-        newEmbed.setThumbnail('attachment://bns_logo.png');
+        const newEmbed = new Discord.MessageEmbed().setThumbnail('attachment://bns_logo.png');
 
         if(recruitment.type == 'A'){
             if (recruitment.enforceRoles) {
