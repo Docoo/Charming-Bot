@@ -29,7 +29,7 @@ module.exports = {
                 newEmbed.addField('Party1', 'Empty!', true);
                 newEmbed.addField('Party2', 'Empty!', true);
             }
-            message.channelsend({
+            message.channel.send({
             embeds: [newEmbed]
             }).then(() =>
             {

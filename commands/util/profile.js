@@ -35,7 +35,7 @@ module.exports = {
             const newEmbed = new Discord.MessageEmbed()
                 .setTitle(`${name}'s profile picture`)
                 .setImage(myUser.user.avatarURL);
-            message.channelsend({
+            message.channel.send({
                 embeds: [newEmbed]
             });
             return 0;

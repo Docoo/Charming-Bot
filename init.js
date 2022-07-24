@@ -427,15 +427,15 @@ async function backup_file(file){
 	let minutes = date.getMinutes().toString();
 	
 	//console.log(`day ${day} month ${month} year ${year}`);
-	filename = `.\\backups\\` + filename + `_backup_${year.substring(2,4)}${month.length==1? "0"+month : month}${day.length == 1 ? "0"+day : day}_${hour.length==1? "0"+hour : hour}${minutes.length==1? "0"+minutes : minutes}.` + extension;
+	filename = `./backups/` + filename + `_backup_${year.substring(2,4)}${month.length==1? "0"+month : month}${day.length == 1 ? "0"+day : day}_${hour.length==1? "0"+hour : hour}${minutes.length==1? "0"+minutes : minutes}.` + extension;
 	filecontent = fs.readFileSync(file, 'utf8');
 	fs.writeFileSync(filename, filecontent, 'utf8');
 	console.log(`${file} backed up successfully!`);
 }
 
 async function backup_now(){
-	bot.backup_file('configs/recruitments.json');
-	bot.backup_file('configs/countdowns.json');
+	bot.backup_file('./configs/recruitments.json');
+	bot.backup_file('./configs/countdowns.json');
 	console.log("Files backed up successfully!");
 }
 
