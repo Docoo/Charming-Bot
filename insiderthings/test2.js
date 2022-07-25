@@ -3,7 +3,7 @@ module.exports={
     description: "",
     async execute(bot,message,args){
 
-        message.channel.send(`Last BnS server status was: ${bot.bnsServerStatus.toString()}`)
+        thisShouldGenerateAn.error()
 
         return 0;
     }

@@ -3,8 +3,10 @@ module.exports = {
     description: `Updates the list of guilds in the bot files`,
     async execute(bot, message, args){
         bot.guilds.cache.forEach(guild => {
-            console.log(`ID: ${guild.id}, name: ${guild.name}`);
-            console.log("Admin:" + guild.me.permissions.has("ADMINISTRATOR"));
+            if (!guild.me.permissions.has("ADMINISTRATOR")){
+                console.log(`ID: ${guild.id}, name: ${guild.name}`);
+                console.log("Admin:" + guild.me.permissions.has("ADMINISTRATOR"));
+            }
             let thisGuild = undefined;
             bot.guildList.forEach(botguild => {
                 if (botguild.guildID == guild.id) thisGuild = botguild;

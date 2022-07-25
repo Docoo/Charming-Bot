@@ -30,7 +30,7 @@ async function wait(ms){
 }
 
 let restartBot = require('./insiderthings/restartbot.js');
-bot = await restartBot.execute(bot, null, null);
+restartBot.execute(bot, null, null);
 
 //const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const insiderCommandFiles = fs.readdirSync('./insiderthings').filter(file => file.endsWith('.js'));
@@ -251,8 +251,7 @@ bot.on("guildDelete", guild => {
 	bot.eraseGuild(guild.id);
 })
 
-process.on('uncaughtException', async function(err) {
-	console.dir(err)
-	await wait(1000)
+process.on('uncaughtException', function(err) {
+	console.log(err)
 	process.exit(1)
 });

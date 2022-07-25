@@ -20,7 +20,7 @@ async function initBot(bot, message){
 		console.log = function(msg){
 			let date2 = new Date();
             const bot = require('./bot.js').bot;
-            console._log_old(bot.loggedIn)
+            // console._log_old(bot.loggedIn)
 			if (bot.loggedIn){
 				//send to my logging channel
 				logguild = bot.guilds.resolve('247831161013796865');
@@ -122,9 +122,7 @@ async function initBot(bot, message){
 		ac: 'ac'
 	}
 
-
-	bot.test2 = "twst2works!!!!!";
-	if (message != null){
+    if (message != null){
 		message.channel.send("Restart complete!");
 	} else {
 		const restarted = JSON.parse(fs.readFileSync('./configs/restart.json', 'utf8'));
