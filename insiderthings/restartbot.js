@@ -3,12 +3,12 @@ module.exports = {
     description: "Restart the bot",
     usage: `restartbot`,
     help: `-`,
-    execute(bot,message,args){
+    async execute(bot,message,args){
         try{
             delete require.cache[require.resolve('./../init.js')];
         } catch (err) {}
         let init = require('./../init.js');
         bot.loggedIn = false;
-        return init.initBot(bot, message);
+        return await init.initBot(bot, message);
     }
 }
