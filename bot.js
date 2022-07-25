@@ -30,7 +30,7 @@ async function wait(ms){
 }
 
 let restartBot = require('./insiderthings/restartbot.js');
-restartBot.execute(bot, null, null);
+bot = restartBot.execute(bot, null, null);
 
 //const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 //const insiderCommandFiles = fs.readdirSync('./insiderthings').filter(file => file.endsWith('.js'));
