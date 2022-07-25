@@ -21,8 +21,8 @@ async function initBot(bot, message){
 			let date2 = new Date();
 			if (bot.loggedIn){
 				//send to my logging channel
-				logguild = bot.guilds.cache.get('247831161013796865');
-				logchannel = logguild.channels.cache.get('642485408722190336');
+				logguild = bot.guilds.resolve('247831161013796865');
+				logchannel = logguild.channels.resolve('642485408722190336');
 				logchannel.send(`[${date2.getHours()}:${date2.getMinutes()}:${date2.getSeconds()}]\n\`\`\`${msg}\`\`\``);
 			}
 			console._log_old(`[${date2.getHours()}:${date2.getMinutes()}:${date2.getSeconds()}]\n`+msg);
