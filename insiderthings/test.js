@@ -21,6 +21,7 @@ module.exports={
                 message.channel.send({embeds: [newEmbed], files: files})
                 break;
             case "2":
+                const date2 = new Date();
                 const msg = "This is a test message to log to the log channel"
                 logguild = bot.guilds.resolve('247831161013796865');
                 logchannel = logguild.channels.resolve('642485408722190336');
