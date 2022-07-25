@@ -19,7 +19,6 @@ async function initBot(bot, message){
 		console._log_old = console.log;
 		console.log = function(msg){
 			let date2 = new Date();
-            const bot = require('./bot.js').bot;
             console.log(bot.loggedIn)
 			if (bot.loggedIn){
 				//send to my logging channel

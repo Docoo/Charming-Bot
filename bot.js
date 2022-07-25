@@ -251,12 +251,8 @@ bot.on("guildDelete", guild => {
 	bot.eraseGuild(guild.id);
 })
 
-process.on('uncaughtException', function(err) {
-	console.log(err)
-	wait_and_exit()
-});
-
-async function wait_and_exit(){
+process.on('uncaughtException', async function(err) {
+	console.dir(err)
 	await wait(1000)
 	process.exit(1)
-}
+});
