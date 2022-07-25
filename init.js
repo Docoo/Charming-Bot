@@ -19,7 +19,8 @@ async function initBot(bot, message){
 		console._log_old = console.log;
 		console.log = function(msg){
 			let date2 = new Date();
-            console.log(bot.loggedIn)
+            const bot = require('./bot.js').bot;
+            console._log_old(bot.loggedIn)
 			if (bot.loggedIn){
 				//send to my logging channel
 				logguild = bot.guilds.resolve('247831161013796865');
