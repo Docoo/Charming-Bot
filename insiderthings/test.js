@@ -12,7 +12,7 @@ module.exports={
         // message.channel.send("Test complete!");
         //console.log(new Date().getDay());
 
-        switch(args){
+        switch(args[0]){
             case "1":
                 const Discord = require('Discord.js')
                 files = []
