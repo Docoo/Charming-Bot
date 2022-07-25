@@ -233,13 +233,6 @@ bot.on('messageReactionRemove', (reaction, user) => {
     if (bot.getWeeklyEmotesIdList().includes(reaction.emoji.id)) bot.queue.push(['weeklyTrackerReactRemove', reaction, user]);
 });
 
-async function wait(ms){
-	const sleep = (milliseconds) => {
-		return new Promise(resolve => setTimeout(resolve, milliseconds))
-	}
-	await sleep(ms);
-}
-
 //joined a server
 bot.on("guildCreate", guild => {
 	// if (guild.id == '611826349035749386'){
@@ -260,6 +253,10 @@ bot.on("guildDelete", guild => {
 
 process.on('uncaughtException', function(err) {
 	console.log(err)
+	wait_and_exit()
+});
+
+async function wait_and_exit(){
 	await wait(1000)
 	process.exit(1)
-  });
+}
