@@ -159,6 +159,12 @@ async function loop(newIdentifier){
     let identifier = newIdentifier;
 	while (identifier == bot.loopIdentifier){
         bot.botInstanceID = require('./bot.js').botInstanceID;
+
+        if (!bot.loggedIn){
+            await bot.login(bot.config.token);
+            bot.loggedIn = true;
+        }
+        
 		if (bot.queue.length == 0){
 			//logger.info('Waiting');
 			await sleep(1000);
