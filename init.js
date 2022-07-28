@@ -422,9 +422,9 @@ async function wait(ms){
 
 async function backup_file(file){
     console.log(file)
-	let filename = file.split(".")[0];
+	let filename = file.split(".")[1];
     console.log(filename)
-	let extension = file.split(".")[1];
+	let extension = file.split(".")[2];
     console.log(extension)
 	let date = new Date();
 	let day = date.getDate().toString();
