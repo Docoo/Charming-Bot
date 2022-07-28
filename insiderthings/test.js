@@ -27,6 +27,9 @@ module.exports={
                 logchannel = logguild.channels.resolve('642485408722190336');
                 logchannel.send(`[${date2.getHours()}:${date2.getMinutes()}:${date2.getSeconds()}]\n\`\`\`${msg}\`\`\``);
                 break;
+            case "3":
+                bot.backup_now();
+                break;
             default:
                 return message.reply("You did not specify a valid test case")
                 break;
