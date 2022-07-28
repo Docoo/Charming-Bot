@@ -421,11 +421,11 @@ async function wait(ms){
 }
 
 async function backup_file(file){
-    console.log(file)
+    // console.log(file)
 	let filename = file.split(".")[1];
-    console.log(filename)
+    // console.log(filename)
 	let extension = file.split(".")[2];
-    console.log(extension)
+    // console.log(extension)
 	let date = new Date();
 	let day = date.getDate().toString();
 	let month = date.getMonth();
@@ -437,7 +437,7 @@ async function backup_file(file){
 	
 	//console.log(`day ${day} month ${month} year ${year}`);
 	filename = `./backups/` + filename + `_backup_${year.substring(2,4)}${month.length==1? "0"+month : month}${day.length == 1 ? "0"+day : day}_${hour.length==1? "0"+hour : hour}${minutes.length==1? "0"+minutes : minutes}.` + extension;
-	console.log(filename)
+	// console.log(filename)
     filecontent = fs.readFileSync(file, 'utf8');
 	fs.writeFileSync(filename, filecontent, 'utf8');
 	console.log(`${file} backed up successfully!`);
