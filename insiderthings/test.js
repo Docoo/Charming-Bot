@@ -14,7 +14,7 @@ module.exports={
 
         switch(args[0]){
             case "1":
-                const Discord = require('Discord.js')
+                const Discord = require('discord.js')
                 files = []
                 files.push(new Discord.MessageAttachment(`./assets/BD.png`))
                 const newEmbed = new Discord.MessageEmbed().setImage('attachment://BD.png')
@@ -29,6 +29,9 @@ module.exports={
                 break;
             case "3":
                 bot.backup_now();
+                break;
+            case "4":
+                bot.insidercommands.get("resetweeklytrackers").execute(bot, null, null);
                 break;
             default:
                 return message.reply("You did not specify a valid test case")

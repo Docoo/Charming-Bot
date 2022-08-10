@@ -4,7 +4,7 @@ module.exports = {
     usage: `removeweeklytracker <messageID>`,
     help: `messageID - the ID of the discord message that represents the tracker`,
     execute(bot,message,args){
-        const Discord = require("Discord.js");
+        const Discord = require("discord.js");
 
         let myWeeklyTracker;
         for (aWeeklyTracker of bot.weeklyTrackers){

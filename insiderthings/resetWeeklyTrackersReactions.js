@@ -4,11 +4,11 @@ module.exports = {
     usage: `resetweeklytrackersreactions`,
     help: `-`,
     execute(bot,arg1,arg2){
-        const Discord = require("Discord.js");
+        const Discord = require("discord.js");
         for (let aWeeklyTracker of bot.weeklyTrackers){
             const aWeeklyTrackerCopy = JSON.parse(JSON.stringify(aWeeklyTracker));
-            guild = bot.guilds.cache.get(aWeeklyTrackerCopy.guildID);
-            channel = guild.channels.cache.get(aWeeklyTrackerCopy.channelID);
+            guild = bot.guilds.resolve(aWeeklyTrackerCopy.guildID);
+            channel = guild.channels.resolve(aWeeklyTrackerCopy.channelID);
             channel.messages.fetch(aWeeklyTrackerCopy.messageID)
                 .then((message) => {
                     message.reactions.removeAll().then((message2) => {
