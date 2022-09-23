@@ -708,7 +708,6 @@ function bnsServerChecker(){
 function bnsNotifyMaintenance(onlineStatus){
     let textToSend = "This was supposed to be a BnS server status change notification but Charmie fucked up"
     if (onlineStatus == "online") {
-        bot.fetchBnsEquipmentFromSilveress()
         textToSend = "BnS EU server is now online"
     } else if (onlineStatus == "offline") {
         textToSend = "BnS EU server has gone offline"

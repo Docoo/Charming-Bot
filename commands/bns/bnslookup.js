@@ -44,7 +44,7 @@ module.exports = {
         //console.log(characterData);
         console.log('Character data aquired!');
 
-
+        bot.fetchBnsEquipmentFromSilveress()
         const bnsEquipment = JSON.parse(fs.readFileSync('./configs/bnsequipment.json', 'utf8'))
 
         const equipment = characterData.equipment;
