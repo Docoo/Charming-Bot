@@ -30,7 +30,7 @@ module.exports = {
             console.log("Silveress error");
             return message.channel.send("Error reaching silveress API server");
         }
-        if (silveressCharacterResponse.error.includes("not found")){
+        if (silveressCharacterResponse.includes("not found")){
             console.log(`Character ${characterName} not found!`)
             return message.channel.send(`Character ${characterName} not found!`)
         }
