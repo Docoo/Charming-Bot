@@ -44,53 +44,70 @@ module.exports = {
         //console.log(characterData);
         console.log('Character data aquired!');
 
-        let weapName = '';
-        let weapUrl
-        if (weapUrl != undefined){
-            weapName = weapUrl.split('/');
-            weapName = weapName[weapName.length - 1];
-        }
+
+        const bnsEquipment = JSON.parse(fs.readFileSync('./configs/bnsequipment.json', 'utf8'))
+
+        const equipment = characterData.equipment;
+
+        const weapon = bnsEquipment.find(entry => entry.id == equipment.hand.id)
+        const weapUrl = weapon.icon
+        const weapUrlFileName = weapUrl.split('/').pop()
+        const weapName = weapon.name
         
         var accTxt = '';
-        if (characterData.weaponName != ''){
-            accTxt += characterData.weaponName + '\n';
-        }
-        if (characterData.ringName != ''){
-            accTxt += characterData.ringName + '\n';
-        }
-        if (characterData.earringName != ''){
-            accTxt += characterData.earringName + '\n';
-        }
-        if (characterData.necklaceName != ''){
-            accTxt += characterData.necklaceName + '\n';
-        }
-        if (characterData.braceletName != ''){
-            accTxt += characterData.braceletName + '\n';
-        }
-        if (characterData.beltName != ''){
-            accTxt += characterData.beltName + '\n';
-        }
-        if (characterData.gloves != ''){
-            accTxt += characterData.gloves + '\n';
-        }
-        if (characterData.soulName != ''){
-            accTxt += characterData.soulName + '\n';
-        }
-        if (characterData.soulName2 != ''){
-            accTxt += characterData.soulName2 + '\n';
-        }
-        if (characterData.petAuraName != ''){
-            accTxt += characterData.petAuraName + '\n';
-        }
-        if (characterData.talismanName != ''){
-            accTxt += characterData.talismanName + '\n';
-        }
-        if (characterData.soulBadgeName != ''){
-            accTxt += characterData.soulBadgeName + '\n';
-        }
-        if (characterData.mysticBadgeName != ''){
-            accTxt += characterData.mysticBadgeName + '\n';
-        }
+        // if (characterData.weaponName != ''){
+        //     accTxt += characterData.weaponName + '\n';
+        // }
+        // if (characterData.ringName != ''){
+        //     accTxt += characterData.ringName + '\n';
+        // }
+        // if (characterData.earringName != ''){
+        //     accTxt += characterData.earringName + '\n';
+        // }
+        // if (characterData.necklaceName != ''){
+        //     accTxt += characterData.necklaceName + '\n';
+        // }
+        // if (characterData.braceletName != ''){
+        //     accTxt += characterData.braceletName + '\n';
+        // }
+        // if (characterData.beltName != ''){
+        //     accTxt += characterData.beltName + '\n';
+        // }
+        // if (characterData.gloves != ''){
+        //     accTxt += characterData.gloves + '\n';
+        // }
+        // if (characterData.soulName != ''){
+        //     accTxt += characterData.soulName + '\n';
+        // }
+        // if (characterData.soulName2 != ''){
+        //     accTxt += characterData.soulName2 + '\n';
+        // }
+        // if (characterData.petAuraName != ''){
+        //     accTxt += characterData.petAuraName + '\n';
+        // }
+        // if (characterData.talismanName != ''){
+        //     accTxt += characterData.talismanName + '\n';
+        // }
+        // if (characterData.soulBadgeName != ''){
+        //     accTxt += characterData.soulBadgeName + '\n';
+        // }
+        // if (characterData.mysticBadgeName != ''){
+        //     accTxt += characterData.mysticBadgeName + '\n';
+        // }
+
+        accTxt += weapName + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.finger_left.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.ear_left.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.neck.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.bracelet.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.belt.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.gloves.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_badge.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.swift_badge.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_2.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.pet.id).name + '\n';
+        accTxt += bnsEquipment.find(entry => entry.id == equipment.nova.id).name + '\n';
 
         const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD").toString();
         const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM").toString();
@@ -170,6 +187,7 @@ module.exports = {
                 console.log('Picture aquired!');
             } catch (error) {
                 console.log('Failed to fetch picture! (url=\"' + f2picurl + '\")');
+                console.dir(error)
                 f2picurl = undefined;
             }
         }
@@ -180,7 +198,7 @@ module.exports = {
         // console.log('Attributes aquired!');
         // if (attributes.result == "fail") return message.channel.send("Character not found!");
         var generalInfo = '**Server:** ' + characterData.server_name + '\n' +
-            '**Clan:** ' + characterData.guild.guild_name +  '\n' +
+            '**Clan:** ' + characterData.guild_name +  '\n' +
             '**Level:** ' + characterData.level + ' ■ ' +
             '**HM Level:** ' + characterData.mastery_level;
         var mysticStats = '**Mystic:** ' + characterData.abilities.total_ability.attack_attribute_value + 
@@ -235,21 +253,21 @@ module.exports = {
             .setTimestamp(new Date() + ' | courtesy of silveress.ie');
         const files = [];
         if (f2picurl != undefined){
-            files.push(new Discord.MessageAttachment(`${weapUrl}`))
+            // files.push(new Discord.MessageAttachment(`${weapUrl}`))
             files.push(new Discord.MessageAttachment('./f2pics/'+filenamee))
             exampleEmbed.setImage('attachment://'+filenamee)
-                .setThumbnail('attachment://'+weapName);
+                .setThumbnail(`${weapUrl}`);
         } else {
-            files.push(new Discord.MessageAttachment(`${weapUrl}`))
-            exampleEmbed.setThumbnail('attachment://'+weapName);
+            // files.push(new Discord.MessageAttachment(`${weapUrl}`))
+            exampleEmbed.setThumbnail(`${weapUrl}`);
         }
 
         if (attpwr<2000){
             lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
             exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
         } else if (attpwr<3000){
-            gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
-            exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
+            uwuComfy = message.client.emojis.cache.find(emoji => emoji.name == "uwuComfy").toString();
+            exampleEmbed.addField('Whale meter: ', 'lolita'+uwuComfy);
         } else if (attpwr<4000){
             dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
             exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
@@ -290,8 +308,8 @@ function sum(theArgs) {
 //         lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
 //         exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
 //     } else if (attpwr<3000){
-//         gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
-//         exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
+//         uwuComfy = message.client.emojis.cache.find(emoji => emoji.name == "uwuComfy").toString();
+//         exampleEmbed.addField('Whale meter: ', 'lolita'+uwuComfy);
 //     } else if (attpwr<4000){
 //         dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
 //         exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
