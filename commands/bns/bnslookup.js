@@ -28,6 +28,7 @@ module.exports = {
             silveressCharacterResponse = silveressCharacterReq.getBody('binary');
         } catch (err) {
             console.log("Silveress error");
+            console.dir(err)
             return message.channel.send("Error reaching silveress API server");
         }
         if (silveressCharacterResponse.includes("not found")){
@@ -42,7 +43,7 @@ module.exports = {
         }
         var characterData = JSON.parse(silveressCharacterResponse);
         //console.log(characterData);
-        console.log('Character data aquired!');
+        console.dir('Character data aquired!');
 
         bot.fetchBnsEquipmentFromSilveress()
         require("child_process").execSync('php -r "sleep($argv[1]);" ' + 2);
@@ -105,7 +106,7 @@ module.exports = {
         // }
 
 
-        console.dir(equipment)
+        // console.dir(equipment)
 
         accTxt += weapName + '\n';
         const accList = ["finger_left", "ear_left", "neck", "bracelet", "belt", "gloves", "soul_badge", "swift_badge", "soul", "soul_2", "pet", "nova"]
@@ -114,7 +115,7 @@ module.exports = {
             try{
                 accTxt += bnsEquipment.find(entry => entry.id == equipment[accessory].id).name + '\n';
             } catch (err) {
-                console.log("Error parsing " + accessory)
+                console.dir("Error parsing " + accessory)
                 console.dir(err)
             }
         }
@@ -207,7 +208,7 @@ module.exports = {
             try{
                 var imgRequest = request('GET', f2picurl);
                 fs.writeFileSync('./f2pics/'+filenamee, imgRequest.getBody('binary'), 'binary');
-                console.log('./f2pics/'+filenamee);
+                console.dir('./f2pics/'+filenamee);
                 console.log('Picture aquired!');
             } catch (error) {
                 console.log('Failed to fetch picture! (url=\"' + f2picurl + '\")');
