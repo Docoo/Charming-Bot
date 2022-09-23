@@ -97,6 +97,7 @@ async function initBot(bot, message){
     bot.bnsServerChecker = bnsServerChecker;
     bot.bnsNotifyMaintenance = bnsNotifyMaintenance
     bot.bnsServerStatusUpdate = bnsServerStatusUpdate
+    bot.fetchBnsEquipmentFromSilveress = fetchBnsEquipmentFromSilveress
 
 	bot.unicodeEmoji = ['ðŸ¤‘', '🤑', '1️⃣', '2️⃣', '3️⃣', '❤️', '🧡', '💚', '💙', '💜', '🖤', '🤎', '🤍', '💝', '💖', '💗', '💓', '💞', '💕', '❣️', '💔', '💟', '🍆', '⚡'];
 
@@ -724,4 +725,21 @@ function bnsNotifyMaintenance(onlineStatus){
             }
         }
     });
+}
+
+function fetchBnsEquipmentFromSilveress(){
+    console.log("Fetching bns equipment list from silveress")
+    const request = require('sync-request');
+    const url = "https://api.silveress.ie/bns/v3/equipment"
+
+    try {
+        const silveressCharacterReq = request('GET', encodeURI(url), {
+            timeout : 5000
+        });
+        const response = silveressCharacterReq.getBody('binary');
+        var equipment = JSON.parse(response);
+        fs.writeFileSync('./configs/bnsequipment.json', equipment, 'utf8');
+    } catch (err) {
+        console.log("Error fetching bns equipment list from silveress");
+    }
 }

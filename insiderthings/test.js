@@ -33,6 +33,9 @@ module.exports={
             case "4":
                 bot.insidercommands.get("resetweeklytrackers").execute(bot, null, null);
                 break;
+            case "5":
+                bot.fetchBnsEquipmentFromSilveress();
+                break;
             default:
                 return message.reply("You did not specify a valid test case")
                 break;

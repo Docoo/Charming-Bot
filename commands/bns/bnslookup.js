@@ -5,23 +5,18 @@ module.exports = {
     help: `**charactername** : the name of the character you wish to look up
             \tall original characters and spaces allowed`,
     execute(bot,message,args){
-        const cheerio = require('cheerio');
+        //const cheerio = require('cheerio');
         const Discord = require('discord.js');
         const fs = require('fs');
         name1 = sum(args);
         characterName = name1.slice(0, -1);
         var request = require('sync-request');
-        let url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/equipments?c=' + characterName;
-        var bnsEquipReq = request('GET', encodeURI(url));
-        bnsEquipResponse = bnsEquipReq.getBody('binary');
-        bnsEquipResponseUTF8 = bnsEquipReq.getBody('utf8');
-        if (!(bnsEquipResponse.error == undefined))
-            return message.channel.send("Character not found!");
+        let url;
 
-        console.log('Character found!');
-        let $ = cheerio.load(bnsEquipResponse);
-        let weapSrc = $('.wrapWeapon .icon .thumb img');
-        let weapUrl = weapSrc.attr("src");
+        // console.log('Character found!');
+        // let $ = cheerio.load(bnsEquipResponse);
+        // let weapSrc = $('.wrapWeapon .icon .thumb img');
+        // let weapUrl = weapSrc.attr("src");
 
         url ='https://api.silveress.ie/bns/v4/character/eu/' + characterName;
         var silveressCharacterReq;
@@ -33,7 +28,11 @@ module.exports = {
             silveressCharacterResponse = silveressCharacterReq.getBody('binary');
         } catch (err) {
             console.log("Silveress error");
-            return message.channel.send("Character found, but failed to load data!");
+            return message.channel.send("Error reaching silveress API server");
+        }
+        if (silveressCharacterResponse.error.includes("not found")){
+            console.log(`Character ${characterName} not found!`)
+            return message.channel.send(`Character ${characterName} not found!`)
         }
         if (silveressCharacterResponse.includes("Error: Request timed out after") || 
         silveressCharacterResponse.includes("502: Bad G")){
@@ -46,6 +45,7 @@ module.exports = {
         console.log('Character data aquired!');
 
         let weapName = '';
+        let weapUrl
         if (weapUrl != undefined){
             weapName = weapUrl.split('/');
             weapName = weapName[weapName.length - 1];
@@ -104,8 +104,9 @@ module.exports = {
         const WL = message.client.emojis.cache.find(emoji => emoji.name === "WL").toString();
         const WRD = message.client.emojis.cache.find(emoji => emoji.name === "WRD").toString();
         const ARC = message.client.emojis.cache.find(emoji => emoji.name === "ARC").toString();
+        const AST = message.client.emojis.cache.find(emoji => emoji.name === "AST").toString();
         var charClass = '';
-        switch (characterData.playerClass) {
+        switch (characterData.base_info.class_name) {
             case 'Blade Dancer':
                 charClass = BD;
                 break;
@@ -142,11 +143,14 @@ module.exports = {
             case 'Zen Archer':
                 charClass = ARC;
                 break;
+            case 'Astromancer':
+                charClass = AST;
+                break;
             default:
                 break;
         }
         let filenamee = '';
-        let f2picurl = characterData.officialImg;
+        let f2picurl = characterData.base_info.profile_url;
         if (f2picurl == undefined) f2picurl = characterData.characterImg;
         if (f2picurl == undefined){
             console.log('F2pic url error');
@@ -169,54 +173,54 @@ module.exports = {
                 f2picurl = undefined;
             }
         }
-        url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/abilities.json?c=' + characterName;
-        var attributeRequest = request('GET', encodeURI(url));
-        var attributeBody = attributeRequest.getBody('utf8');
-        var attributes = JSON.parse(attributeBody);
-        console.log('Attributes aquired!');
-        if (attributes.result == "fail") return message.channel.send("Character not found!");
-        var generalInfo = '**Server:** ' + characterData.server + '\n' +
-            '**Clan:** ' + characterData.guild +  '\n' +
-            '**Level:** ' + characterData.playerLevel + ' ■ ' +
-            '**HM Level:** ' + characterData.playerLevelHM;
-        var mysticStats = '**Mystic:** ' + attributes.records.total_ability.attack_attribute_value + 
-            '\n**Mystic damage:** ' + attributes.records.total_ability.attack_attribute_rate + '%\n' + 
+        // url = 'http://eu-bns.ncsoft.com/ingame/bs/character/data/abilities.json?c=' + characterName;
+        // var attributeRequest = request('GET', encodeURI(url));
+        // var attributeBody = attributeRequest.getBody('utf8');
+        // var attributes = JSON.parse(attributeBody);
+        // console.log('Attributes aquired!');
+        // if (attributes.result == "fail") return message.channel.send("Character not found!");
+        var generalInfo = '**Server:** ' + characterData.server_name + '\n' +
+            '**Clan:** ' + characterData.guild.guild_name +  '\n' +
+            '**Level:** ' + characterData.level + ' ■ ' +
+            '**HM Level:** ' + characterData.mastery_level;
+        var mysticStats = '**Mystic:** ' + characterData.abilities.total_ability.attack_attribute_value + 
+            '\n**Mystic damage:** ' + characterData.abilities.total_ability.attack_attribute_rate + '%\n' + 
             message.client.emojis.cache.find(emoji => emoji.name == "Magic1").toString();
-        var offensive = '**Attack:** ' + attributes.records.total_ability.attack_power_value +
+        var offensive = '**Attack:** ' + characterData.abilities.total_ability.attack_power_value +
             ' ' + message.client.emojis.cache.find(emoji => emoji.name == "ap_icon").toString() + ' ' +
-            attributes.records.point_ability.offense_point+'P\n'+
+            characterData.abilities.point_ability.offense_point+'P\n'+
             message.client.emojis.cache.find(emoji => emoji.name == "threat_icon").toString() + ' ' +
-            attributes.records.point_ability.picks[0].point+'P '+
+            characterData.abilities.point_ability.picks[0].point+'P '+
             message.client.emojis.cache.find(emoji => emoji.name == "focus_icon").toString() + ' '+ 
-            attributes.records.point_ability.picks[3].point+'P\n'+
-            '**Pierce:** ' + attributes.records.total_ability.attack_pierce_value+
-            ' ('+attributes.records.total_ability.attack_defend_pierce_rate+'%)\n'+
-            '**Accuracy:** ' + attributes.records.total_ability.attack_hit_value+
-            ' ('+attributes.records.total_ability.attack_hit_rate+'%)\n'+
-            '**Critical:** ' + attributes.records.total_ability.attack_critical_value+
-            ' ('+attributes.records.total_ability.attack_critical_rate+'%)\n'+
-            '**Critical damage:** ' + attributes.records.total_ability.attack_critical_damage_value+
-            ' ('+attributes.records.total_ability.attack_critical_damage_rate+'%)\n';
-        var defence = '**HP:** ' + attributes.records.total_ability.max_hp + ' ' + 
+            characterData.abilities.point_ability.picks[3].point+'P\n'+
+            '**Pierce:** ' + characterData.abilities.total_ability.attack_pierce_value+
+            ' ('+characterData.abilities.total_ability.attack_defend_pierce_rate+'%)\n'+
+            '**Accuracy:** ' + characterData.abilities.total_ability.attack_hit_value+
+            ' ('+characterData.abilities.total_ability.attack_hit_rate+'%)\n'+
+            '**Critical:** ' + characterData.abilities.total_ability.attack_critical_value+
+            ' ('+characterData.abilities.total_ability.attack_critical_rate+'%)\n'+
+            '**Critical damage:** ' + characterData.abilities.total_ability.attack_critical_damage_value+
+            ' ('+characterData.abilities.total_ability.attack_critical_damage_rate+'%)\n';
+        var defence = '**HP:** ' + characterData.abilities.total_ability.max_hp + ' ' + 
             message.client.emojis.cache.find(emoji => emoji.name == "defense_icon").toString() + ' ' +
-            attributes.records.point_ability.defense_point+'P\n'+
+            characterData.abilities.point_ability.defense_point+'P\n'+
             message.client.emojis.cache.find(emoji => emoji.name == "regen_icon").toString() + ' ' +
-            attributes.records.point_ability.picks[1].point+'P ' +
+            characterData.abilities.point_ability.picks[1].point+'P ' +
             message.client.emojis.cache.find(emoji => emoji.name == "evade_icon").toString() + ' ' +
-            attributes.records.point_ability.picks[2].point+'P ' +
+            characterData.abilities.point_ability.picks[2].point+'P ' +
             message.client.emojis.cache.find(emoji => emoji.name == "stun_icon").toString() + ' ' +
-            attributes.records.point_ability.picks[4].point+'P\n'+
-            '**Defense:** ' + attributes.records.total_ability.defend_power_value+
-            ' ('+attributes.records.total_ability.defend_physical_damage_reduce_rate+'%)\n'+
-            '**Evasion:** ' + attributes.records.total_ability.defend_dodge_value+
-            ' ('+attributes.records.total_ability.defend_dodge_rate+'%)\n'+
-            '**Block:** ' + attributes.records.total_ability.defend_parry_value+
-            ' ('+attributes.records.total_ability.defend_parry_rate+'%)\n'+
-            '**Crit Defense:** ' + attributes.records.total_ability.defend_critical_value +
-            ' ('+attributes.records.total_ability.defend_critical_damage_rate+'%)';
+            characterData.abilities.point_ability.picks[4].point+'P\n'+
+            '**Defense:** ' + characterData.abilities.total_ability.defend_power_value+
+            ' ('+characterData.abilities.total_ability.defend_physical_damage_reduce_rate+'%)\n'+
+            '**Evasion:** ' + characterData.abilities.total_ability.defend_dodge_value+
+            ' ('+characterData.abilities.total_ability.defend_dodge_rate+'%)\n'+
+            '**Block:** ' + characterData.abilities.total_ability.defend_parry_value+
+            ' ('+characterData.abilities.total_ability.defend_parry_rate+'%)\n'+
+            '**Crit Defense:** ' + characterData.abilities.total_ability.defend_critical_value +
+            ' ('+characterData.abilities.total_ability.defend_critical_damage_rate+'%)';
         //console.log(attributes.records.point_ability.picks);
         var randomColor = "000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
-        var attpwr = attributes.records.total_ability.attack_power_value;
+        var attpwr = characterData.abilities.total_ability.attack_power_value;
         var exampleEmbed = new Discord.MessageEmbed()
             .setTitle(`${charClass}${characterData.accountName}[${characterName}]`)
             .setURL('http://eu-bns.ncsoft.com/ingame/bs/character/profile?c='+ characterName.replace(' ', '%20'))
@@ -240,22 +244,22 @@ module.exports = {
             exampleEmbed.setThumbnail('attachment://'+weapName);
         }
 
-        if (attpwr<1800){
+        if (attpwr<2000){
             lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
             exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
-        } else if (attpwr<1900){
+        } else if (attpwr<3000){
             gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
             exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
-        } else if (attpwr<2000){
+        } else if (attpwr<4000){
             dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
             exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
-        } else if (attpwr<2200){
+        } else if (attpwr<4500){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'whale'+whale);
-        } else if (attpwr<2400){
+        } else if (attpwr<5000){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
-        } else if (attpwr>2400){
+        } else if (attpwr>5000){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
         }
@@ -281,24 +285,24 @@ function sum(theArgs) {
     return mystring;
 }
 
-function whale(bot, message, args, exampleEmbed, attpwr){
-    if (attpwr<1800){
-        lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
-        exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
-    } else if (attpwr<1900){
-        gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
-        exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
-    } else if (attpwr<2000){
-        dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
-        exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
-    } else if (attpwr<2200){
-        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-        exampleEmbed.addField('Whale meter: ', 'whale'+whale);
-    } else if (attpwr<2400){
-        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-        exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
-    } else if (attpwr>2400){
-        whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-        exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
-    }
-}
+// function whale(bot, message, args, exampleEmbed, attpwr){
+//     if (attpwr<2000){
+//         lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
+//         exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
+//     } else if (attpwr<3000){
+//         gasmlove = message.client.emojis.cache.find(emoji => emoji.name == "GasmLove").toString();
+//         exampleEmbed.addField('Whale meter: ', 'lolita'+gasmlove);
+//     } else if (attpwr<4000){
+//         dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
+//         exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
+//     } else if (attpwr<4500){
+//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
+//         exampleEmbed.addField('Whale meter: ', 'whale'+whale);
+//     } else if (attpwr<5000){
+//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
+//         exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
+//     } else if (attpwr>5000){
+//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
+//         exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
+//     }
+// }
