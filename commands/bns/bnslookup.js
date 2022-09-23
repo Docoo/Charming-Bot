@@ -45,6 +45,7 @@ module.exports = {
         console.log('Character data aquired!');
 
         bot.fetchBnsEquipmentFromSilveress()
+        require("child_process").execSync('php -r "sleep($argv[1]);" ' + 2);
         const bnsEquipment = JSON.parse(fs.readFileSync('./configs/bnsequipment.json', 'utf8'))
 
         const equipment = characterData.equipment;
@@ -96,18 +97,30 @@ module.exports = {
         // }
 
         accTxt += weapName + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.finger_left.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.ear_left.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.neck.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.bracelet.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.belt.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.gloves.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_badge.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.swift_badge.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_2.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.pet.id).name + '\n';
-        accTxt += bnsEquipment.find(entry => entry.id == equipment.nova.id).name + '\n';
+        const accList = ["finger_left", "ear_left", "neck", "bracelet", "belt", "gloves", "soul_badge", "swift_badge", "soul", "soul_2", "pet", "nova"]
+
+        for (accessory of accList){
+            try{
+                accTxt += bnsEquipment.find(entry => entry.id == equipment[accessory].id).name + '\n';
+            } catch (err) {
+                console.log("Error parsing " + accessory)
+                console.dir(err)
+            }
+        }
+
+
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.finger_left.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.ear_left.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.neck.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.bracelet.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.belt.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.gloves.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_badge.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.swift_badge.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.soul.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.soul_2.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.pet.id).name + '\n';
+        // accTxt += bnsEquipment.find(entry => entry.id == equipment.nova.id).name + '\n';
 
         const BD = message.client.emojis.cache.find(emoji => emoji.name === "BD").toString();
         const BM = message.client.emojis.cache.find(emoji => emoji.name === "BM").toString();
