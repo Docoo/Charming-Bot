@@ -282,10 +282,14 @@ module.exports = {
             exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
         }
         //console.log(exampleEmbed);
-        message.channel.send({
-            embeds: [exampleEmbed],
-            files: files
-        });
+        if (f2picurl != undefined)
+            message.channel.send({
+                embeds: [exampleEmbed],
+                files: files
+            })
+        else message.channel.send({
+            embeds: [exampleEmbed]
+        })
         //console.log(weapName);
         console.log('Success!');
         return 0;
