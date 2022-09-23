@@ -331,6 +331,7 @@ module.exports = {
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
             exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
         }
+        exampleEmbed.setFooter({text: "Character data provided by silveress.ie"})
         //console.log(exampleEmbed);
         if (f2picurl != undefined)
             message.channel.send({
