@@ -708,6 +708,7 @@ function bnsServerChecker(){
 function bnsNotifyMaintenance(onlineStatus){
     let textToSend = "This was supposed to be a BnS server status change notification but Charmie fucked up"
     if (onlineStatus == "online") {
+        bot.fetchBnsEquipmentFromSilveress()
         textToSend = "BnS EU server is now online"
     } else if (onlineStatus == "offline") {
         textToSend = "BnS EU server has gone offline"
@@ -733,13 +734,24 @@ function fetchBnsEquipmentFromSilveress(){
     const url = "https://api.silveress.ie/bns/v3/equipment"
 
     try {
-        const silveressCharacterReq = request('GET', encodeURI(url), {
-            timeout : 5000
-        });
-        const response = silveressCharacterReq.getBody('binary');
-        var equipment = JSON.parse(response);
-        fs.writeFileSync('./configs/bnsequipment.json', equipment, 'utf8');
+        // const silveressCharacterReq = request('GET', encodeURI(url), {
+        //     timeout : 5000
+        // });
+        // const response = silveressCharacterReq.getBody('binary');
+        // var equipment = JSON.parse(response);
+        // fs.writeFileSync('./configs/bnsequipment.json', equipment, 'utf8');
+        const https = require('https')
+        https.get(url, res => {
+        let data = '';
+            res.on('data', chunk => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                fs.writeFileSync('./configs/bnsequipment.json', data, 'utf8');
+            })
+        })
     } catch (err) {
         console.log("Error fetching bns equipment list from silveress");
+        console.dir(err)
     }
 }
