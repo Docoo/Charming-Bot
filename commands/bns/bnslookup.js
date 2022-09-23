@@ -50,10 +50,18 @@ module.exports = {
 
         const equipment = characterData.equipment;
 
-        const weapon = bnsEquipment.find(entry => entry.id == equipment.hand.id)
-        const weapUrl = weapon.icon
-        const weapUrlFileName = weapUrl.split('/').pop()
-        const weapName = weapon.name
+
+        var weapUrl
+        var weapName
+        if (equipment.hand != undefined){
+            const weapon = bnsEquipment.find(entry => entry.id == equipment.hand.id)
+            weapUrl = weapon.icon
+            // weapUrlFileName = weapUrl.split('/').pop()
+            weapName = weapon.name
+        } else {
+            weapUrl = undefined
+            weapName = "No weapon equipped"
+        }
         
         var accTxt = '';
         // if (characterData.weaponName != ''){
@@ -95,6 +103,9 @@ module.exports = {
         // if (characterData.mysticBadgeName != ''){
         //     accTxt += characterData.mysticBadgeName + '\n';
         // }
+
+
+        console.dir(equipment)
 
         accTxt += weapName + '\n';
         const accList = ["finger_left", "ear_left", "neck", "bracelet", "belt", "gloves", "soul_badge", "swift_badge", "soul", "soul_2", "pet", "nova"]
@@ -210,48 +221,78 @@ module.exports = {
         // var attributes = JSON.parse(attributeBody);
         // console.log('Attributes aquired!');
         // if (attributes.result == "fail") return message.channel.send("Character not found!");
-        var generalInfo = '**Server:** ' + characterData.server_name + '\n' +
-            '**Clan:** ' + characterData.guild_name +  '\n' +
-            '**Level:** ' + characterData.level + ' ■ ' +
-            '**HM Level:** ' + characterData.mastery_level;
-        var mysticStats = '**Mystic:** ' + characterData.abilities.total_ability.attack_attribute_value + 
-            '\n**Mystic damage:** ' + characterData.abilities.total_ability.attack_attribute_rate + '%\n' + 
-            message.client.emojis.cache.find(emoji => emoji.name == "Magic1").toString();
-        var offensive = '**Attack:** ' + characterData.abilities.total_ability.attack_power_value +
-            ' ' + message.client.emojis.cache.find(emoji => emoji.name == "ap_icon").toString() + ' ' +
-            characterData.abilities.point_ability.offense_point+'P\n'+
-            message.client.emojis.cache.find(emoji => emoji.name == "threat_icon").toString() + ' ' +
-            characterData.abilities.point_ability.picks[0].point+'P '+
-            message.client.emojis.cache.find(emoji => emoji.name == "focus_icon").toString() + ' '+ 
-            characterData.abilities.point_ability.picks[3].point+'P\n'+
-            '**Pierce:** ' + characterData.abilities.total_ability.attack_pierce_value+
-            ' ('+characterData.abilities.total_ability.attack_defend_pierce_rate+'%)\n'+
-            '**Accuracy:** ' + characterData.abilities.total_ability.attack_hit_value+
-            ' ('+characterData.abilities.total_ability.attack_hit_rate+'%)\n'+
-            '**Critical:** ' + characterData.abilities.total_ability.attack_critical_value+
-            ' ('+characterData.abilities.total_ability.attack_critical_rate+'%)\n'+
-            '**Critical damage:** ' + characterData.abilities.total_ability.attack_critical_damage_value+
-            ' ('+characterData.abilities.total_ability.attack_critical_damage_rate+'%)\n';
-        var defence = '**HP:** ' + characterData.abilities.total_ability.max_hp + ' ' + 
-            message.client.emojis.cache.find(emoji => emoji.name == "defense_icon").toString() + ' ' +
-            characterData.abilities.point_ability.defense_point+'P\n'+
-            message.client.emojis.cache.find(emoji => emoji.name == "regen_icon").toString() + ' ' +
-            characterData.abilities.point_ability.picks[1].point+'P ' +
-            message.client.emojis.cache.find(emoji => emoji.name == "evade_icon").toString() + ' ' +
-            characterData.abilities.point_ability.picks[2].point+'P ' +
-            message.client.emojis.cache.find(emoji => emoji.name == "stun_icon").toString() + ' ' +
-            characterData.abilities.point_ability.picks[4].point+'P\n'+
-            '**Defense:** ' + characterData.abilities.total_ability.defend_power_value+
-            ' ('+characterData.abilities.total_ability.defend_physical_damage_reduce_rate+'%)\n'+
-            '**Evasion:** ' + characterData.abilities.total_ability.defend_dodge_value+
-            ' ('+characterData.abilities.total_ability.defend_dodge_rate+'%)\n'+
-            '**Block:** ' + characterData.abilities.total_ability.defend_parry_value+
-            ' ('+characterData.abilities.total_ability.defend_parry_rate+'%)\n'+
-            '**Crit Defense:** ' + characterData.abilities.total_ability.defend_critical_value +
-            ' ('+characterData.abilities.total_ability.defend_critical_damage_rate+'%)';
+        var generalInfo = 'Failed to get basic data'
+        var mysticStats = 'Failed to get less basic data'
+        var offensive = 'Failed to get advanced data'
+        var defence = 'Failed to get more advanced data'
+        try {
+            generalInfo = '**Server:** ' + characterData.server_name + '\n' +
+                '**Clan:** ' + characterData.guild_name +  '\n' +
+                '**Level:** ' + characterData.level + ' ■ ' +
+                '**HM Level:** ' + characterData.mastery_level;
+        } catch (err) {
+            console.dir('Failed to parse general info')
+            console.dir(err)
+        }
+        try {
+            mysticStats = '**Mystic:** ' + characterData.abilities.total_ability.attack_attribute_value + 
+                '\n**Mystic damage:** ' + characterData.abilities.total_ability.attack_attribute_rate + '%\n' + 
+                message.client.emojis.cache.find(emoji => emoji.name == "Magic1").toString();
+        } catch (err) {
+            console.dir('Failed to parse general info')
+            console.dir(err)
+        }
+        try{
+            offensive = '**Attack:** ' + characterData.abilities.total_ability.attack_power_value +
+                ' ' + message.client.emojis.cache.find(emoji => emoji.name == "ap_icon").toString() + ' ' +
+                characterData.abilities.point_ability.offense_point+'P\n'+
+                message.client.emojis.cache.find(emoji => emoji.name == "threat_icon").toString() + ' ' +
+                characterData.abilities.point_ability.picks[0].point+'P '+
+                message.client.emojis.cache.find(emoji => emoji.name == "focus_icon").toString() + ' '+ 
+                characterData.abilities.point_ability.picks[3].point+'P\n'+
+                '**Pierce:** ' + characterData.abilities.total_ability.attack_pierce_value+
+                ' ('+characterData.abilities.total_ability.attack_defend_pierce_rate+'%)\n'+
+                '**Accuracy:** ' + characterData.abilities.total_ability.attack_hit_value+
+                ' ('+characterData.abilities.total_ability.attack_hit_rate+'%)\n'+
+                '**Critical:** ' + characterData.abilities.total_ability.attack_critical_value+
+                ' ('+characterData.abilities.total_ability.attack_critical_rate+'%)\n'+
+                '**Critical damage:** ' + characterData.abilities.total_ability.attack_critical_damage_value+
+                ' ('+characterData.abilities.total_ability.attack_critical_damage_rate+'%)\n';
+        } catch (err) {
+            console.dir('Failed to parse general info')
+            console.dir(err)
+        }
+        try{
+            defence = '**HP:** ' + characterData.abilities.total_ability.max_hp + ' ' + 
+                message.client.emojis.cache.find(emoji => emoji.name == "defense_icon").toString() + ' ' +
+                characterData.abilities.point_ability.defense_point+'P\n'+
+                message.client.emojis.cache.find(emoji => emoji.name == "regen_icon").toString() + ' ' +
+                characterData.abilities.point_ability.picks[1].point+'P ' +
+                message.client.emojis.cache.find(emoji => emoji.name == "evade_icon").toString() + ' ' +
+                characterData.abilities.point_ability.picks[2].point+'P ' +
+                message.client.emojis.cache.find(emoji => emoji.name == "stun_icon").toString() + ' ' +
+                characterData.abilities.point_ability.picks[4].point+'P\n'+
+                '**Defense:** ' + characterData.abilities.total_ability.defend_power_value+
+                ' ('+characterData.abilities.total_ability.defend_physical_damage_reduce_rate+'%)\n'+
+                '**Evasion:** ' + characterData.abilities.total_ability.defend_dodge_value+
+                ' ('+characterData.abilities.total_ability.defend_dodge_rate+'%)\n'+
+                '**Block:** ' + characterData.abilities.total_ability.defend_parry_value+
+                ' ('+characterData.abilities.total_ability.defend_parry_rate+'%)\n'+
+                '**Crit Defense:** ' + characterData.abilities.total_ability.defend_critical_value +
+                ' ('+characterData.abilities.total_ability.defend_critical_damage_rate+'%)';
+        } catch (err) {
+            console.dir('Failed to parse general info')
+            console.dir(err)
+        }
         //console.log(attributes.records.point_ability.picks);
         var randomColor = "000000".replace(/0/g,function(){return (~~(Math.random()*16)).toString(16);});
-        var attpwr = characterData.abilities.total_ability.attack_power_value;
+        var attpwr = 0
+        try{
+            attpwr = characterData.abilities.total_ability.attack_power_value;
+        } catch (err) {
+            console.dir('Failed to get attack power wth')
+            console.dir(err)
+        }
         var exampleEmbed = new Discord.MessageEmbed()
             .setTitle(`${charClass}${characterData.accountName}[${characterName}]`)
             .setURL('http://eu-bns.ncsoft.com/ingame/bs/character/profile?c='+ characterName.replace(' ', '%20'))
@@ -266,14 +307,10 @@ module.exports = {
             .setTimestamp(new Date() + ' | courtesy of silveress.ie');
         const files = [];
         if (f2picurl != undefined){
-            // files.push(new Discord.MessageAttachment(`${weapUrl}`))
             files.push(new Discord.MessageAttachment('./f2pics/'+filenamee))
             exampleEmbed.setImage('attachment://'+filenamee)
-                .setThumbnail(`${weapUrl}`);
-        } else {
-            // files.push(new Discord.MessageAttachment(`${weapUrl}`))
-            exampleEmbed.setThumbnail(`${weapUrl}`);
         }
+        if (weapUrl != undefined) exampleEmbed.setThumbnail(`${weapUrl}`);
 
         if (attpwr<2000){
             lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
