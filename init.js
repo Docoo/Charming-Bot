@@ -34,6 +34,9 @@ async function initBot(bot, message){
 		//fuckoff
 	}
 
+    //check for missing configs
+    if (!fs.existsSync('./configs/alerts.json')) fs.writeFileSync('./configs/alerts.json', '[]', 'utf8')
+
 	bot.queue = [];
     bot.loopIdentifier = initIdentifier();
 	bot.bnsrecendlock = false;
@@ -98,6 +101,12 @@ async function initBot(bot, message){
     bot.bnsNotifyMaintenance = bnsNotifyMaintenance
     bot.bnsServerStatusUpdate = bnsServerStatusUpdate
     bot.fetchBnsEquipmentFromSilveress = fetchBnsEquipmentFromSilveress
+    bot.alerts = JSON.parse(fs.readFileSync('./configs/alerts.json', 'utf8'))
+    bot.createAlert = createAlert
+    bot.getNextAlert = getNextAlert
+    bot.existsChannelAlert = existsChannelAlert
+    bot.alert = alert
+    bot.removeAlert = removeAlert
 
 	bot.unicodeEmoji = ['ðŸ¤‘', '🤑', '1️⃣', '2️⃣', '3️⃣', '❤️', '🧡', '💚', '💙', '💜', '🖤', '🤎', '🤍', '💝', '💖', '💗', '💓', '💞', '💕', '❣️', '💔', '💟', '🍆', '⚡'];
 
@@ -547,6 +556,14 @@ function timedEvents(){
         bot.removeInactiveSubs()
         bot.insidercommands.get("redditwatchprocess").execute(bot, null, null);
     }
+
+    for (alert of bot.alerts){
+        const nextAlert = new Date(alert.nextAlert)
+        if (date > nextAlert){
+            alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
+            bot.alert(alert)
+        }
+    }
     
 }
 
@@ -741,7 +758,7 @@ function fetchBnsEquipmentFromSilveress(){
         // fs.writeFileSync('./configs/bnsequipment.json', equipment, 'utf8');
         const https = require('https')
         https.get(url, res => {
-        let data = '';
+            let data = '';
             res.on('data', chunk => {
                 data += chunk;
             });
@@ -752,5 +769,49 @@ function fetchBnsEquipmentFromSilveress(){
     } catch (err) {
         console.log("Error fetching bns equipment list from silveress");
         console.dir(err)
+    }
+}
+
+function createAlert(serverID, channelID, message, repeatInterval){
+    const timeNow = new Date()
+    const newAlert = {}
+    newAlert.startTime = timeNow.toISOString()
+    newAlert.repeatInterval = repeatInterval
+    newAlert.nextAlert = bot.getNextAlert(newAlert.startTime, repeatInterval)
+    newAlert.message = message
+    newAlert.serverID = serverID
+    newAlert.channelID = channelID
+    bot.alerts.push(newAlert)
+    json = JSON.stringify(bot.alerts, null, 4).split(",").join(",\n");
+	fs.writeFileSync('./configs/alerts.json', json, 'utf8');
+}
+
+function getNextAlert(ISODate, repeatInterval){
+    const oldAlert = new Date(ISODate)
+    const days = Math.floor(repeatInterval/24)
+    const hours = repeatInterval % 24
+    oldAlert.setHours(oldAlert.getHours()+hours)
+    oldAlert.setDate(oldAlert.getDate()+days)
+    return oldAlert.toISOString()
+}
+
+function existsChannelAlert(serverID, channelID){
+    for (alert of bot.alerts){
+        if (alert.serverID == serverID && alert.channelID == channelID) return true
+    }
+    return false
+}
+
+function alert(alert){
+    bot.guilds.resolve(alert.serverID).channels.resolve(alert.channelID).send(alert.message)
+}
+
+function removeAlert(serverID, channelID){
+    for (alertIndex in bot.alerts){
+        const alert = bot.alerts[alertIndex]
+        if (alert.serverID == serverID && alert.channelID == channelID){
+            bot.alerts.splice(alertIndex, 1)
+            return
+        }
     }
 }
