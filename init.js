@@ -107,6 +107,7 @@ async function initBot(bot, message){
     bot.existsChannelAlert = existsChannelAlert
     bot.alert = alert
     bot.removeAlert = removeAlert
+    bot.updateAlerts = updateAlerts
 
 	bot.unicodeEmoji = ['ðŸ¤‘', '🤑', '1️⃣', '2️⃣', '3️⃣', '❤️', '🧡', '💚', '💙', '💜', '🖤', '🤎', '🤍', '💝', '💖', '💗', '💓', '💞', '💕', '❣️', '💔', '💟', '🍆', '⚡'];
 
@@ -560,10 +561,12 @@ function timedEvents(){
     for (alert of bot.alerts){
         const nextAlert = new Date(alert.nextAlert)
         if (date > nextAlert){
-            alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
+            while (new Date(alert.nextAlert) < date)
+                alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
             bot.alert(alert)
         }
     }
+    bot.updateAlerts()
     
 }
 
@@ -782,6 +785,10 @@ function createAlert(serverID, channelID, message, repeatInterval){
     newAlert.serverID = serverID
     newAlert.channelID = channelID
     bot.alerts.push(newAlert)
+    bot.updateAlerts()
+}
+
+function updateAlerts(){
     json = JSON.stringify(bot.alerts, null, 4).split(",").join(",\n");
 	fs.writeFileSync('./configs/alerts.json', json, 'utf8');
 }

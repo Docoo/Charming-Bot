@@ -5,7 +5,7 @@ module.exports = {
     help: `?`,
     async execute(bot, message, args){
         if (!bot.existsChannelAlert(message.guildId, message.channelId)) return message.channel.send('There is no alert in this channel!')
-        bot.removeAlert(message.guildID, message.channelID)
+        bot.removeAlert(message.guildId, message.channelId)
         return message.channel.send('Alert removed!')
     }
 }
