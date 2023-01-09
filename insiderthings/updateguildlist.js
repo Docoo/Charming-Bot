@@ -6,7 +6,7 @@ module.exports = {
         bot.guilds.cache.forEach(guild => {
             if (!guild.members.me.permissions.has(Discord.PermissionFlagsBits.Administrator)){
                 console.log(`ID: ${guild.id}, name: ${guild.name}`);
-                console.log("Admin:" + guild.me.permissions.has(Discord.PermissionFlagsBits.Administrator));
+                console.log("Admin:" + guild.members.me.permissions.has(Discord.PermissionFlagsBits.Administrator));
             }
             let thisGuild = undefined;
             bot.guildList.forEach(botguild => {
