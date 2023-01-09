@@ -57,14 +57,14 @@ module.exports={
         
         const Discord = require('discord.js');
         const files = [];
-        files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
+        files.push(new Discord.AttachmentBuilder('./assets/bns_logo.png'))
 
         if (recruitment.type == 'B'){
             //end type B recruit
             message.guild.channels.cache.get(recruitment.channel_id).messages.fetch(recruitment.message_id)
                 .then(fetchedMessage => {
                     //console.log("fetched");
-                    newEmbed = new Discord.MessageEmbed(fetchedMessage.embeds[0]);
+                    newEmbed = Discord.MessageEmbed.from(fetchedMessage.embeds[0].toJSON());
                     //console.log("stole embed");
                     newEmbed.setTitle(`Recruitment ended!`)
                     .setDescription(`Roles were given to:`)
@@ -134,7 +134,7 @@ module.exports={
             message.guild.channels.cache.get(recruitment.channel_id).messages.fetch(recruitment.message_id)
                 .then(fetchedMessage => {
                     //console.log("fetched");
-                    newEmbed = new Discord.MessageEmbed(fetchedMessage.embeds[0]);
+                    newEmbed = Discord.MessageEmbed.from(fetchedMessage.embeds[0].toJSON());
                     newEmbed.setTitle(`Recruitment ended!`)
                     .setDescription(`The final team is:`)
                     .setThumbnail('attachment://bns_logo.png');

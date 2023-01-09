@@ -23,20 +23,33 @@ module.exports = {
         if (!(data.error == undefined))
             return message.channel.send("Character not found!");
 
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
             .setTitle(`Characters of account ${datautf8.accountName}`)
-            .addField(`${getClassIcon(datautf8.playerClass, message)}${datautf8.characterName}`, 
-            `Level ${datautf8.playerLevel} • HM ${datautf8.playerLevelHM}`)
-            .setTimestamp(new Date() + ' | courtesy of silveress.ie');
+            .addFields([
+                {   
+                    name: `${getClassIcon(datautf8.playerClass, message)}${datautf8.characterName}`, 
+                    value: `Level ${datautf8.playerLevel} • HM ${datautf8.playerLevelHM}`
+                }
+            ])
+            .setTimestamp(new Date());
         data.otherNames.forEach(element => {
             var res = request('GET', 'https://api.silveress.ie/bns/v3/character/full/eu/'+ element);
             response = res.getBody('utf8');
             //console.log(response);
             elemData = JSON.parse(response);
             if (! (elemData.error == undefined))
-                embed.addField(element, 'Character returned error')
-            else embed.addField(`${getClassIcon(elemData.playerClass, message)}${elemData.characterName}`, 
-                `Level ${elemData.playerLevel} • HM ${elemData.playerLevelHM}`);
+                embed.addFields([
+                    {   
+                        name: element, 
+                        value: 'Character returned error'
+                    }
+                ]);
+            else embed.addFields([
+                    {   
+                        name: `${getClassIcon(elemData.playerClass, message)}${elemData.characterName}`, 
+                        value: `Level ${elemData.playerLevel} • HM ${elemData.playerLevelHM}`
+                    }
+                ]);
         });
         message.channel.send({embeds: [embed]});
         return 0;

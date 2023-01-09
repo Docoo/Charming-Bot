@@ -7,7 +7,13 @@ var path = require('path')
 
 //ext_file_list = recFindByExt('/mypath','ext')
 class StaticBot{
-    static bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+    // static bot = new Discord.Client({ intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES, Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+    static bot = new Discord.Client({ intents: [
+		Discord.GatewayIntentBits.Guilds, 
+		Discord.GatewayIntentBits.GuildMessages, 
+		Discord.GatewayIntentBits.GuildMessageReactions, 
+		Discord.GatewayIntentBits.MessageContent,
+	] });
     static botInstanceID = Math.floor(Math.random()*100000);
 }
 bot = StaticBot.bot;
@@ -71,9 +77,28 @@ bot.on('messageCreate', message => {
 	}
 	//console.log(thisGuild);
 	if (message.author.id === bot.user.id) return;
+
+	//monitor waifugame messages 812323565012647997
+	if (message.author.id == '812323565012647997'){
+		//needs a small delay for discord to cache the embed
+		setTimeout(() => {
+			message.channel.messages.fetch(message.id).then((message) => {
+				// console.dir(message)
+				// console.dir(message.embeds[0])
+				if (message.embeds[0] != undefined)
+					if (message.embeds[0].description.includes("is looking for Encounters...")){
+						const myGuild = bot.getGuildById(message.guild.id)
+						if (myGuild.waifuGameReminder) bot.createAlert(message.guild.id, message.channel.id, myGuild.waifuGameReminderMessage, 3, false)
+						message.channel.send(`Detected WaifuGame successful encounter search, will remind you in 3 hours.`)
+					}
+			})
+		}, 10000)
+	} 
+
+	//everyone tag spam detection
     if (message.mentions.everyone)
         if (thisGuild.protectFromEveryoneTag == true) {
-            console.log(`User ${message.author.username} has tagged everyone in server ${message.guild.name}`);
+            console.log(`User ${message.author.username} (${message.member.displayName}) has tagged everyone in server ${message.guild.name}`);
             bot.addEveryoneTagToWatchlist(message);
         }
 	if (bot.userBlacklist.indexOf(message.author.id) != -1) return;

@@ -12,7 +12,7 @@ module.exports = {
         if (member != undefined){
             myUser = member;
         } else {
-            for (let user of message.channel.guild.members){
+            for (let user of message.channel.guild.members.cache){
                 user = user[1];
                 //console.log(user.displayName.toLowerCase().length + ", " + user.user.username.toLowerCase().length + ", " + name.toLowerCase().length);
                 if (user.displayName.toLowerCase() == name.toLowerCase() || user.user.username.toLowerCase() == name.toLowerCase()){
@@ -21,7 +21,7 @@ module.exports = {
                 }
             }
             if (myUser == null){
-                for (let user of message.channel.guild.members){
+                for (let user of message.channel.guild.members.cache){
                     user = user[1];
                     if (user.displayName.toLowerCase().includes(name.toLowerCase()) || user.user.username.toLowerCase().includes(name.toLowerCase())){
                         myUser = user;
@@ -32,7 +32,7 @@ module.exports = {
         }
         if (myUser != null){
             const Discord = require('discord.js');
-            const newEmbed = new Discord.MessageEmbed()
+            const newEmbed = new Discord.EmbedBuilder()
                 .setTitle(`${name}'s profile picture`)
                 .setImage(myUser.user.avatarURL()+'?size=1024');
             message.channel.send({

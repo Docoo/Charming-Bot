@@ -62,10 +62,10 @@ module.exports = {
             //console.log(marketList);
         }
 
-        let embed = new Discord.MessageEmbed()
+        let embed = new Discord.EmbedBuilder()
         .setTitle(item.name)
         .setThumbnail(item.img)
-        .setTimestamp(new Date() + ' | courtesy of silveress.ie');
+        .setTimestamp(new Date());
 
         if (exists == true){
             let listings = marketList[0].listings;
@@ -74,13 +74,24 @@ module.exports = {
             while (listings.length > 0 && count > 0){
                 count--;
                 let listing = listings.shift();
-                embed.addField(`${listing.count} items registered`,
-                    `${Math.floor(listing.each/10000)>0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each, for a total of ${Math.floor(listing.price/10000) > 0 ? Math.floor(listing.price/10000) : 0}${bnsGoldCoin}${Math.floor(listing.price%10000/100) > 0 ? Math.floor(listing.price%10000/100) : 0}${bnsSilverCoin}${listing.price%100}${bnsCopperCoin}`, false);
+                embed.addFields([
+                        {   
+                            name: `${listing.count} items registered`, 
+                            value: `${Math.floor(listing.each/10000)>0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each, for a total of ${Math.floor(listing.price/10000) > 0 ? Math.floor(listing.price/10000) : 0}${bnsGoldCoin}${Math.floor(listing.price%10000/100) > 0 ? Math.floor(listing.price%10000/100) : 0}${bnsSilverCoin}${listing.price%100}${bnsCopperCoin}`,
+                            inline: false
+                        }
+                    ])
             }
         } else {
             let listing = marketHistory[0].listings[0];
             embed.setDescription(`No current listings found!`)
-            .addField(`Historical value:`, `${Math.floor(listing.each/10000) > 0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each`);
+            .addFields([
+                {   
+                    name: `Historical value:`, 
+                    value: `${Math.floor(listing.each/10000) > 0 ? Math.floor(listing.each/10000) : 0}${bnsGoldCoin}${Math.floor(listing.each%10000/100) > 0 ? Math.floor(listing.each%10000/100) : 0}${bnsSilverCoin}${listing.each%100}${bnsCopperCoin} each`,
+                    inline: false
+                }
+            ])
         }
             
         message.channel.send({embeds: [embed]});

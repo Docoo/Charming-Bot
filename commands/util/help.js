@@ -12,12 +12,22 @@ module.exports = {
             command = bot.commands.get(command);
             let helpVal = command.help;
             if (helpVal == '') helpVal = '-';
-            let newEmbed = new Discord.MessageEmbed()
+            let newEmbed = new Discord.EmbedBuilder()
                 .setTitle(`Help for ${command.name}`)
-                .addField(`${command.description} `, 'Usage: ', false)
-                .addField(`${command.usage}`, helpVal, false)
+                .addFields([
+                    {   
+                        name: `${command.description} `, 
+                        value: 'Usage: ',
+                        inline: false
+                    },
+                    {   
+                        name: `${command.usage}`, 
+                        value: helpVal,
+                        inline: false
+                    }
+                ])
                 .setThumbnail('attachment://help.png');
-            const messageAttachment = new Discord.MessageAttachment().setFile('./assets/help.png')
+            const messageAttachment = new Discord.AttachmentBuilder().setFile('./assets/help.png')
             return message.channel.send({embeds: [newEmbed], files: [messageAttachment]});
         } else {
             return message.channel.send("Command not found!");

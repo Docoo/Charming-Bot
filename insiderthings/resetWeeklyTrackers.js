@@ -25,13 +25,18 @@ module.exports = {
                         areaction[1].users.remove(aWeeklyTrackerCopy.userID)
                     }
                     const Discord = require('discord.js');
-                    const embed = new Discord.MessageEmbed()
+                    const embed = new Discord.EmbedBuilder()
                         .setTitle(`Weeklies for ${aWeeklyTrackerCopy.name}`)
-                        .addField("**Progress:**",`${bot.getEmoteById("911415406550450269")}Weeklies: ${aWeeklyTrackerCopy.weeklies ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-                        ${bot.getEmoteById("911415406865039361")}BT: ${aWeeklyTrackerCopy.bt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-                        ${bot.getEmoteById("911415407007649792")}VT/SK: ${aWeeklyTrackerCopy.vt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-                        ${bot.getEmoteById("911415406986661898")}TT: ${aWeeklyTrackerCopy.tt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-                        ${bot.getEmoteById("911415407053778954")}ET: ${aWeeklyTrackerCopy.et ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}`)
+                        .addFields([
+                            {
+                                name:"**Progress:**", 
+                                value: `${bot.getEmoteById("911415406550450269")}Weeklies: ${aWeeklyTrackerCopy.weeklies ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                                        ${bot.getEmoteById("911415406865039361")}BT: ${aWeeklyTrackerCopy.bt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                                        ${bot.getEmoteById("911415407007649792")}VT/SK: ${aWeeklyTrackerCopy.vt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                                        ${bot.getEmoteById("911415406986661898")}TT: ${aWeeklyTrackerCopy.tt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                                        ${bot.getEmoteById("911415407053778954")}ET: ${aWeeklyTrackerCopy.et ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}`
+                            }
+                        ])
                         .setTimestamp(new Date(aWeeklyTrackerCopy.date));
                     message.edit({ embeds: [embed] });
                 })

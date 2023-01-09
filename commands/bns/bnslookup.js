@@ -294,43 +294,105 @@ module.exports = {
             console.dir('Failed to get attack power wth')
             console.dir(err)
         }
-        var exampleEmbed = new Discord.MessageEmbed()
-            .setTitle(`${charClass}${characterData.accountName}[${characterName}]`)
+        var exampleEmbed = new Discord.EmbedBuilder()
+            .setTitle(`${charClass}${characterName}`)
             .setURL('http://eu-bns.ncsoft.com/ingame/bs/character/profile?c='+ characterName.replace(' ', '%20'))
             .setDescription('AP: ' + attpwr)
-            .addField('__General Info:__', generalInfo, true)
-            .addField('__Mystic damage:__', mysticStats, true)
-			.addField('\u200B','\u200B', false)
-            .addField('__Offensive:__', offensive, true)
-            .addField('__Defense:__', defence, true)
-            .addField('__Equipment:__', accTxt, false)
+            .addFields([
+                {   
+                    name: '__General Info:__', 
+                    value: generalInfo,
+                    inline: true
+                },
+                {   
+                    name: '__Mystic damage:__', 
+                    value: mysticStats,
+                    inline: true
+                },
+                {   
+                    name: '\u200B', 
+                    value: '\u200B',
+                    inline: false
+                },
+                {   
+                    name: '__Offensive:__', 
+                    value: offensive,
+                    inline: true
+                },
+                {   
+                    name: '__Defense:__', 
+                    value: defence,
+                    inline: true
+                },
+                {   
+                    name: '__Equipment:__', 
+                    value: accTxt,
+                    inline: false
+                }
+            ])
             .setColor(randomColor)
-            .setTimestamp(new Date() + ' | courtesy of silveress.ie');
+            .setTimestamp(new Date());
         const files = [];
         if (f2picurl != undefined){
-            files.push(new Discord.MessageAttachment('./f2pics/'+filenamee))
+            files.push(new Discord.AttachmentBuilder('./f2pics/'+filenamee))
             exampleEmbed.setImage('attachment://'+filenamee)
         }
         if (weapUrl != undefined) exampleEmbed.setThumbnail(`${weapUrl}`);
 
         if (attpwr<2000){
             lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
-            exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'loli'+lollipop,
+                    inline: false
+                }
+            ])
         } else if (attpwr<3000){
             uwuComfy = message.client.emojis.cache.find(emoji => emoji.name == "uwuComfy").toString();
-            exampleEmbed.addField('Whale meter: ', 'lolita'+uwuComfy);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'lolita'+uwuComfy,
+                    inline: false
+                }
+            ])
         } else if (attpwr<4000){
             dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
-            exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'dolphin'+dolphin,
+                    inline: false
+                }
+            ])
         } else if (attpwr<4500){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-            exampleEmbed.addField('Whale meter: ', 'whale'+whale);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'whale'+whale,
+                    inline: false
+                }
+            ])
         } else if (attpwr<5000){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-            exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'WHALE'+whale+whale+whale,
+                    inline: false
+                }
+            ])
         } else if (attpwr>5000){
             whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-            exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
+            exampleEmbed.addFields([
+                {   
+                    name: 'Whale meter: ', 
+                    value: 'WHALE!!! '+whale+whale+whale+whale+whale+whale,
+                    inline: false
+                }
+            ])
         }
         exampleEmbed.setFooter({text: "Character data provided by silveress.ie"})
         //console.log(exampleEmbed);
@@ -358,25 +420,3 @@ function sum(theArgs) {
     }
     return mystring;
 }
-
-// function whale(bot, message, args, exampleEmbed, attpwr){
-//     if (attpwr<2000){
-//         lollipop = message.client.emojis.cache.find(emoji => emoji.name == "AkariHug").toString();
-//         exampleEmbed.addField('Whale meter: ', 'loli'+lollipop);
-//     } else if (attpwr<3000){
-//         uwuComfy = message.client.emojis.cache.find(emoji => emoji.name == "uwuComfy").toString();
-//         exampleEmbed.addField('Whale meter: ', 'lolita'+uwuComfy);
-//     } else if (attpwr<4000){
-//         dolphin = message.client.emojis.cache.find(emoji => emoji.name == "NanachiSmug").toString();
-//         exampleEmbed.addField('Whale meter: ', 'dolphin'+dolphin);
-//     } else if (attpwr<4500){
-//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-//         exampleEmbed.addField('Whale meter: ', 'whale'+whale);
-//     } else if (attpwr<5000){
-//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-//         exampleEmbed.addField('Whale meter: ', 'WHALE'+whale+whale+whale);
-//     } else if (attpwr>5000){
-//         whale = message.client.emojis.cache.find(emoji => emoji.name == "HyperYay").toString();
-//         exampleEmbed.addField('Whale meter: ', 'WHALE!!! '+whale+whale+whale+whale+whale+whale);
-//     }
-// }

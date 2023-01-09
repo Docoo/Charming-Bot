@@ -27,15 +27,8 @@ module.exports = {
         }
         fivePercentCut = sum * 5 / 100;
         sumToSplit = sum - fivePercentCut;
-        let newEmbed = new Discord.MessageEmbed();
+        let newEmbed = new Discord.EmbedBuilder();
         newEmbed.setTitle("Split calculator");
-        // newEmbed.addField(`Total sum is ${sum} gold`,"")
-        //     .addField(`6-man split is ${(sum/6).toFixed(2)}\n`,"")
-        //     .addField(`7-man split is ${(sum/7).toFixed(2)}\n`,"")
-        //     .addField(`8-man split is ${(sum/8).toFixed(2)}\n`,"")
-        //     .addField(`9-man split is ${(sum/9).toFixed(2)}\n`,"")
-        //     .addField(`10-man split is ${(sum/10).toFixed(2)}\n`,"")
-        //     .addField(`11-man split is ${(sum/11).toFixed(2)}\n`,"");
         newEmbed.setDescription(`Total sum is ${sum} gold
             6-man split is ${(sum/6).toFixed(2)}
             7-man split is ${(sum/7).toFixed(2)}

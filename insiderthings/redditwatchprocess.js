@@ -98,5 +98,5 @@ module.exports = {
 
 function makeEmbedFromPost(post){
     const Discord = require('discord.js')
-    return new Discord.MessageEmbed().setTitle(post.title).setDescription(post.subreddit_name_prefixed).setImage(post.url).setURL(`https://www.reddit.com${post.permalink}`)
+    return new Discord.EmbedBuilder().setTitle(post.title).setDescription(post.subreddit_name_prefixed).setImage(post.url).setURL(`https://www.reddit.com${post.permalink}`)
 }

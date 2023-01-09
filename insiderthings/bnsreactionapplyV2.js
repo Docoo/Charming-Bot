@@ -207,8 +207,8 @@ module.exports={
                 if (recruitment.tank_needed) tankvalue += `Tank needed!`;
             }
             
-            files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
-            let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
+            files.push(new Discord.AttachmentBuilder('./assets/bns_logo.png'))
+            let newEmbed = Discord.MessageEmbed.from(reaction.message.embeds[0].toJSON())
                 .setThumbnail('attachment://bns_logo.png');
             if (sbvalue != ''){
                 newEmbed.fields[0].value = sbvalue;
@@ -235,8 +235,8 @@ module.exports={
                 let party2value = '';
                 let overflowvalue = '';
 
-                files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
-                let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
+                files.push(new Discord.AttachmentBuilder('./assets/bns_logo.png'))
+                let newEmbed = Discord.MessageEmbed.from(reaction.message.embeds[0].toJSON())
                     .setThumbnail('attachment://bns_logo.png');
                 playerClass = reaction.emoji.name.toUpperCase();
                 if (playerClass == 'WAR') playerClass = 'WRD';
@@ -323,11 +323,29 @@ module.exports={
                         party1value = 'Be the first one to apply!';    
 
                     newEmbed.fields = [];
-                    newEmbed.addField('**Party 1:**', party1value, true);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Party 1:**', 
+                            value: party1value,
+                            inline: true
+                        }
+                    ])
                     if (party2value != '')
-                        newEmbed.addField('**Party 2:**', party2value, true);
+                        newEmbed.addFields([
+                            {   
+                                name: '**Party 2:**', 
+                                value: party2value,
+                                inline: true
+                            }
+                        ])
                     if (overflowvalue != '')
-                        newEmbed.addField('**Overflow:**', overflowvalue, false);
+                        newEmbed.addFields([
+                            {   
+                                name: '**Overflow:**', 
+                                value: overflowvalue,
+                                inline: true
+                            }
+                        ])
                     tankPlayer = {};
                     if (recruitment.tank_id == null){
                         tankPlayer.user = {};
@@ -373,11 +391,29 @@ module.exports={
                     party1value = 'Be the first one to apply!';
 
                 newEmbed.fields = [];
-                newEmbed.addField('**Party 1:**', party1value, true);
+                newEmbed.addFields([
+                    {   
+                        name: '**Party 1:**', 
+                        value: party1value,
+                        inline: true
+                    }
+                ])
                 if (party2value != '')
-                    newEmbed.addField('**Party 2:**', party2value, true);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Party 2:**', 
+                            value: party2value,
+                            inline: true
+                        }
+                    ])
                 if (overflowvalue != '')
-                    newEmbed.addField('**Overflow:**', overflowvalue, false);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Overflow:**', 
+                            value: overflowvalue,
+                            inline: true
+                        }
+                    ])
                 tankPlayer = {};
                 if (recruitment.tank_id == null){
                     tankPlayer.user = {};
@@ -401,8 +437,8 @@ module.exports={
                 let party2value = '';
                 let overflowvalue = '';
 
-                files.push(new Discord.MessageAttachment('./assets/bns_logo.png'))
-                let newEmbed = new Discord.MessageEmbed(reaction.message.embeds[0])
+                files.push(new Discord.AttachmentBuilder('./assets/bns_logo.png'))
+                let newEmbed = Discord.MessageEmbed.from(reaction.message.embeds[0].toJSON())
                     .setThumbnail('attachment://bns_logo.png');
 
                 let found = false;
@@ -542,11 +578,29 @@ module.exports={
                         party1value = 'Be the first one to apply!';    
 
                     newEmbed.fields = [];
-                    newEmbed.addField('**Party 1:**', party1value, true);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Party 1:**', 
+                            value: party1value,
+                            inline: true
+                        }
+                    ])
                     if (party2value != '')
-                        newEmbed.addField('**Party 2:**', party2value, true);
+                        newEmbed.addFields([
+                            {   
+                                name: '**Party 2:**', 
+                                value: party2value,
+                                inline: true
+                            }
+                        ])
                     if (overflowvalue != '')
-                        newEmbed.addField('**Overflow:**', overflowvalue, false);
+                        newEmbed.addFields([
+                            {   
+                                name: '**Overflow:**', 
+                                value: overflowvalue,
+                                inline: true
+                            }
+                        ])
 
                     //console.log(newEmbed);
 
@@ -650,11 +704,29 @@ module.exports={
                     party1value = 'Be the first one to apply!';    
 
                 newEmbed.fields = [];
-                newEmbed.addField('**Party 1:**', party1value, true);
+                newEmbed.addFields([
+                    {   
+                        name: '**Party 1:**', 
+                        value: party1value,
+                        inline: true
+                    }
+                ])
                 if (party2value != '')
-                    newEmbed.addField('**Party 2:**', party2value, true);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Party 2:**', 
+                            value: party2value,
+                            inline: true
+                        }
+                    ])
                 if (overflowvalue != '')
-                    newEmbed.addField('**Overflow:**', overflowvalue, false);
+                    newEmbed.addFields([
+                        {   
+                            name: '**Overflow:**', 
+                            value: overflowvalue,
+                            inline: true
+                        }
+                    ])
 
                 tankPlayer = {};
                 if (recruitment.tank_id == null){

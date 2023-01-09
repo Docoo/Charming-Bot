@@ -16,8 +16,8 @@ module.exports = {
                 return message.reply(`no emote was found! :(`);
             let url = emote.url;
             url = url.split('/');
-            files.push(new Discord.MessageAttachment(`${emote.url}`))
-            const exampleEmbed = new Discord.MessageEmbed()
+            files.push(new Discord.AttachmentBuilder(`${emote.url}`))
+            const exampleEmbed = new Discord.EmbedBuilder()
                 .setTitle(`Max res of ${emote.name}`)
                 .setImage(`attachment://${url[url.length-1]}`);
             message.channel.send({embeds: [exampleEmbed], files: files});
@@ -25,8 +25,8 @@ module.exports = {
         }
         namefile = emoteFiles[0].split('/');
         file = namefile[namefile.length-1];
-        files.push(new Discord.MessageAttachment(`./media/img/discordblobs/${emoteFiles[0]}`))
-        const exampleEmbed = new Discord.MessageEmbed()
+        files.push(new Discord.AttachmentBuilder(`./media/img/discordblobs/${emoteFiles[0]}`))
+        const exampleEmbed = new Discord.EmbedBuilder()
     	    .setTitle(`Max res of ${file}`)
             .setImage(`attachment://${file}`);
 

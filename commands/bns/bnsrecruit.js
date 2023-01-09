@@ -95,7 +95,7 @@ module.exports = {
                 count++;
                 let name = args.shift();
 				let myUser = null;
-				for (let user of message.channel.guild.members){
+				for (let user of message.channel.guild.members.cache){
 					user = user[1];
 					//console.log(user.displayName.toLowerCase().length + ", " + user.user.username.toLowerCase().length + ", " + name.toLowerCase().length);
 					if (user.displayName.toLowerCase() == name.toLowerCase() || user.user.username.toLowerCase() == name.toLowerCase() || user.id == name){
@@ -104,7 +104,7 @@ module.exports = {
 					}
 				}
 				if (myUser == null){
-					for (let user of message.channel.guild.members){
+					for (let user of message.channel.guild.members.cache){
 						user = user[1];
 						if (user.displayName.toLowerCase().includes(name.toLowerCase()) || user.user.username.toLowerCase().includes(name.toLowerCase())){
 							myUser = user;
@@ -178,8 +178,8 @@ module.exports = {
         
 
         const Discord = require('discord.js');
-        const messageAttachment = new Discord.MessageAttachment().setFile(`./assets/bns_logo.png`);
-        const newEmbed = new Discord.MessageEmbed().setThumbnail('attachment://bns_logo.png');
+        const messageAttachment = new Discord.AttachmentBuilder().setFile(`./assets/bns_logo.png`);
+        const newEmbed = new Discord.EmbedBuilder().setThumbnail('attachment://bns_logo.png');
 
         if(recruitment.type == 'A'){
             if (recruitment.enforceRoles) {
@@ -498,11 +498,29 @@ module.exports = {
 
             newEmbed.setTitle(`People needed for ${title}`)
                 .setDescription(`Still needed: ${recruitment.nr_free_spots}`)
-                .addField('**Party 1:**', party1value, true)
+                .addFields([
+                    {   
+                        name: '**Party 1:**', 
+                        value: party1value,
+                        inline: true
+                    }
+                ])
                 .setFooter({text: `SB: ${recruitment.sb_count}/${recruitment.nr_of_parties} • BB: ${recruitment.bb_count}/${recruitment.nr_of_parties} • AC: ${recruitment.ac_count}/${recruitment.nr_of_parties} • Tank: ${recruitment.use_nick == false ? tankPlayer.user.username : tankPlayer.displayName} • HMB: ${recruitment.hmb_count}/${recruitment.nr_of_parties} • STEALTH: ${recruitment.stealth_count}/${recruitment.nr_of_parties} • ICE: ${recruitment.ice_count}/${recruitment.nr_of_parties}`});
 
-            if (party2value != 'Be the first one to apply!') newEmbed.addField('**Party 2:**', party2value, true);
-            if (overflowvalue != '') newEmbed.addField('**Overflow:**', overflowvalue, false);
+            if (party2value != 'Be the first one to apply!') newEmbed.addFields([
+                {   
+                    name: '**Party 2:**', 
+                    value: party2value,
+                    inline: true
+                }
+            ])
+            if (overflowvalue != '') newEmbed.addFields([
+                {   
+                    name: '**Overflow:**', 
+                    value: overflowvalue,
+                    inline: false
+                }
+            ])
 
             message.channel.send({
                 embeds: [
@@ -567,14 +585,34 @@ module.exports = {
             else acmessage = `${recruitment.ac_needed} AC needed`
             newEmbed.setTitle(`People needed for ${title}`)
                 .setDescription(`Still needed: ${recruitment.nr_free_spots}`)
-                .addField(`**Soulburns:**`, sbmessage, false)
-                .addField(`**Bluebuffs:**`, bbmessage, false)
-                .addField(`**Alphacalls:**`, acmessage, false);
+                .addFields([
+                    {   
+                        name: `**Soulburns:**`, 
+                        value: sbmessage,
+                        inline: false
+                    },
+                    {   
+                        name: `**Bluebuffs:**`, 
+                        value: bbmessage,
+                        inline: false
+                    },
+                    {   
+                        name: `**Alphacalls:**`, 
+                        value: acmessage,
+                        inline: false
+                    }
+                ])
             let tankmessage;
             if (recruitment.tank_is_buff) tankmessage = 'Must have a buff'
             else tankmessage = 'Can be any class';
             if (recruitment.tank_needed && recruitment.tank_id==null)
-                newEmbed.addField(`**Tank needed!**`, tankmessage, false);
+                newEmbed.addFields([
+                    {   
+                        name: `**Tank needed!**`, 
+                        value: tankmessage,
+                        inline: false
+                    }
+                ])
             message.channel.send({
                 embeds: [
                     newEmbed

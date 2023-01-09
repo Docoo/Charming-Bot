@@ -10,13 +10,16 @@ module.exports = {
         let aname = bot.sum(args, " ");
         const date = new Date();
 
-        const embed = new Discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setTitle(`Weeklies for ${aname}`)
-            .addField("**Progress:**",`${bot.getEmoteById(911415406550450269)}Weeklies: ${bot.getEmoteByName("weeklies_not_done")}
-            ${bot.getEmoteById(911415406865039361)}BT: ${bot.getEmoteByName("weeklies_not_done")}
-            ${bot.getEmoteById(911415407007649792)}VT/SK: ${bot.getEmoteByName("weeklies_not_done")}
-            ${bot.getEmoteById(911415406986661898)}TT: ${bot.getEmoteByName("weeklies_not_done")}
-            ${bot.getEmoteById(911415407053778954)}ET: ${bot.getEmoteByName("weeklies_not_done")}`)
+            .addFields([{
+                name: "**Progress:**",
+                value: `${bot.getEmoteById(911415406550450269)}Weeklies: ${bot.getEmoteByName("weeklies_not_done")}
+                        ${bot.getEmoteById(911415406865039361)}BT: ${bot.getEmoteByName("weeklies_not_done")}
+                        ${bot.getEmoteById(911415407007649792)}VT/SK: ${bot.getEmoteByName("weeklies_not_done")}
+                        ${bot.getEmoteById(911415406986661898)}TT: ${bot.getEmoteByName("weeklies_not_done")}
+                        ${bot.getEmoteById(911415407053778954)}ET: ${bot.getEmoteByName("weeklies_not_done")}`
+            }])
             .setTimestamp(date);
         message.channel.send({embeds: [embed]}).then(async sentMessage => {
             bot.reactWeeklyTracker(sentMessage);

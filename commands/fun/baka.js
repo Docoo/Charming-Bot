@@ -12,8 +12,8 @@ module.exports = {
         namefile = emoteFiles[number].split('/');
         file = namefile[namefile.length-1];
         const files = []
-        files.push(new Discord.MessageAttachment(`./media/gif/baka/${emoteFiles[number]}`))
-        const exampleEmbed = new Discord.MessageEmbed()
+        files.push(new Discord.AttachmentBuilder(`./media/gif/baka/${emoteFiles[number]}`))
+        const exampleEmbed = new Discord.EmbedBuilder()
     	    .setTitle(`Baka!`)
             .setImage(`attachment://${file}`);
         message.channel.send({ embeds: [exampleEmbed], files: files});

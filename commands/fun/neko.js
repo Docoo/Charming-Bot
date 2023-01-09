@@ -23,14 +23,14 @@ module.exports = {
         file = namefile[namefile.length-1];
         //console.log(`File name: ${file}`);
         if (number < emoteFiles.length){
-            files.push(new Discord.MessageAttachment(`./media/img/neko/${emoteFiles[number]}`))
-            exampleEmbed = new Discord.MessageEmbed()
-    	        .setTitle(`${message.author.username} summoned a neko!`)
+            files.push(new Discord.AttachmentBuilder(`./media/img/neko/${emoteFiles[number]}`))
+            exampleEmbed = new Discord.EmbedBuilder()
+    	        .setTitle(`${message.member.displayName} summoned a neko!`)
                 .setImage(`attachment://${file}`)
         } else {
-            files.push(new Discord.MessageAttachment(`./media/gif/neko/${nekoGifs[smallnumber]}`))
-            exampleEmbed = new Discord.MessageEmbed()
-                .setTitle(`${message.author.username} summoned a neko!`)
+            files.push(new Discord.AttachmentBuilder(`./media/gif/neko/${nekoGifs[smallnumber]}`))
+            exampleEmbed = new Discord.EmbedBuilder()
+                .setTitle(`${message.member.displayName} summoned a neko!`)
                 .setImage(`attachment://${file}`);
         }
         message.channel.send({embeds: [exampleEmbed], files: files});

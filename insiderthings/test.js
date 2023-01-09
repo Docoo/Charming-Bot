@@ -16,8 +16,8 @@ module.exports={
             case "1":
                 const Discord = require('discord.js')
                 files = []
-                files.push(new Discord.MessageAttachment(`./assets/BD.png`))
-                const newEmbed = new Discord.MessageEmbed().setImage('attachment://BD.png')
+                files.push(new Discord.AttachmentBuilder(`./assets/BD.png`))
+                const newEmbed = new Discord.EmbedBuilder().setImage('attachment://BD.png')
                 message.channel.send({embeds: [newEmbed], files: files})
                 break;
             case "2":
@@ -35,6 +35,9 @@ module.exports={
                 break;
             case "5":
                 bot.fetchBnsEquipmentFromSilveress();
+                break;
+            case "6":
+                return message.channel.send(`${message.guild.members.resolve("1231233")}`)
                 break;
             default:
                 return message.reply("You did not specify a valid test case")

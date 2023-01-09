@@ -13,40 +13,8 @@ module.exports = {
     	var list = oldEmbed.description.split(" ");
     	var required = parseInt(list[1]);
 		var newDescription;
-		let newEmbed = new Discord.MessageEmbed(oldEmbed);
-		/*
-    	if (oldEmbed.fields.length == 1) {
-		    let field = oldEmbed.fields[0];
-		    if (field.name === user.username && field.value === reaction.emoji.toString()){	
-    			required++;
-			    newDescription = list[0] + " " + required.toString();
-			    var newEmbed = new Discord.MessageEmbed({
-    				title: oldEmbed.title,
-				    description: newDescription
-			    });
-			    newEmbed.addField("Empty list", "Be the first one to apply!");
-			    reaction.message.edit({embeds: [newEmbed]});
-		    }
-	    } else {
-    		var newEmbed = new Discord.MessageEmbed({
-			    title: oldEmbed.title
-		    });
-		    oldEmbed.fields.forEach(field => {
-    			if (field.name === user.username && field.value === reaction.emoji.toString()){
-				    required++;
-			    }
-			    else {
-    				newEmbed.addField(field.name, field.value);
-			    }
-		    })
-		    if (newEmbed.fields.length == 0) {
-    			newEmbed.addField("Empty list", "Be the first one to apply!");
-		    }
-		    var newDescription = list[0] + " " + required.toString();
-		    newEmbed.setDescription(newDescription);
-		    reaction.message.edit({embeds: [newEmbed]});
-		}
-		*/
+		let newEmbed = Discord.MessageEmbed.from(oldEmbed.toJSON());
+		
 		if (oldEmbed.fields.length == 1){
 			// one party, no overflow
 			let data = newEmbed.fields[0].value;

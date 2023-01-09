@@ -35,13 +35,18 @@ module.exports = {
         bot.updateOneWeeklyTracker(weeklyTracker);
 
         const Discord = require('discord.js');
-        const embed = new Discord.MessageEmbed()
+        const embed = new Discord.EmbedBuilder()
             .setTitle(`Weeklies for ${weeklyTracker.name}`)
-            .addField("**Progress:**",`${bot.getEmoteById("911415406550450269")}Weeklies: ${weeklyTracker.weeklies ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-            ${bot.getEmoteById("911415406865039361")}BT: ${weeklyTracker.bt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-            ${bot.getEmoteById("911415407007649792")}VT/SK: ${weeklyTracker.vt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-            ${bot.getEmoteById("911415406986661898")}TT: ${weeklyTracker.tt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
-            ${bot.getEmoteById("911415407053778954")}ET: ${weeklyTracker.et ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}`)
+            .addFields([
+                {
+                    name: "**Progress:**", 
+                    value: `${bot.getEmoteById("911415406550450269")}Weeklies: ${weeklyTracker.weeklies ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                            ${bot.getEmoteById("911415406865039361")}BT: ${weeklyTracker.bt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                            ${bot.getEmoteById("911415407007649792")}VT/SK: ${weeklyTracker.vt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                            ${bot.getEmoteById("911415406986661898")}TT: ${weeklyTracker.tt ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}
+                            ${bot.getEmoteById("911415407053778954")}ET: ${weeklyTracker.et ? bot.getEmoteById("911417771517165608") : bot.getEmoteById("911417514683158569")}`
+                }
+            ])
             .setTimestamp(new Date(weeklyTracker.date));
         reaction.message.edit({ embeds: [embed] });
         return;

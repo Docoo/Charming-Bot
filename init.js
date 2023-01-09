@@ -55,6 +55,7 @@ async function initBot(bot, message){
 	bot.reloadCommands = reloadCommands;
 	bot.guildUpdate = updateGuildList;
 	bot.updateGuildList = updateGuildList;
+    bot.getGuildById = getGuildById
 	bot.updateBnsRecruitments = updateBnsRecruitments;
 	bot.updateGuildQuiz = updateGuildQuiz;
 	bot.getClassIcon = getClassIcon;
@@ -309,6 +310,12 @@ function updateGuildList(){
 	bot.guildList = JSON.parse(fs.readFileSync('./configs/guilds.json'));
 }
 
+function getGuildById(id){
+    for (const guild of bot.guildList)
+        if (guild.guildID == id) return guild
+    return null
+}
+
 function updateBnsRecruitments(){
 	json = JSON.stringify(bot.bnsrecruitments, null, 4);
 	fs.writeFileSync('./configs/recruitments.json', json, 'utf8')
@@ -499,7 +506,7 @@ function updateCountdownMessages(){
     let currentDate = new Date();
     for (currentCountdown of bot.countdowns){
         let timeLeft = new Date(new Date(currentCountdown.targetDate)-currentDate);
-        const embed = new Discord.MessageEmbed();
+        const embed = new Discord.EmbedBuilder();
         embed.setTitle("**Countdown**")
             .setDescription(`**${timeLeft.getUTCHours()} hours : ${timeLeft.getUTCMinutes()} minutes left**`);
         bot.guilds.cache.get(currentCountdown.server_id).channels.cache.get(currentCountdown.channel_id).messages.fetch(currentCountdown.message_id).then(message => {
@@ -509,7 +516,7 @@ function updateCountdownMessages(){
 }
 
 function endCountdown(removedCountdown){
-    const embed = new Discord.MessageEmbed();
+    const embed = new Discord.EmbedBuilder();
     embed.setTitle("**Countdown**")
         .setDescription(`**Countdown ended!**`);
     bot.guilds.cache.get(removedCountdown.server_id).channels.cache.get(removedCountdown.channel_id).messages.fetch(removedCountdown.message_id).then(message => {
@@ -561,9 +568,12 @@ function timedEvents(){
     for (alert of bot.alerts){
         const nextAlert = new Date(alert.nextAlert)
         if (date > nextAlert){
-            while (new Date(alert.nextAlert) < date)
-                alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
             bot.alert(alert)
+            if (alert.loop)
+                while (new Date(alert.nextAlert) < date)
+                    alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
+            else
+                bot.removeAlert(alert.serverID, alert.channelID)
         }
     }
     bot.updateAlerts()
@@ -775,7 +785,7 @@ function fetchBnsEquipmentFromSilveress(){
     }
 }
 
-function createAlert(serverID, channelID, message, repeatInterval){
+function createAlert(serverID, channelID, message, repeatInterval, loop){
     const timeNow = new Date()
     const newAlert = {}
     newAlert.startTime = timeNow.toISOString()
@@ -784,6 +794,7 @@ function createAlert(serverID, channelID, message, repeatInterval){
     newAlert.message = message
     newAlert.serverID = serverID
     newAlert.channelID = channelID
+    newAlert.loop = loop
     bot.alerts.push(newAlert)
     bot.updateAlerts()
 }

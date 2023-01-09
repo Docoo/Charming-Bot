@@ -12,7 +12,7 @@ module.exports = {
         if (member != undefined){
             myUser = member;
         } else {
-            for (let user of message.channel.guild.members){
+            for (let user of message.channel.guild.members.cache){
                 user = user[1];
                 //console.log(user.displayName.toLowerCase().length + ", " + user.user.username.toLowerCase().length + ", " + name.toLowerCase().length);
                 if (user.displayName.toLowerCase() == name.toLowerCase() || user.user.username.toLowerCase() == name.toLowerCase()){
@@ -21,7 +21,7 @@ module.exports = {
                 }
             }
             if (myUser == null){
-                for (let user of message.channel.guild.members){
+                for (let user of message.channel.guild.members.cache){
                     user = user[1];
                     if (user.displayName.toLowerCase().includes(name.toLowerCase()) || user.user.username.toLowerCase().includes(name.toLowerCase())){
                         myUser = user;
@@ -41,12 +41,12 @@ module.exports = {
         console.log(`File path: ${namefile}`);
         file = namefile[namefile.length-1];
         console.log(`File name: ${file}`);
-        const messageAttachment = new Discord.MessageAttachment().setFile(`./media/gif/pat/${emoteFiles[number]}`);
-        const messageEmbed = new Discord.MessageEmbed()
-    	    .setTitle(`${message.member.displayName!=undefined?message.member.displayName:message.author.username} pat ${myUser.displayName!=undefined?myUser.displayName:myUser.username}!`)
+        const messageAttachment = new Discord.AttachmentBuilder().setFile(`./media/gif/pat/${emoteFiles[number]}`);
+        const messageEmbed = new Discord.EmbedBuilder()
+    	    .setTitle(`${message.member.displayName} pat ${myUser.displayName}!`)
             .setImage(`attachment://${file}`);
-        if ((message.author.username == message.mentions.users.first().username)) 
-            messageEmbed.setTitle(`${message.author.displayName}, have a pat!`);
+        if ((message.author.username == user.username)) 
+            messageEmbed.setTitle(`${message.member.displayName}, have a pat!`);
         message.channel.send({
             embeds: [
                 messageEmbed

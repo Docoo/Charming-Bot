@@ -1,24 +1,23 @@
-const { isInteger, isUndefined, toInteger } = require("lodash");
-
 module.exports = {
     name: 'countdown',
     description: 'create timer, 1 min updates',
     usage: `countdown <hours> <minutes>`,
     help: `**hours, minutes** : numbers that are valid`,
     async execute(bot, message, args){
-        let hours = toInteger(args[0]);
-        if (isUndefined(hours)) {
+        let hours = parseInt(args[0]);
+        if (hours == undefined) {
             hours = 0;
         }
-        let minutes = toInteger(args[1]);
-        if (isUndefined(minutes)){
+        let minutes = parseInt(args[1]);
+        if (minutes == undefined){
             minutes = 0;
         }
-		if (!isInteger(hours) || !isInteger(minutes) || hours > 23 || minutes > 59){
+		// if (!isInteger(hours) || !isInteger(minutes) || hours > 23 || minutes > 59){
+		if (!Number.isInteger(hours) || !Number.isInteger(minutes) || hours > 23 || minutes > 59){
             return message.reply("Invalid input data");
         }
         const Discord = require('discord.js');
-        const embed = new Discord.MessageEmbed();
+        const embed = new Discord.EmbedBuilder();
         embed.setTitle("**Countdown**")
             .setDescription(`**${hours} hours : ${minutes} minutes left**`);
         let countdownMessage = await message.channel.send({embeds: [embed]});

@@ -21,7 +21,7 @@ module.exports = {
         }
 
         const Discord = require("discord.js")
-        const messageEmbed = new Discord.MessageEmbed().setTitle("List of reddit subscriptions").addField(`**Subreddit - Channel**`, subscriptionList)
+        const messageEmbed = new Discord.EmbedBuilder().setTitle("List of reddit subscriptions").addFields([{ name: `**Subreddit - Channel**`, value: subscriptionList}])
         return message.channel.send({embeds: [messageEmbed]})
     }
 }

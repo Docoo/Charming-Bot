@@ -7,7 +7,7 @@ module.exports = {
         var response = "**Command list:**";
         const fs = require('fs');
         const Discord = require('discord.js');
-        let replyEmbed = new Discord.MessageEmbed()
+        let replyEmbed = new Discord.EmbedBuilder()
             .setTitle(response)
             .setColor('#17b817')
             .setThumbnail(`attachment://cuteLove.jpg`);
@@ -26,7 +26,7 @@ module.exports = {
                         let command = require(`./../../commands/${modules[dir]}/${commands[index]}`);
                         responseVal2 += `\n\`${command.name}:\` ${command.description}`;
                     }
-                    replyEmbed.addField(responseVal1, responseVal2, false);
+                    replyEmbed.addFields([{name: responseVal1, value: responseVal2, inline: false}]);
                 }
             } else {
                 responseVal1 = `\n**${modules[dir]}:**`;
@@ -36,10 +36,10 @@ module.exports = {
                     let command = require(`./../../commands/${modules[dir]}/${commands[index]}`);
                     responseVal2 += `\n\`${command.name}:\` ${command.description}`;
                 }
-                replyEmbed.addField(responseVal1, responseVal2, false);
+                replyEmbed.addFields([{name: responseVal1, value: responseVal2, inline: false}]);
             }
         }
-        const messageAttachment = new Discord.MessageAttachment().setFile(`./media/img/discordblobs/cuteLove.jpg`);
+        const messageAttachment = new Discord.AttachmentBuilder().setFile(`./media/img/discordblobs/cuteLove.jpg`);
         message.channel.send({embeds: [replyEmbed], files: [messageAttachment]});
     }
 }

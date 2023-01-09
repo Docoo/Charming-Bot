@@ -13,7 +13,7 @@ module.exports = {
                 } else {
                     //console.log(msg.embeds[0].title.split(" ")[3], args[0]);
                     let oldEmbed = msg.embeds[0];
-                    const exampleEmbed = new Discord.MessageEmbed(oldEmbed).setTitle('Recruitment ended!').setDescription('This is the team:');
+                    const exampleEmbed = Discord.MessageEmbed.from(oldEmbed.toJSON()).setTitle('Recruitment ended!').setDescription('This is the team:');
                     msg.edit({embeds: [exampleEmbed]}).then(() =>{
                         msg.reactions.removeAll();
                     });

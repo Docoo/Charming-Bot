@@ -16,8 +16,8 @@ module.exports = {
         file = namefile[namefile.length-1];
         //console.log(`File name: ${file}`);
         const files = []
-        files.push(new Discord.MessageAttachment(`./media/img/waifu/${emoteFiles[number]}`))
-        const exampleEmbed = new Discord.MessageEmbed()
+        files.push(new Discord.AttachmentBuilder(`./media/img/waifu/${emoteFiles[number]}`))
+        const exampleEmbed = new Discord.EmbedBuilder()
     	    .setTitle(`${message.member.displayName}, here is your waifu!`)
             .setImage(`attachment://${file}`);
         message.channel.send({embeds: [exampleEmbed], files: files});

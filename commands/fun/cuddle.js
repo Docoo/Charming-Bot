@@ -12,7 +12,7 @@ module.exports = {
         if (member != undefined){
             myUser = member;
         } else {
-            for (let user of message.channel.guild.members){
+            for (let user of message.channel.guild.members.cache){
                 user = user[1];
                 //console.log(user.displayName.toLowerCase().length + ", " + user.user.username.toLowerCase().length + ", " + name.toLowerCase().length);
                 if (user.displayName.toLowerCase() == name.toLowerCase() || user.user.username.toLowerCase() == name.toLowerCase()){
@@ -21,7 +21,7 @@ module.exports = {
                 }
             }
             if (myUser == null){
-                for (let user of message.channel.guild.members){
+                for (let user of message.channel.guild.members.cache){
                     user = user[1];
                     if (user.displayName.toLowerCase().includes(name.toLowerCase()) || user.user.username.toLowerCase().includes(name.toLowerCase())){
                         myUser = user;
@@ -43,12 +43,12 @@ module.exports = {
         file = namefile[namefile.length-1];
         console.log(`File name: ${file}`);
         const files = [];
-        files.push(new Discord.MessageAttachment(`./media/gif/cuddle/${emoteFiles[number]}`))
-        const exampleEmbed = new Discord.MessageEmbed()
+        files.push(new Discord.AttachmentBuilder(`./media/gif/cuddle/${emoteFiles[number]}`))
+        const exampleEmbed = new Discord.EmbedBuilder()
     	    .setTitle(`${message.member.displayName} cuddles ${myUser.displayName}!`)
             .setImage(`attachment://${file}`);
-        if ((message.author.username == message.mentions.users.first().username)) 
-            exampleEmbed.setTitle(`${message.author.username}, you can cuddle me!`);
+        if ((message.author.username == user.username)) 
+            exampleEmbed.setTitle(`${message.member.displayName}, you can cuddle me!`);
         message.channel.send({embeds: [exampleEmbed], files: files});
         return 0;
     }

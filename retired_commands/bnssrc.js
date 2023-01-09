@@ -20,14 +20,28 @@ module.exports = {
             const Discord = require('discord.js');
             //var messageContent = `${amount.toString()} people needed for ${sum(args)}\n\`\`\`\nEmpty list\n\`\`\``;
             //message.channel.send(messageContent);
-            const newEmbed = new Discord.MessageEmbed().setTitle(`People needed for ${sum(args)}`);
+            const newEmbed = new Discord.EmbedBuilder().setTitle(`People needed for ${sum(args)}`);
             newEmbed.setDescription(`Needed: ${amount}`);
-            //newEmbed.addField("Empty list", "Be the first one to apply!");
             if (amount == 6){
-                newEmbed.addField('Party1', 'Empty!');
+                newEmbed.addFields([
+                    {
+                        name: 'Party1', 
+                        value: 'Empty!'
+                    }
+                ])
             } else {
-                newEmbed.addField('Party1', 'Empty!', true);
-                newEmbed.addField('Party2', 'Empty!', true);
+                newEmbed.addFields([
+                    {
+                        name: 'Party1', 
+                        value: 'Empty!', 
+                        inline: true
+                    },
+                    {
+                        name: 'Party2', 
+                        value: 'Empty!', 
+                        inline: true
+                    }
+                ])
             }
             message.channel.send({
             embeds: [newEmbed]

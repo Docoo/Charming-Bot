@@ -8,7 +8,7 @@ module.exports = {
         let msgToSend = sum(args);
         if (message.author.id == "412077741274431498") msgToSend = "Ruki told me to say that " + msgToSend;
         message.channel.send(msgToSend).then(sentMessage => {
-            console.log(`Sent message with id ${sentMessage.id} for ${message.author.username}`);
+            console.log(`Sent message with id ${sentMessage.id} for ${message.author.username} (${message.member.displayName})`);
             message.delete().then(msg => console.log(`Deleted message from ${msg.author.username}`)).catch(console.log);
         });
     }

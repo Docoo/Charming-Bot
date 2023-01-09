@@ -14,7 +14,7 @@ module.exports ={
         if (member != undefined){
             myUser = member;
         } else {
-            for (let user of message.channel.guild.members){
+            for (let user of message.channel.guild.members.cache){
                 user = user[1];
                 //console.log(user);
                 if (user.displayName.toLowerCase() == name.toLowerCase() || user.user.username.toLowerCase() == name.toLowerCase()){
@@ -23,7 +23,7 @@ module.exports ={
                 }
             }
             if (myUser == null){
-                for (let user of message.channel.guild.members){
+                for (let user of message.channel.guild.members.cache){
                     user = user[1];
                     if (user.displayName.toLowerCase().includes(name.toLowerCase()) || user.user.username.toLowerCase().includes(name.toLowerCase())){
                         myUser = user;
