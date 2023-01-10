@@ -86,11 +86,12 @@ bot.on('messageCreate', message => {
 				// console.dir(message)
 				// console.dir(message.embeds[0])
 				if (message.embeds[0] != undefined)
-					if (message.embeds[0].description.includes("is looking for Encounters...")){
-						const myGuild = bot.getGuildById(message.guild.id)
-						if (myGuild.waifuGameReminder) bot.createAlert(message.guild.id, message.channel.id, myGuild.waifuGameReminderMessage, 3, false)
-						message.channel.send(`Detected WaifuGame successful encounter search, will remind you in 3 hours.`)
-					}
+					if (message.embeds[0].description != null)
+						if (message.embeds[0].description.includes("is looking for Encounters...")){
+							const myGuild = bot.getGuildById(message.guild.id)
+							if (myGuild.waifuGameReminder) bot.createAlert(message.guild.id, message.channel.id, myGuild.waifuGameReminderMessage, 3, false)
+							message.channel.send(`Detected WaifuGame successful encounter search, will remind you in 3 hours.`)
+						}
 			})
 		}, 10000)
 	} 
