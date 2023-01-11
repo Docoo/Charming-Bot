@@ -4,14 +4,14 @@ module.exports = {
     async execute(bot, message, args){
         if (message.author.id == "169525036305219585"){
             const stringToSend = JSON.stringify(bot.guildList.find(guild => guild.guildID == args[0]), null, 4)
-            if (stringToSend.length < 3000)
+            if (stringToSend.length < 1900)
                 message.channel.send("```\n"+stringToSend+"\n```")
             else {
                 const lines = stringToSend.split('\n')
                 var someLines = ""
                 while (lines.length > 0){
                     someLines += lines.shift() + '\n'
-                    if (someLines.length > 3000){
+                    if (someLines.length > 1500){
                         message.channel.send("```\n"+someLines+"\n```")
                         someLines = ""
                     }
