@@ -17,7 +17,23 @@ module.exports = {
                 bot.guildList.push(thisGuild);
             }
             thisGuild.name = guild.name;
+            //creating role list
             if (thisGuild.roles == undefined) thisGuild.roles = [];
+            //checking if any old style entries are found (id-only)
+            var stringRolesFound = false
+            for (const role in thisGuild.roles)
+                if (typeof(role) == 'string') stringRolesFound = true
+            //convert to new object-style entry
+            if (stringRolesFound){
+                const newRoleList = []
+                for (const stringRole of thisGuild.roles)
+                    if (typeof(stringRole) == 'string') 
+                        newRoleList.push({id: stringRole , name: guild.roles.resolve(stringRole).name}) 
+                    else 
+                        newRoleList.push(stringRole)
+                thisGuild.roles = newRoleList
+            }
+            //to be continued
             if (thisGuild.roleWatches == undefined) thisGuild.roleWatches = [];
             if (thisGuild.roleToggles == undefined) thisGuild.roleToggles = [];
             if (thisGuild.defaultChannel != undefined){
@@ -27,6 +43,7 @@ module.exports = {
                     thisGuild.defaultChannel = undefined;
                 }
             }
+            //abandoned daily quiz
             // if (thisGuild.dailyQuiz == undefined) thisGuild.dailyQuiz = null;
             // if (thisGuild.autoQuizUpdate == undefined) thisGuild.autoQuizUpdate = false;
             // if (thisGuild.dailyQuizAnswers == undefined) thisGuild.dailyQuizAnswers = [];

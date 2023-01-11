@@ -6,9 +6,7 @@ module.exports = {
             that the users have to answer`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
         let data = bot.sum(args);
         if (data == ""){
             return message.channel.send("No question provided or improper use of quotations.");

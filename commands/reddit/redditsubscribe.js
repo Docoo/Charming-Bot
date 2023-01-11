@@ -6,9 +6,7 @@ module.exports = {
     execute(bot, message, args){
 
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
 
         if (args[0] == undefined || args[0] == null || args[0] == "") return message.channel.send("No subreddit provided")
         if (args[0].startsWith("r/",0)) args[0] = args[0].slice(2);

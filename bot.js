@@ -89,8 +89,10 @@ bot.on('messageCreate', message => {
 					if (message.embeds[0].description != null)
 						if (message.embeds[0].description.includes("is looking for Encounters...")){
 							const myGuild = bot.getGuildById(message.guild.id)
-							if (myGuild.waifuGameReminder) bot.createAlert(message.guild.id, message.channel.id, myGuild.waifuGameReminderMessage, 3, false)
-							message.channel.send(`Detected WaifuGame successful encounter search, will remind you in 3 hours.`)
+							if (myGuild.waifuGameReminder) {
+								bot.createAlert(message.guild.id, message.channel.id, myGuild.waifuGameReminderMessage, 3, false)
+								message.channel.send(`Detected WaifuGame successful encounter search, will remind you in 3 hours.`)
+							}
 						}
 			})
 		}, 10000)
@@ -212,6 +214,7 @@ bot.on('raw', packet => {
 
 bot.on('messageReactionAdd', (reaction, user) => {
 	//console.dir(reaction);
+	// console.dir(reaction.emoji)
 	if (bot.userBlacklist.indexOf(user.id) != -1) return;
 	if (bot.whitelistmode == true){
 		if (bot.userWhitelist.indexOf(user.id) == -1) return;

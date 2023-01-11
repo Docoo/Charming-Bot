@@ -1,77 +1,58 @@
 module.exports = {
     name: 'addreactionrole',
     description: `Allows set up of reaction role assignment.`,
-    usage: `addreactionrole <messageid> <rolename> <emojitype> <emojiname>`,
+    usage: `addreactionrole <messageid> <roleID> <emojiID>`,
     help: `**messageid** : the ID of the message you want to add the reaction to
             \tyou can obtain this by right-clicking on a message and selecting the "Copy ID" option
-            **rolename** : the name of the role people will get when reacting to the message
+            **roleID** : the ID of the role people will get when reacting to the message
             \tplease make sure the role is user settable (done with the "addmanualrole" command!)
-            **emojitype : custom (added on server) or standard (from discord, available on all servers)
-            **emojiname** : the name of the emoji the reaction will use
-            \tyou can obtain this by hovering your mouse pointer over an emoji in a message
-            ***WARNING! ONLY CUSTOM EMOJI WILL WORK! UNICODE EMOJI NOT SUPPORTED!***`,
+            **emojiID** : the name of the emoji the reaction will use
+            \tyou can obtain this the same way you obtained the roleID`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
         if (args[0] == undefined) return message.channel.send("No message id specified!");
         if (args[1] == undefined) return message.channel.send("No role specified!");
-        if (args[2] == undefined || (args[2] != "custom" && args[2] != "standard")) return message.channel.send("Invalid emoji type (must be \"custom\" or \"standard\")!");
-        if (args[3] == undefined) return message.channel.send("No emote specified!");
+        if (args[2] == undefined) return message.channel.send("No emote specified!");
 
+        //check if role exists on server
+        const role = message.guild.roles.resolve(args[1]);
+        if (role == null) return message.channel.send("Role was not found on this server!");
 
-        guildRole = message.guild.roles.cache.find(role => role.name == args[1]);
-        if (guildRole == null) return message.channel.send("Role was not found on this server!");
-
-        let unicode = false;
+        //find server config
         let thisGuild = undefined;
         bot.guildList.forEach(botguild => {
             if (botguild.guildID == message.guild.id) thisGuild = botguild;
         })
         if (thisGuild == undefined) return message.channel.send("This server is not in the database yet!");
-        
-        let emote = null;
-        if (args[2] == "custom"){
-            let emotename = args[3].split(":")[1];
-            if (emotename == null || emotename == undefined) emotename = args[3];
-            emote = message.channel.guild.emojis.cache.find(emoji => emoji.name == emotename);
-            if (emote == null) emote = message.client.emojis.cache.find(emoji => emoji.name == emotename);
-        } else {
-            let emotename = args[3];
-            if (emote == null) {
-                for (let unicodeEmoji of bot.unicodeEmoji){
-                    if (emotename == unicodeEmoji){
-                        emote = emotename;
-                        unicode = true;
-                    }
-                }
-            }
-        }
-        if (emote == null) return message.channel.send("Emoji not found!");
-        console.log(`Guild: ${thisGuild.name}, role: ${guildRole}, emote: ${emote}`);
 
+        //check if role is user settable
+        if (thisGuild.roles.find(guildRole => guildRole.id == role.id) == null) return message.channel.send("This role is not user settable!")
+        
+        //find the emoji
+        var emoji = bot.emojis.resolve(args[2])
+        if (emoji == null) 
+            if (bot.unicodeEmoji.indexOf(args[2]) > -1)
+                emoji = args[2]
+            else
+                return message.channel.send("Emoji not found!");
+
+        //check if role isn't watched already
         for (index in thisGuild.roleWatches) {
             watch = thisGuild.roleWatches[index];
-            if (watch.role == guildRole.id) return message.channel.send("There is a watch for this role already!");
+            if (watch.role == role.id) return message.channel.send("There is a watch for this role already!");
         };
-        let settablerole = false;
-        for (index in thisGuild.roles) {
-            roleID = thisGuild.roles[index];
-            if (guildRole.id == roleID) settablerole = true;
-        }
-        if (!settablerole) return message.channel.send("This role is not user settable!");
 
+        //search for the message in all of the guild's channels
         bot.guilds.resolve(message.guildId).channels.cache.forEach(channel => {
-            if (channel.type == "GUILD_TEXT"){
+            if (channel.type == require('discord.js').ChannelType.GuildText){
                 channel.messages.fetch(args[0])
                     .then(fetchedMessage => {
-                        // for (watch in thisGuild.roleWatches) {
-                        //     if (watch.role == guildRole.id) return;
-                        // };
-                        fetchedMessage.react(emote);
-                        thisGuild.roleWatches.push({msgID: args[0], role: guildRole.id, emoji: unicode == false ? emote.id : emote});
+                        //once found, react, add the watch to guild config and save
+                        fetchedMessage.react(emoji);
+                        thisGuild.roleWatches.push({msgID: args[0], role: role.id, emoji: bot.unicodeEmoji.includes(emoji)?emoji:emoji.id});
                         bot.guildUpdate();
+                        console.log(`Added role reaction. Guild: ${thisGuild.name}, role: ${role}, emote: ${emoji}`);
                         return message.channel.send("Success!");
                     })
                     .catch(error => {});

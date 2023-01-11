@@ -18,9 +18,7 @@ module.exports = {
             return 0;
         } else {
             //
-            if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-                return message.reply("you are not allowed to change the prefix!");
-            };
+            if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to change the prefix!");
             thisGuild.prefix = args[0];
             bot.updateGuildList();
             message.channel.send('Prefix changed successfully!');

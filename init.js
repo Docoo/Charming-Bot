@@ -109,6 +109,7 @@ async function initBot(bot, message){
     bot.alert = alert
     bot.removeAlert = removeAlert
     bot.updateAlerts = updateAlerts
+    bot.adminOrMeCheck = adminOrMeCheck
 
 	bot.unicodeEmoji = ['ðŸ¤‘', '🤑', '1️⃣', '2️⃣', '3️⃣', '❤️', '🧡', '💚', '💙', '💜', '🖤', '🤎', '🤍', '💝', '💖', '💗', '💓', '💞', '💕', '❣️', '💔', '💟', '🍆', '⚡'];
 
@@ -615,11 +616,11 @@ function everyoneTagSpamCheck(userID, guildID){
 }
 
 function everyoneTagSpamMute(userID, guildID){
-    const guild = bot.guilds.cache.get(guildID);
+    const guild = bot.guilds.resolve(guildID);
     let thisGuild;
     bot.guildList.forEach(guild => {if (guild.guildID == guildID) thisGuild = guild; });
-    const role = guild.roles.get(thisGuild.mutedRoleID);
-    const member = guild.members.get(userID);
+    const role = guild.roles.resolve(thisGuild.mutedRoleID);
+    const member = guild.members.resolve(userID);
     member.addRole(role);
     console.log(`Protected ${guild.name} from everyone tag spammer ${member.user.username}`);
 }
@@ -832,4 +833,12 @@ function removeAlert(serverID, channelID){
             return
         }
     }
+}
+
+function adminOrMeCheck(message){
+    const Discord = require('discord.js')
+    if ((!message.member.permissions.has(Discord.PermissionFlagsBits.Administrator)) && (message.author.id != '169525036305219585')){
+        return false
+    };
+    return true
 }

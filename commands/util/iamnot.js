@@ -12,7 +12,7 @@ module.exports = {
                     else {
                         msgString += `\nThe roles a user can self-remove on this server are:\n`;
                         for (let role of guild.roles){
-                            msgString += `\`${message.channel.guild.roles.get(role).name}\` `;
+                            msgString += `\`${message.channel.guild.roles.resolve(role.id).name}\` `;
                         }
                     }
                 }
@@ -22,10 +22,9 @@ module.exports = {
         bot.guildList.forEach(guild => {
             if (guild.guildID == message.guild.id){
                 if (guild.roles == undefined) return message.channel.send("This server does not allow users to set their roles.");
-                index = guild.roles.indexOf(args[0]);
-                if (index == -1) return message.channel.send("Role not found!");
-                role = message.guild.roles.cache.find(role => role.name == args[0]);
-                message.member.removeRole(role);
+                role = guild.roles.find(role => role.name == args[0]);
+                if (role == null) return message.channel.send("Role cannot be set by user or does not exist!");
+                message.member.roles.remove(role.id, 'iamnot');
                 return message.channel.send("Role removed successfully!");
             }
         })

@@ -7,9 +7,7 @@ module.exports = {
             \tUse without providing any rolename to disable.`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
         if (args[0] == undefined) {
             bot.guildList.forEach(guild => {
                 if (guild.guildID == message.guild.id){

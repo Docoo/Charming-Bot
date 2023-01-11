@@ -125,7 +125,7 @@ module.exports={
                 }
             }
             console.log("type A before fetching message");
-            if (!message.guild.me.permissions.has('ADMINISTRATOR')) {
+            if (!message.guild.members.me.permissions.has(Discord.PermissionFlagsBits.Administrator)) {
                 bot.bnsrecendlock = false;
                 return 3;
             }

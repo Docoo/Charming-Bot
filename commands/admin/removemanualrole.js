@@ -1,21 +1,19 @@
 module.exports = {
     name: 'removemanualrole',
     description: `Removes a role from the list of roles a user can give himself.`,
-    usage: `removemanualrole <rolename>`,
-    help: `**rolename** : the name of the role you want people to set themselves
-    Please make sure there is only one role with that name!`,
+    usage: `removemanualrole <roleID>`,
+    help: `**rolename** : the name of the role you no longer want people to set themselves
+            \tYou can obtain the ID of a role by sending a message with \\@role and taking the numerical value`,
     async execute(bot, message, args){
         //.hasPermission('ADMINISTRATOR')
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
         if (args[0] == undefined) return message.channel.send("No role specified!");
-        role = message.guild.roles.cache.find(role => role.name == args[0]);
+        role = message.guild.roles.resolve(args[0]);
         if (role == null) return message.channel.send("Role was not found on this server!");
         bot.guildList.forEach(guild => {
             if (guild.guildID == message.guild.id){
                 if (guild.roles == undefined) guild.roles = [];
-                var index = guild.roles.indexOf(role.id);
+                const index = guild.roles.indexOf(guild.roles.find(roleEntry => roleEntry.id == role.id));
                 if (index !== -1) {
                     guild.roles.splice(index, 1);
                     bot.guildUpdate();

@@ -4,9 +4,7 @@ module.exports ={
     usage: `setquizmanager <user>`,
     help: `**user** : can be a username, mention or partial name (first fit is used on partial)`,
     async execute(bot, message, args){
-        if ((!message.member.permissions.has('ADMINISTRATOR')) && (message.author.id != '169525036305219585')){
-            return message.reply("you are not allowed to use this command!");
-        };
+        if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
         let myUser = null;
         const member = message.mentions.members.first();
         //console.log(member);
