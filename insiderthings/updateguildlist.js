@@ -2,6 +2,7 @@ module.exports = {
     name: 'updateguildlist',
     description: `Updates the list of guilds in the bot files`,
     async execute(bot, message, args){
+        await bot.sleep(2000)
         const Discord = require('discord.js')
         bot.guilds.cache.forEach(guild => {
             if (!guild.members.me.permissions.has(Discord.PermissionFlagsBits.Administrator)){
@@ -27,8 +28,15 @@ module.exports = {
             if (stringRolesFound){
                 const newRoleList = []
                 for (const stringRole of thisGuild.roles)
-                    if (typeof(stringRole) == 'string') 
-                        newRoleList.push({id: stringRole , name: guild.roles.resolve(stringRole).name}) 
+                    if (typeof(stringRole) == 'string') {
+                        const guildRole = guild.roles.resolve(stringRole)
+                        if (guildRole != null)
+                            newRoleList.push({id: stringRole , name: guild.roles.resolve(stringRole).name})
+                        else {
+                            if (thisGuild.erroredRoles == undefined) thisGuild.erroredRoles = []
+                            thisGuild.erroredRoles.push(stringRole)
+                        }
+                    }
                     else 
                         newRoleList.push(stringRole)
                 thisGuild.roles = newRoleList
