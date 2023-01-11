@@ -8,7 +8,8 @@ module.exports = {
             //console.log(guild);
             let guild = guildEntry[1];
             //let owner = guild.members.get(guild.ownerID);
-            messageToSend += `**GuildID**: ${guild.id}, **Name**: ${guild.name}, **Owner**: ${guild.owner.user.username}#${guild.owner.user.discriminator}\n`;
+            const owner = guild.members.resolve(guild.ownerId)==null?{a: "value", user: bot.users.resolve(guild.ownerId)}:guild.members.resolve(guild.ownerId)
+            messageToSend += `**GuildID**: ${guild.id}, **Name**: ${guild.name}, **Owner**: ${owner==null?guild.ownerId:owner.user.tag}\n`;
             counter++;
             if (counter == 25){
                 message.channel.send(messageToSend);

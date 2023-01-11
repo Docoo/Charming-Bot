@@ -39,6 +39,10 @@ module.exports={
             case "6":
                 return message.channel.send(`${message.guild.members.resolve("1231233")}`)
                 break;
+            case "7":
+                return message.channel.send(`${bot.guilds.resolve("1008309956610629822").memberCount}`)
+                // bot.guilds.resolve("1008309956610629822").members.fetch("169525036305219585").then(member => {message.channel.send(member.user.tag)}).catch(error => {message.channel.send(error)})
+                break;
             default:
                 return message.reply("You did not specify a valid test case")
                 break;

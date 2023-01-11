@@ -2,7 +2,6 @@ module.exports = {
     name: 'updateguildlist',
     description: `Updates the list of guilds in the bot files`,
     async execute(bot, message, args){
-        await bot.sleep(2000)
         const Discord = require('discord.js')
         bot.guilds.cache.forEach(guild => {
             if (!guild.members.me.permissions.has(Discord.PermissionFlagsBits.Administrator)){
@@ -61,6 +60,7 @@ module.exports = {
             if (thisGuild.protectFromEveryoneTag == undefined) thisGuild.protectFromEveryoneTag = false
             if (thisGuild.bnsMaintenanceChannel == undefined) thisGuild.bnsMaintenanceChannel = null
             if (thisGuild.waifuGameReminder == undefined) thisGuild.waifuGameReminder = false
+            thisGuild.size = guild.memberCount
         });
         bot.guildUpdate();
         console.log("Successfully updated!");
