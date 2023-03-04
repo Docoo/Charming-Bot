@@ -8,7 +8,7 @@ module.exports = {
         if (message.author.bot == true){
             console.dir(message.channel.guild.members.get(message.author.id));
         } else {
-            if (!bot.adminOrMeCheck()) return message.reply("you are not allowed to use this command!");
+            if (!bot.adminOrMeCheck(message)) return message.reply("you are not allowed to use this command!");
             if (isNaN(amount)) {
                 return message.reply('that doesn\'t seem to be a valid number.');
             } else if (amount < 2 || amount > 100) {
