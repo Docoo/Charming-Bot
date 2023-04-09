@@ -6,7 +6,7 @@ module.exports = {
     async execute(bot, message, args){
         const hourString = args.shift()
         const hourInt = hourString/1
-        if (hourInt == NaN || hourInt < 0 || intervalInt > 24) return message.channel.send('Invalid hours! Must be between 0 and 24.')
+        if (hourInt == NaN || hourInt < 0 || hourInt > 24) return message.channel.send('Invalid hours! Must be between 0 and 24.')
         const minuteString = args.shift()
         const minuteInt = minuteString/1
         if (minuteInt == NaN || minuteInt < 0 || minuteInt > 59) return message.channel.send('Invalid minutes! Must be between 0 and 59.')
