@@ -11,7 +11,7 @@ module.exports = {
         if (textMessage == '' || textMessage == ' ') return message.channel.send('Cannot set an empty message!')
         if (bot.existsChannelAlert(message.guildId, message.channelId)) return message.channel.send('There already exists an alert in this channel! Use "deletealert" to remove it.')
         // console.log(`${message.guildId} ${message.channelId}`)
-        bot.createAlert(message.guildId, message.channelId, textMessage, intervalInt, true)
+        bot.createAlert(message.guildId, message.channelId, textMessage, intervalInt, 0, true)
         return message.channel.send('Alert created!')
     }
 }
