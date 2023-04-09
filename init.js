@@ -809,7 +809,7 @@ function updateAlerts(){
 function getNextAlert(ISODate, repeatIntervalHours, repeatIntervalMinutes){
     const oldAlert = new Date(ISODate)
     const days = Math.floor(repeatIntervalHours/24)
-    const hours = repeatInterval % 24
+    const hours = repeatIntervalHours % 24
     oldAlert.setDate(oldAlert.getDate()+days)
     oldAlert.setHours(oldAlert.getHours()+hours)
     oldAlert.setMinutes(oldAlert.getMinutes()+repeatIntervalMinutes)
