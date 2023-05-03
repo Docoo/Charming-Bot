@@ -52,6 +52,7 @@ async function initBot(bot, message){
 	bot.guildBlacklist = JSON.parse(fs.readFileSync('./configs/guild-blacklist.json', 'utf8'));
 	bot.loop = loop;
 	bot.bdoStuff = bdoStuff;
+    bot.updateConfig = updateConfig;
 	bot.reloadCommands = reloadCommands;
 	bot.guildUpdate = updateGuildList;
 	bot.updateGuildList = updateGuildList;
@@ -242,6 +243,12 @@ async function loop(newIdentifier){
 		}
 	}
     console.log(`Ended loop with identifier ${identifier}`);
+}
+
+function updateConfig(){
+    configjson = JSON.stringify(bot.config, null, 4);
+	fs.writeFileSync('./configs/config.json', configjson, 'utf8');
+    bot.config = JSON.parse(fs.readFileSync('./configs/config.json', 'utf8'));
 }
 
 async function bdoStuff(count){
@@ -562,8 +569,10 @@ function timedEvents(){
     //reddit watches every 10 minutes
     if (date.getMinutes()%10 == 0){
         //console.log(`time for reddit stuff`)
-        bot.removeInactiveSubs()
-        bot.insidercommands.get("redditwatchprocess").execute(bot, null, null);
+        if (!bot.config.redditpause){
+            bot.removeInactiveSubs()
+            bot.insidercommands.get("redditwatchprocess").execute(bot, null, null);
+        }
     }
 
     for (alert of bot.alerts){
