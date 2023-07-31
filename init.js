@@ -145,11 +145,11 @@ async function initBot(bot, message){
 				await bot.login(bot.config.token);
                 bot.loggedIn = true;
 			}
-			//await bot.wait(3000);
+			await bot.wait(3000);
 			//console.log(bot.guilds.cache);
-			let guild = bot.guilds.cache.get(restarted.guild);
+			let guild = bot.guilds.resolve(restarted.guild);
 			//console.log(guild);
-			let channel = guild.channels.cache.get(restarted.channel);
+			let channel = guild.channels.resolve(restarted.channel);
 			channel.send("Restart complete!");
 			restarted.restart = false;
 			restarted.guild = null;
