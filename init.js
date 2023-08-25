@@ -581,7 +581,7 @@ function timedEvents(){
             bot.alert(alert)
             if (alert.loop)
                 while (new Date(alert.nextAlert) < date)
-                    alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatInterval)
+                    alert.nextAlert = bot.getNextAlert(alert.nextAlert, alert.repeatIntervalHours, alert.repeatIntervalMinutes)
             else
                 bot.removeAlert(alert.serverID, alert.channelID)
         }

@@ -10,7 +10,12 @@ module.exports = {
             //check if new post for each subreddit
             try {
                 const url = `https://www.reddit.com/r/${redditWatch.subreddit}/new/.json?sort=new&raw_json=1`
-                const getRequest = request('GET', encodeURI(url))
+                const requestOptions = {
+                    headers: {
+                      'User-Agent': 'node:CharmingBot:0.1 (by /u/CharmingGaze)',
+                    },
+                  }
+                const getRequest = request('GET', encodeURI(url), requestOptions)
                 const getRequestResponseUTF8 = getRequest.getBody('utf8')
                 const jsonResponse = JSON.parse(getRequestResponseUTF8)
                 const postList = jsonResponse.data.children;
