@@ -795,13 +795,14 @@ function fetchBnsEquipmentFromSilveress(){
     }
 }
 
-function createAlert(serverID, channelID, message, repeatIntervalHours, repeatIntervalMinutes, loop){
+function createAlert(serverID, channelID, message, repeatIntervalDays, repeatIntervalHours, repeatIntervalMinutes, loop){
     const timeNow = new Date()
     const newAlert = {}
     newAlert.startTime = timeNow.toISOString()
+    newAlert.repeatIntervalDays = repeatIntervalDays
     newAlert.repeatIntervalHours = repeatIntervalHours
     newAlert.repeatIntervalMinutes = repeatIntervalMinutes
-    newAlert.nextAlert = bot.getNextAlert(newAlert.startTime, repeatIntervalHours, repeatIntervalMinutes)
+    newAlert.nextAlert = bot.getNextAlert(newAlert.startTime, repeatIntervalDays, repeatIntervalHours, repeatIntervalMinutes)
     newAlert.message = message
     newAlert.serverID = serverID
     newAlert.channelID = channelID
@@ -815,9 +816,9 @@ function updateAlerts(){
 	fs.writeFileSync('./configs/alerts.json', json, 'utf8');
 }
 
-function getNextAlert(ISODate, repeatIntervalHours, repeatIntervalMinutes){
+function getNextAlert(ISODate, repeatIntervalDays, repeatIntervalHours, repeatIntervalMinutes){
     const oldAlert = new Date(ISODate)
-    const days = Math.floor(repeatIntervalHours/24)
+    const days = repeatIntervalDays + Math.floor(repeatIntervalHours/24)
     const hours = repeatIntervalHours % 24
     oldAlert.setDate(oldAlert.getDate()+days)
     oldAlert.setHours(oldAlert.getHours()+hours)
